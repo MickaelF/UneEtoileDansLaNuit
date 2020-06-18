@@ -1,0 +1,24 @@
+^C:\USERS\MICKAEL\DOCUMENTS\PROJETS\PROJETSACTUELS\UNEETOILEDANSLANUIT\DEPENDENCIES\GLFW-3.3.2\BUILD\CMAKEFILES\22A918579E183176E7783EB0ED8B38D3\DOCS.RULE
+setlocal
+cd C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\docs
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\doxygen\bin\doxygen.exe"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MICKAEL\DOCUMENTS\PROJETS\PROJETSACTUELS\UNEETOILEDANSLANUIT\DEPENDENCIES\GLFW-3.3.2\DOCS\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2 -BC:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/build --check-stamp-file C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/build/docs/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

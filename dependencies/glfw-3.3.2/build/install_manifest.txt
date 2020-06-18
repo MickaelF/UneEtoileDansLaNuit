@@ -1,0 +1,9 @@
+C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/thirdParty/glfw3/include/GLFW/glfw3.h
+C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/thirdParty/glfw3/include/GLFW/glfw3native.h
+C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/thirdParty/glfw3/lib/cmake/glfw3/glfw3Config.cmake
+C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/thirdParty/glfw3/lib/cmake/glfw3/glfw3ConfigVersion.cmake
+C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/thirdParty/glfw3/lib/cmake/glfw3/glfw3Targets.cmake
+C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/thirdParty/glfw3/lib/cmake/glfw3/glfw3Targets-release.cmake
+C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/thirdParty/glfw3/lib/pkgconfig/glfw3.pc
+C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/thirdParty/glfw3/lib/glfw3dll.lib
+C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/thirdParty/glfw3/bin/glfw3.dll

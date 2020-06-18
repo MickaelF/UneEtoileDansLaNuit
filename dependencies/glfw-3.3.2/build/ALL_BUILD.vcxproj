@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{46001149-6910-300E-9B57-5F3B7493082F}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2 -BC:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/build --check-stamp-file C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.18\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindDoxygen.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\WriteBasicConfigVersionFile.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\3.18.0-rc1\CMakeCCompiler.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\3.18.0-rc1\CMakeRCCompiler.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\3.18.0-rc1\CMakeSystem.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\cmake_uninstall.cmake.in;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\src\glfw3.pc.in;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\src\glfw3Config.cmake.in;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\src\glfw_config.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2 -BC:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/build --check-stamp-file C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-3.18\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindDoxygen.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\WriteBasicConfigVersionFile.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\3.18.0-rc1\CMakeCCompiler.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\3.18.0-rc1\CMakeRCCompiler.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\3.18.0-rc1\CMakeSystem.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\cmake_uninstall.cmake.in;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\src\glfw3.pc.in;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\src\glfw3Config.cmake.in;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\src\glfw_config.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2 -BC:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/build --check-stamp-file C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files\CMake\share\cmake-3.18\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindDoxygen.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\WriteBasicConfigVersionFile.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\3.18.0-rc1\CMakeCCompiler.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\3.18.0-rc1\CMakeRCCompiler.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\3.18.0-rc1\CMakeSystem.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\cmake_uninstall.cmake.in;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\src\glfw3.pc.in;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\src\glfw3Config.cmake.in;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\src\glfw_config.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2 -BC:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/build --check-stamp-file C:/Users/Mickael/Documents/Projets/ProjetsActuels/UneEtoileDansLaNuit/dependencies/glfw-3.3.2/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-3.18\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindDoxygen.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.18\Modules\WriteBasicConfigVersionFile.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\3.18.0-rc1\CMakeCCompiler.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\3.18.0-rc1\CMakeRCCompiler.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\3.18.0-rc1\CMakeSystem.cmake;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\cmake_uninstall.cmake.in;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\src\glfw3.pc.in;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\src\glfw3Config.cmake.in;C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\src\glfw_config.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\ZERO_CHECK.vcxproj">
+      <Project>{37794737-DA19-331E-A099-4C305CFF49F5}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\examples\boing.vcxproj">
+      <Project>{FD1E51C1-39F0-39AF-A206-AD2D513E4DA1}</Project>
+      <Name>boing</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\clipboard.vcxproj">
+      <Project>{A9738063-1480-3745-9148-96A7E231C8F6}</Project>
+      <Name>clipboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\cursor.vcxproj">
+      <Project>{BA25E7ED-803C-3381-99D9-82C2DC060D18}</Project>
+      <Name>cursor</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\docs\docs.vcxproj">
+      <Project>{1FB6A598-1E6B-3149-A07B-07AEBEB48678}</Project>
+      <Name>docs</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\empty.vcxproj">
+      <Project>{DCBB6791-EFC6-3833-8F4D-D45B4CF4BA4B}</Project>
+      <Name>empty</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\events.vcxproj">
+      <Project>{FE72A026-344D-3881-A931-2D77AD3ECFC9}</Project>
+      <Name>events</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\gamma.vcxproj">
+      <Project>{B58FA925-DEA7-3A72-8954-879DD62E5FDD}</Project>
+      <Name>gamma</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\examples\gears.vcxproj">
+      <Project>{75427832-6BAE-3575-8E98-E9C9F1FE1081}</Project>
+      <Name>gears</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\src\glfw.vcxproj">
+      <Project>{71A7C1FA-22E0-3D1A-9020-3E2A34EAC457}</Project>
+      <Name>glfw</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\glfwinfo.vcxproj">
+      <Project>{B414D659-51E0-3518-A8BE-8B5972C1975D}</Project>
+      <Name>glfwinfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\examples\heightmap.vcxproj">
+      <Project>{1B95F6A2-5FE8-39DE-A7B6-002B1E19B392}</Project>
+      <Name>heightmap</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\icon.vcxproj">
+      <Project>{9049BFEC-9BF6-3117-BBD8-9B3F59A5B9DB}</Project>
+      <Name>icon</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\iconify.vcxproj">
+      <Project>{5D49CC76-2E94-3E15-B6D5-EC5EF572B9E2}</Project>
+      <Name>iconify</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\inputlag.vcxproj">
+      <Project>{E86FD524-9B2F-3E53-938F-6B4FED58FAD4}</Project>
+      <Name>inputlag</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\joysticks.vcxproj">
+      <Project>{A9A45758-A9B0-3B2C-95A3-4C3B99CCF470}</Project>
+      <Name>joysticks</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\monitors.vcxproj">
+      <Project>{70E3CE1C-E37B-341D-ADB2-01880F4BA2C3}</Project>
+      <Name>monitors</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\msaa.vcxproj">
+      <Project>{A260EA4B-5466-3239-8B62-685AA1BE280E}</Project>
+      <Name>msaa</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\examples\offscreen.vcxproj">
+      <Project>{C0392FE3-32B1-3CDB-9DCF-19F8CE1B58D2}</Project>
+      <Name>offscreen</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\opacity.vcxproj">
+      <Project>{70C0BAEF-E588-3440-A8CD-DAEDA87DF307}</Project>
+      <Name>opacity</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\examples\particles.vcxproj">
+      <Project>{D8A7EC8B-0409-3ADE-8414-1630D9C9C816}</Project>
+      <Name>particles</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\reopen.vcxproj">
+      <Project>{28ADB562-2789-36AC-80B8-AB1D2C3A9C16}</Project>
+      <Name>reopen</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\examples\sharing.vcxproj">
+      <Project>{C551B644-6C06-36A1-BC51-8B713B3EB925}</Project>
+      <Name>sharing</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\examples\simple.vcxproj">
+      <Project>{A8B4D393-6F7F-3AF2-8DE6-46BC6BE993C4}</Project>
+      <Name>simple</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\examples\splitview.vcxproj">
+      <Project>{DC0F1417-1E74-3C1C-9C0D-A6EC7A37A984}</Project>
+      <Name>splitview</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\tearing.vcxproj">
+      <Project>{D0A514A5-4DA3-3601-BFEA-BA37EC009E7C}</Project>
+      <Name>tearing</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\threads.vcxproj">
+      <Project>{92BC1FEF-81DA-39E7-B5F6-39B9C5ACA87F}</Project>
+      <Name>threads</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\timeout.vcxproj">
+      <Project>{67C58150-3F71-3BA9-9AC9-2EBDAE129438}</Project>
+      <Name>timeout</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\title.vcxproj">
+      <Project>{655FCF76-7CC1-3052-854E-87D67BD3BBBC}</Project>
+      <Name>title</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\triangle-vulkan.vcxproj">
+      <Project>{D91BA5EC-A579-347E-8527-FFEA1B96D7E5}</Project>
+      <Name>triangle-vulkan</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\examples\wave.vcxproj">
+      <Project>{AD36C524-D437-33D9-A370-F9599EB09B1F}</Project>
+      <Name>wave</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Mickael\Documents\Projets\ProjetsActuels\UneEtoileDansLaNuit\dependencies\glfw-3.3.2\build\tests\windows.vcxproj">
+      <Project>{93E768AA-84A2-3F17-826B-79F4BBC9F436}</Project>
+      <Name>windows</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
