@@ -5,6 +5,7 @@ set (PROJECT_NAME "AStarInTheNight")
 project(${PROJECT_NAME})
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(OpenGL REQUIRED)
 
 # ********* GLW3 *********
@@ -34,7 +35,7 @@ set(ImGUI_SRC
 	${ImGUI_DIR}/imgui_widgets.cpp)
 
 # ********* Application *********
-set(SRCS src/main.cpp)
+set(SRCS src/main.cpp "src/tools/log.h" "src/tools/log.cpp" "src/tools/logger.h")
 add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC})
 
 target_link_libraries(${PROJECT_NAME} glfw opengl32 glm GLAD)
