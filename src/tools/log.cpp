@@ -14,6 +14,8 @@ namespace {
 			return "Warning";
 		case Log::Priority::Error:
 			return "Error";
+		case Log::Priority::Fatal:
+			return "Fatal";
 		case Log::Priority::Remember:
 			return "Remember";
 		default: return "Unknown"; 
@@ -22,9 +24,9 @@ namespace {
 }
 std::mutex Log::m_mutex;
 
-Log::Log(Priority priority, const char* fileName, int lineNumber) : m_priority(priority)
+Log::Log(Priority priority, std::string_view fileName, int lineNumber) : m_priority(priority)
 {
-	m_stream << enumToStr(priority) << "-" << fileName << ":" << lineNumber << " - "; 
+	m_stream << enumToStr(priority) << "-" << fileName.substr(fileName.find_last_of('\\') + 1) << ":" << lineNumber << " - "; 
 }
 
 Log::~Log()

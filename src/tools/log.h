@@ -1,14 +1,14 @@
 #pragma once
 #include <sstream>
+#include <string_view>
 #include <mutex>
 //#include <source_location> As soon as it is available, use this instead of defined macros
-// TODO(mfle) At each << call, remove previous endline operator and add another one at the end of the new message
 
 class Log
 {
 public: 
-	enum class Priority {Debug, Info, Warning, Error, Remember};
-	Log(Priority p, const char* fileName, int lineNumber);
+	enum class Priority {Debug, Info, Warning, Error, Fatal, Remember};
+	Log(Priority p, std::string_view fileName, int lineNumber);
 	~Log();
 	Log(Log& o) = delete; 
 	Log(Log&& o) = delete; 
@@ -74,7 +74,8 @@ private:
 	std::ostringstream m_stream;
 	static std::mutex m_mutex; 
 };
- 
+
+#define lFatal		Log(Log::Priority::Fatal, __FILE__, __LINE__)
 #define lError		Log(Log::Priority::Error, __FILE__, __LINE__)
 #define lInfo		Log(Log::Priority::Info, __FILE__, __LINE__)
 #define lWarning	Log(Log::Priority::Warning, __FILE__, __LINE__)
