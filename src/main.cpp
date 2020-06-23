@@ -1,7 +1,10 @@
 #include <glad/glad.h>
+// glad.h needs to be included before glfw3
 #include <GLFW/glfw3.h>
-#include "tools/log.h"
+
 #include <memory>
+
+#include "tools/log.h"
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
@@ -29,10 +32,10 @@ int main()
         lFatal << "Failed to initialize GLAD";
         return -1;
     }
-    lRemember << "Call to framebufferSizeCallback will be used to resize the viewport, once we use ImGUI for engine UI"; 
-    framebufferSizeCallback(window, 1600, 900); 
+    lRemember << "Call to framebufferSizeCallback will be used to resize the viewport, once we use "
+                 "ImGUI for engine UI";
+    framebufferSizeCallback(window, 1600, 900);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
-    
 
     while (!glfwWindowShouldClose(window))
     {
@@ -41,5 +44,5 @@ int main()
     }
 
     glfwTerminate();
-    return 0; 
+    return 0;
 }
