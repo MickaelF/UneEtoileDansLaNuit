@@ -32,5 +32,5 @@ Log::~Log()
 {
     std::lock_guard<std::mutex> lock {m_mutex};
     std::cout << m_stream.str() << std::endl;
-    Logger::append(m_stream.str());
+    Logger::appendLog(m_stream.str()+"\n");
 }

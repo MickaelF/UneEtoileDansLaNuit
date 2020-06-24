@@ -1,7 +1,7 @@
 #pragma once
 #include <chrono>
-#include <iostream>
 #include <string>
+#include "logger.h"
 
 class ExecutionTimer
 {
@@ -10,16 +10,23 @@ public:
     ExecutionTimer(const ExecutionTimer&) = delete;
     ExecutionTimer(ExecutionTimer&&) = delete;
     ExecutionTimer& operator=(const ExecutionTimer&) = delete;
+
     ExecutionTimer(std::string&& name) : m_name(name), m_start(std::chrono::system_clock::now()) {}
 
     ~ExecutionTimer()
     {
         auto end = std::chrono::system_clock::now();
-        auto duration = end - m_start;
-        // TODO(mfle) Output this in a file rather than in the console.
-        std::cout << m_name << ": "
-                  << std::chrono::duration_cast<std::chrono::milliseconds>(duration).count()
-                  << "ms\n";
+        std::string unity = "ms\n"; 
+        auto duration =
+            std::chrono::duration_cast<std::chrono::milliseconds>(end - m_start).count();
+        if (duration <= 1)
+        {
+            duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - m_start).count();
+            unity = "ns\n";
+        }
+        std::stringstream ss;
+        ss << m_name << ": " << duration << unity;
+        Logger::appendExecutionLog(ss.str());
     }
 
 private:
