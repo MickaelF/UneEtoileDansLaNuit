@@ -3,6 +3,7 @@
 #include <queue>
 #include <string>
 #include <string_view>
+#include <thread>
 #include "debug.h"
 class Logger
 {
@@ -31,6 +32,6 @@ private:
     std::ofstream m_executionFileStream;
     std::queue<std::string> m_executionLogQueue;
 #endif // IS_DEBUG
-
+    std::thread m_loggingThread; 
     bool m_isRunning {true};
 };

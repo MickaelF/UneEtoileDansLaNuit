@@ -4,7 +4,6 @@
 #ifdef _WIN32
     #include <ShlObj.h>
 #endif
-#include <thread>
 #include <sstream>
 
 namespace
@@ -44,15 +43,13 @@ Logger::Logger()
 #endif // IS_DEBUG
     if (isOpened)
     {
-        std::thread thread {&Logger::flush, this};
-        thread.detach();
+        m_loggingThread = std::thread{&Logger::flush, this};
     }
 }
 
 Logger::~Logger()
 {
     close();
-    std::this_thread::sleep_for(std::chrono::milliseconds {1000});
 }
 
 void Logger::appendLog(std::string_view str)
@@ -77,7 +74,9 @@ void Logger::append(std::string_view str, std::queue<std::string>& queue)
 
 void Logger::close()
 {
-    get().m_isRunning = false;
+    Logger& logger {get()};
+    logger.m_isRunning = false;
+    logger.m_loggingThread.join();
 }
 
 Logger& Logger::get()
