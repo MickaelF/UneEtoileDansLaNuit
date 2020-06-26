@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "tools/log.h"
+#include "log.h"
 #include <exception>
 
 int main()
