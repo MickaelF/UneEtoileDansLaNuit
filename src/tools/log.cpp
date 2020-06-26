@@ -1,8 +1,10 @@
 #include "log.h"
-
-#include <iostream>
-
+#include "debug.h"
 #include "logger.h"
+
+#ifdef IS_DEBUG
+    #include <iostream>
+#endif
 
 namespace
 {
@@ -20,7 +22,6 @@ const char* enumToStr(Log::Priority p)
     }
 }
 } // namespace
-std::mutex Log::m_mutex;
 
 Log::Log(Priority priority, std::string_view fileName, int lineNumber) : m_priority(priority)
 {
@@ -30,7 +31,10 @@ Log::Log(Priority priority, std::string_view fileName, int lineNumber) : m_prior
 
 Log::~Log()
 {
+#ifdef IS_DEBUG
+    static std::mutex m_mutex;
     std::lock_guard<std::mutex> lock {m_mutex};
     std::cout << m_stream.str() << std::endl;
+#endif
     Logger::appendLog(m_stream.str()+"\n");
 }

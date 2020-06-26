@@ -80,7 +80,6 @@ public:
 private:
     Priority m_priority = Priority::Debug;
     std::ostringstream m_stream;
-    static std::mutex m_mutex;
 };
 
 #define lFatal Log(Log::Priority::Fatal, __FILE__, __LINE__)

@@ -36,7 +36,7 @@ set(ImGUI_SRC
 	${ImGUI_DIR}/imgui_widgets.cpp)
 
 # ********* Application *********
-set(SRCS src/main.cpp "src/tools/log.h" "src/tools/log.cpp" "src/tools/logger.h" "src/tools/executiontimer.h" "src/tools/logger.cpp" "src/tools/debug.h" "src/file/abstractreader.h" "src/file/abstractreader.cpp" "src/mainwindow.h" "src/mainwindow.cpp")
+set(SRCS src/main.cpp "src/tools/log.h" "src/tools/log.cpp" "src/tools/logger.h" "src/tools/executiontimer.h" "src/tools/logger.cpp" "src/tools/debug.h" "src/file/abstractreader.h" "src/file/abstractreader.cpp" "src/mainwindow.h" "src/mainwindow.cpp" "src/file/plaintextfile.h" "src/file/plaintextfile.cpp" "src/file/inifile.h"  "src/file/abstractinidefinition.h" "src/file/windowinifile.h" "src/file/windowinifile.cpp")
 add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC})
 
 target_link_libraries(${PROJECT_NAME} glfw opengl32 glm GLAD)

@@ -12,9 +12,9 @@ public:
 	AbstractReader& operator=(const AbstractReader&) = delete;
     AbstractReader& operator=(AbstractReader&&) = delete; 
 
-	bool read(std::string_view str);
     void close(); 
 
-protected: 
+protected:
+    bool read(std::string_view str);
 	std::ifstream m_fileStream; 
 };
