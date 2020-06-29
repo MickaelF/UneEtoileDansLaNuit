@@ -1,8 +1,8 @@
 #include "log.h"
-#include "debug.h"
+#include "macro.h"
 #include "logger.h"
 
-#ifdef IS_DEBUG
+#ifdef DISPLAY_LOG
     #include <iostream>
 #endif
 
@@ -31,10 +31,12 @@ Log::Log(Priority priority, std::string_view fileName, int lineNumber) : m_prior
 
 Log::~Log()
 {
-#ifdef IS_DEBUG
+#ifdef DISPLAY_LOG
     static std::mutex m_mutex;
     std::lock_guard<std::mutex> lock {m_mutex};
     std::cout << m_stream.str() << std::endl;
 #endif
+#if defined(LOG_TO_FILE) || defined(LOG_EXECUTION_TIMERS)
     Logger::appendLog(m_stream.str()+"\n");
+#endif
 }

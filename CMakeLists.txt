@@ -41,7 +41,8 @@ set(SRCS src/main.cpp
 	src/tools/log.cpp 
 	src/tools/logger.h 
 	src/tools/executiontimer.h 
-	src/tools/logger.cpp src/tools/debug.h 
+	src/tools/logger.cpp 
+	src/tools/macro.h
 	src/file/abstractreader.h 
 	src/file/abstractreader.cpp 
 	src/mainwindow.h 
@@ -61,3 +62,5 @@ add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC})
 
 target_link_libraries(${PROJECT_NAME} glfw opengl32 glm GLAD)
 target_include_directories(${PROJECT_NAME} PUBLIC ${HDRS} ${GLAD_INCLUDE_DIR} ${GLFW3_INCLUDE_DIRS} ${GLM_DIR} ${ImGUI_SRC})
+
+add_subdirectory(extra)

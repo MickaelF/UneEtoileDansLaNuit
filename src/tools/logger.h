@@ -4,7 +4,9 @@
 #include <string>
 #include <string_view>
 #include <thread>
-#include "debug.h"
+#include "macro.h"
+
+#if defined(LOG_TO_FILE) || defined(LOG_EXECUTION_TIMERS)
 class Logger
 {
 public:
@@ -13,10 +15,12 @@ public:
     Logger(Logger&&) = delete;
     Logger& operator=(const Logger&) = delete;
 
+#ifdef LOG_TO_FILE
     static void appendLog(std::string_view str);
-#ifdef IS_DEBUG
+#endif
+#ifdef LOG_EXECUTION_TIMERS
     static void appendExecutionLog(std::string_view str);
-#endif // IS_DEBUG
+#endif // LOG_EXECUTION_TIMERS
 
     void append(std::string_view str, std::queue<std::string>& queue);
     static void close();
@@ -25,13 +29,16 @@ private:
     static Logger& get();
     Logger();
     void flush();
-
+#ifdef LOG_TO_FILE
     std::ofstream m_fileStream;
     std::queue<std::string> m_logQueue;
-#ifdef IS_DEBUG
+#endif
+#ifdef LOG_EXECUTION_TIMERS
     std::ofstream m_executionFileStream;
     std::queue<std::string> m_executionLogQueue;
-#endif // IS_DEBUG
+#endif // LOG_EXECUTION_TIMERS
+
     std::thread m_loggingThread; 
     bool m_isRunning {true};
 };
+#endif

@@ -1,5 +1,5 @@
 #include "logger.h"
-
+#ifdef LOG_TO_FILE || LOG_EXECUTION_TIMERS
 #include <filesystem>
 #ifdef _WIN32
     #include <ShlObj.h>
@@ -42,17 +42,20 @@ constexpr std::string_view executionFileName {"execution.txt"};
 Logger::Logger()
 {
     auto basePath {getLogPath()};
-    
+
+    bool isOpened {true};
+#ifdef LOG_TO_FILE
     auto logPath = basePath; 
     logPath.append(logFileName);
     m_fileStream.open(logPath, std::ios_base::out | std::ios_base::app);
-    bool isOpened = m_fileStream.is_open(); 
-#ifdef IS_DEBUG
+    isOpened = isOpened && m_fileStream.is_open();
+#endif
+#ifdef LOG_EXECUTION_TIMERS
     auto executionLogPath = basePath;
     executionLogPath.append(executionFileName);
     m_executionFileStream.open(executionLogPath, std::ios_base::out | std::ios_base::app);
     isOpened = isOpened && m_executionFileStream.is_open();
-#endif // IS_DEBUG
+#endif // LOG_EXECUTION_TIMERS
     if (isOpened)
     {
         m_loggingThread = std::thread{&Logger::flush, this};
@@ -64,12 +67,14 @@ Logger::~Logger()
     close();
 }
 
+#ifdef LOG_TO_FILE
 void Logger::appendLog(std::string_view str)
 {
     get().append(str, get().m_logQueue);
 }
+#endif
 
-#ifdef IS_DEBUG
+#ifdef LOG_EXECUTION_TIMERS
 void Logger::appendExecutionLog(std::string_view str)
 {
     get().append(str, get().m_executionLogQueue);
@@ -101,6 +106,7 @@ void Logger::flush()
 {
     while (m_isRunning)
     {
+    #ifdef LOG_TO_FILE
         if (!m_logQueue.empty())
         {
             while (!m_logQueue.empty())
@@ -110,8 +116,9 @@ void Logger::flush()
             }
             m_fileStream << std::flush;
         }
+#endif // LOG_TO_FILE
 
-#ifdef IS_DEBUG
+#ifdef LOG_EXECUTION_TIMERS
         if (!m_executionLogQueue.empty())
         {
             while (!m_executionLogQueue.empty())
@@ -121,8 +128,9 @@ void Logger::flush()
             }
             m_executionFileStream << std::flush;
         }
-#endif
+#endif //LOG_EXECUTION_TIMERS
         std::this_thread::sleep_for(std::chrono::milliseconds {500});
     }
     m_fileStream.close();
 }
+#endif

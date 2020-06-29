@@ -20,6 +20,7 @@ MainWindow::MainWindow()
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         throw std::runtime_error("Failed to initialize GLAD");
+
     lRemember << "Call to framebufferSizeCallback will be used to resize the viewport, once we use "
                  "ImGUI for engine UI";
     framebufferSizeCallback(m_window, 1600, 900);
