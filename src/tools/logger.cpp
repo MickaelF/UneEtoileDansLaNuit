@@ -86,7 +86,7 @@ void Logger::append(std::string_view str, std::queue<std::string>& queue)
     std::time_t end_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     std::stringstream ss;
     ss << std::put_time(&threadSafeLocalTime(end_time), "[%D-%T]");
-    queue.push(ss.str() + std::string(str));
+    queue.push(std::move(ss.str() + std::string(str)));
 }
 
 void Logger::close()

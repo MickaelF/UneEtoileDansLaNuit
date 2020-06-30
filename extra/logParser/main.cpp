@@ -1,4 +1,24 @@
 #include <iostream>
+#include <string_view>
+#include "logparser.h"
+
+namespace 
+{
+constexpr std::string_view helpArg {"-h"};
+constexpr std::string_view inputArg {"-i"};
+constexpr std::string_view outputArg {"-o"};
+constexpr std::string_view rememberArg {"-R"};
+constexpr std::string_view errorArg {"-E"};
+constexpr std::string_view warningArg {"-W"};
+constexpr std::string_view fatalArg {"-F"};
+constexpr std::string_view infoArg {"-I"};
+constexpr std::string_view debugArg {"-D"};
+constexpr std::string_view dateStartArg {"--dateStart"};
+constexpr std::string_view dateEndArg {"--dateEnd"};
+constexpr std::string_view sortArg {"--sort"};
+constexpr std::string_view sortDateArg {"date"};
+constexpr std::string_view sortTypeArg {"type"};
+}
 
 void displayHelp() 
 {
@@ -26,9 +46,9 @@ void displayHelp()
               << "\t\tSelect info logs\n"
               << "\t-D\n"
               << "\t\tSelect debug logs\n"
-              << "\t--dateStart MM/DD/YYYY\n"
+              << "\t--dateStart MM/DD/YY\n"
               << "\t\tEvery log before this date won't be displayed\n"
-              << "\t--dateEnd MM/DD/YYYY\n"
+              << "\t--dateEnd MM/DD/YY\n"
               << "\t\tEvery log after this date won't be displayed\n"
               << "\t--sort [type/date]\n"
               << "\t\tSort logs by type or by date. By default, they are sorted by date\n"
@@ -38,12 +58,44 @@ void displayHelp()
 
 int main(int argc, char *argv[])
 {
+    
     if (argc == 1)
     {
         displayHelp();
         return 0;
     }
-
+    LogParser parser; 
+    for (int i = 1; i < argc; ++i)
+    {
+        if (argv[i] == helpArg)
+            displayHelp();
+        else if (argv[i] == inputArg)
+            parser.setInputFilePath(argv[++i]);
+        else if (argv[i] == outputArg)
+            parser.setOutputFilePath(argv[++i]);
+        else if (argv[i] == rememberArg)
+            parser.addParsedLogPriority("Remember");
+        else if (argv[i] == errorArg)
+            parser.addParsedLogPriority("Error");
+        else if (argv[i] == warningArg)
+            parser.addParsedLogPriority("Warning");
+        else if (argv[i] == fatalArg)
+            parser.addParsedLogPriority("Fatal");
+        else if (argv[i] == infoArg)
+            parser.addParsedLogPriority("Info");
+        else if (argv[i] == debugArg)
+            parser.addParsedLogPriority("Debug");
+        else if (argv[i] == dateStartArg)
+            parser.setStartDate(argv[++i]);
+        else if (argv[i] == dateEndArg)
+            parser.setEndDate(argv[++i]);
+        else if (argv[i] == sortArg)
+        {
+            i++;
+            if (argv[i] == sortDateArg) parser.setSortTechnique(LogParser::Sort::Date);
+            else if (argv[i] == sortDateArg) parser.setSortTechnique(LogParser::Sort::Type);
+        }
+    }
 
     return 0; 
 }
