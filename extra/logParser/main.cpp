@@ -18,6 +18,8 @@ constexpr std::string_view dateEndArg {"--dateEnd"};
 constexpr std::string_view sortArg {"--sort"};
 constexpr std::string_view sortDateArg {"date"};
 constexpr std::string_view sortTypeArg {"type"};
+constexpr std::string_view sortFilesArg {"files"};
+constexpr std::string_view fileNameArg {"-f"};
 }
 
 void displayHelp() 
@@ -25,7 +27,7 @@ void displayHelp()
     std::cout << "LogParser - Help\n"
               << "\n"
               << "Parse and create a new file with only awaited logs.\n"
-              << "Call: LogParser [options]\n"
+              << "Call: LogParser -i {log_file_path} [options]\n"
               << "Options: \n"
               << "\t-h\n"
               << "\t\tDisplay help\n"
@@ -46,12 +48,14 @@ void displayHelp()
               << "\t\tSelect info logs\n"
               << "\t-D\n"
               << "\t\tSelect debug logs\n"
+              << "\t-f {filenames;seperated;by;semicolon}\n"
+              << "\t\tSelect only the logs from files specified in this option\n"
               << "\t--dateStart MM/DD/YY\n"
               << "\t\tEvery log before this date won't be displayed\n"
               << "\t--dateEnd MM/DD/YY\n"
               << "\t\tEvery log after this date won't be displayed\n"
-              << "\t--sort [type/date]\n"
-              << "\t\tSort logs by type or by date. By default, they are sorted by date\n"
+              << "\t--sort {type/date/files}\n"
+              << "\t\tSort logs by type, by date or by files. By default, they are sorted by date\n"
               << std::endl;
     
 }
@@ -64,36 +68,72 @@ int main(int argc, char *argv[])
         displayHelp();
         return 0;
     }
-    LogParser parser; 
+    std::vector<std::string> priorities; 
+    std::string dateStart; 
+    std::string dateEnd;
+    std::string inputFile; 
+    std::string outputFile; 
+    std::string fileNames; 
+    LogParser::Sort sort{LogParser::Sort::Date};
     for (int i = 1; i < argc; ++i)
     {
         if (argv[i] == helpArg)
             displayHelp();
         else if (argv[i] == inputArg)
-            parser.setInputFilePath(argv[++i]);
+            inputFile = argv[++i];
         else if (argv[i] == outputArg)
-            parser.setOutputFilePath(argv[++i]);
+           outputFile = argv[++i];
         else if (argv[i] == rememberArg)
-            parser.addParsedLogPriority("Remember");
+            priorities.push_back("Remember");
         else if (argv[i] == errorArg)
-            parser.addParsedLogPriority("Error");
+            priorities.push_back("Error");
         else if (argv[i] == warningArg)
-            parser.addParsedLogPriority("Warning");
+            priorities.push_back("Warning");
         else if (argv[i] == fatalArg)
-            parser.addParsedLogPriority("Fatal");
+            priorities.push_back("Fatal");
         else if (argv[i] == infoArg)
-            parser.addParsedLogPriority("Info");
+            priorities.push_back("Info");
         else if (argv[i] == debugArg)
-            parser.addParsedLogPriority("Debug");
+            priorities.push_back("Debug");
         else if (argv[i] == dateStartArg)
-            parser.setStartDate(argv[++i]);
+            dateStart = argv[++i];
         else if (argv[i] == dateEndArg)
-            parser.setEndDate(argv[++i]);
+            dateEnd = argv[++i];
+        else if (argv[i] == fileNameArg)
+            fileNames = argv[++i];
         else if (argv[i] == sortArg)
         {
             i++;
-            if (argv[i] == sortDateArg) parser.setSortTechnique(LogParser::Sort::Date);
-            else if (argv[i] == sortDateArg) parser.setSortTechnique(LogParser::Sort::Type);
+            if (argv[i] == sortDateArg) sort = LogParser::Sort::Date;
+            else if (argv[i] == sortTypeArg) sort = LogParser::Sort::Type;
+            else if (argv[i] == sortFilesArg) sort = LogParser::Sort::Files; 
+        }
+        if (inputFile.empty())
+        {
+            std::cout << "Input file path is needed to start the execution !\n";
+            return -1;
+        }
+        try
+        {
+            LogParser parser(std::move(inputFile));
+            if (!outputFile.empty())
+                parser.setOutputFilePath(std::move(outputFile));
+            if (!priorities.empty())
+                parser.setParsedLogPriority(std::move(priorities));
+            if (!dateStart.empty())
+                parser.setStartDate(std::move(dateStart));
+            if (!dateEnd.empty())
+                parser.setEndDate(std::move(dateEnd));
+            if (!fileNames.empty())
+                parser.setFileNames(std::move(fileNames));
+            parser.setSortTechnique(sort);
+
+            parser.exec();
+        }
+        catch (std::exception e)
+        {
+            std::cout << e.what() << std::endl;
+            return -1;
         }
     }
 

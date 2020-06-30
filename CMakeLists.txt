@@ -52,7 +52,9 @@ set(SRCS src/main.cpp
 	src/file/inifile.h  
 	src/file/abstractinidefinition.h 
 	src/file/windowinifile.h 
-	src/file/windowinifile.cpp)
+	src/file/windowinifile.cpp 
+	src/tools/stringtools.h 
+	src/tools/stringtools.cpp)
 
 set(HDRS src/file/
 	src/tools/)
