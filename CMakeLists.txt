@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-message(NOTICE "This project requires Python 3 to work. Don't forget to run the batch script 'dependencies_compilation.bat' at each dependencies change!")
-
+message(NOTICE "This project requires Python 3 to work")
 set (PROJECT_NAME "AStarInTheNight")
 project(${PROJECT_NAME})
 
@@ -55,12 +54,7 @@ set(SRCS src/main.cpp
 set(HDRS src/file/
 	src/tools/)
 
-message(p ${PTTK_INCLUDE_DIR})
-
-
 add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC})
 
 target_link_libraries(${PROJECT_NAME} glfw opengl32 glm GLAD PTTK)
-target_include_directories(${PROJECT_NAME} PUBLIC ${HDRS} ${GLAD_INCLUDE_DIR}  ${GLM_DIR} ${ImGUI_SRC} ${PTTK_INCLUDE_DIR})
-
-
+target_include_directories(${PROJECT_NAME} PUBLIC ${HDRS} ${GLAD_INCLUDE_DIR} ${GLM_DIR} ${ImGUI_SRC} ${PTTK_INCLUDE_DIR})
