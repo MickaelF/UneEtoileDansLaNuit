@@ -7,7 +7,7 @@ set GLFWDir=%~dp0\glfw-3.3.2
 set GLMDir=%~dp0\glm-0.9.9.8
 set GLADDir=%~dp0\glad-0.1.33
 set ImGUI=%~dp0\imgui-1.76
-set PTTK=%~dp0\pttk
+set PTTK=%~dp0\PTTK
 set BuildDirSuffix=build
 set InstallDir=%~dp0\..\thirdParty
 mkdir %InstallDir%
@@ -37,6 +37,7 @@ xcopy /Y %ImGUI%\*.cpp %InstallDir%\imgui\
 xcopy /S /Y %ImGUI%\misc %InstallDir%\imgui\
 
 echo Handling PTTK
+if not exist "C:\VTS\" call git clone git@github.com:MickaelF/PTTK.git
 xcopy /S /Y %PTTK%\src %InstallDir%\pttk\src\
 xcopy /S /Y %PTTK%\include %InstallDir%\pttk\include\
 xcopy /S /Y %PTTK%\extra %InstallDir%\pttk\extra\
