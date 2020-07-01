@@ -41,10 +41,10 @@ add_subdirectory(${PTTK_DIR})
 
 # ********* Application *********
 set(SRCS src/main.cpp 
-	src/file/abstractreader.h 
-	src/file/abstractreader.cpp 
 	src/mainwindow.h 
 	src/mainwindow.cpp 
+	src/file/abstractreader.h 
+	src/file/abstractreader.cpp 
 	src/file/plaintextfile.h 
 	src/file/plaintextfile.cpp 
 	src/file/inifile.h  
