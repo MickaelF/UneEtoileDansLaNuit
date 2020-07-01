@@ -25,8 +25,14 @@ const char* enumToStr(Log::Priority p)
 
 Log::Log(Priority priority, std::string_view fileName, int lineNumber) : m_priority(priority)
 {
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
+    constexpr char delimiter {'\\'};
+#else
+    constexpr char delimiter {'/'};
+#endif
     m_stream << "[" << enumToStr(priority) << "-"
-             << fileName.substr(fileName.find_last_of('\\') + 1) << ":" << lineNumber << "] - ";
+             << fileName.substr(fileName.find_last_of(delimiter) + 1) << ":" << lineNumber
+             << "] - ";
 }
 
 Log::~Log()

@@ -1,18 +1,17 @@
 #include "logger.h"
 #ifdef LOG_TO_FILE || LOG_EXECUTION_TIMERS
 #include <filesystem>
-#ifdef _WIN32
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
     #include <ShlObj.h>
 #endif
 #include <sstream>
 
 namespace
 {
-std::filesystem::path getLogPath()
+std::filesystem::path getLogPath(std::string_view folderName)
 {
-    constexpr std::string_view folderName {"PotatoThunder/UneEtoile/"};
     std::filesystem::path programDataPath;
-#ifdef _WIN32
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
     PWSTR path {NULL};
     HRESULT hr = SHGetKnownFolderPath(FOLDERID_ProgramData, KF_FLAG_DEFAULT, NULL, &path);
     if (SUCCEEDED(hr)) programDataPath = path;
@@ -27,7 +26,7 @@ std::filesystem::path getLogPath()
 std::tm threadSafeLocalTime(const std::time_t& time)
 {
     std::tm tm_snapshot;
-#if (defined(WIN32) || defined(_WIN32) || defined(__WIN32__))
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
     localtime_s(&tm_snapshot, &time);
 #else
     localtime_r(&time, &tm_snapshot); // POSIX
@@ -37,11 +36,19 @@ std::tm threadSafeLocalTime(const std::time_t& time)
 
 constexpr std::string_view logFileName {"log.txt"};
 constexpr std::string_view executionFileName {"execution.txt"};
+constexpr std::string_view companyName {"PotatoThunder"};
 } // namespace
+
+void Logger::setFolderPath(std::string_view path) 
+{
+    m_defaultPath = std::move(std::string(companyName) + '/' + std::string(path));
+}
+
+std::string Logger::m_defaultPath; 
 
 Logger::Logger()
 {
-    auto basePath {getLogPath()};
+    auto basePath {getLogPath(m_defaultPath)};
 
     bool isOpened {true};
 #ifdef LOG_TO_FILE

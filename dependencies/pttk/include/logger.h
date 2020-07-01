@@ -25,7 +25,10 @@ public:
     void append(std::string_view str, std::queue<std::string>& queue);
     static void close();
 
+    static void setFolderPath(std::string_view path);
+
 private:
+    static std::string m_defaultPath; 
     static Logger& get();
     Logger();
     void flush();

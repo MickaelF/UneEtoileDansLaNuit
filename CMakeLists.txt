@@ -35,14 +35,12 @@ set(ImGUI_SRC
 	${ImGUI_DIR}/imgui_draw.cpp
 	${ImGUI_DIR}/imgui_widgets.cpp)
 
+# ******** PTTK *********
+set(PTTK_DIR ${CMAKE_SOURCE_DIR}/thirdParty/pttk)
+add_subdirectory(${PTTK_DIR})
+
 # ********* Application *********
 set(SRCS src/main.cpp 
-	src/tools/log.h 
-	src/tools/log.cpp 
-	src/tools/logger.h 
-	src/tools/executiontimer.h 
-	src/tools/logger.cpp 
-	src/tools/macro.h
 	src/file/abstractreader.h 
 	src/file/abstractreader.cpp 
 	src/mainwindow.h 
@@ -52,17 +50,17 @@ set(SRCS src/main.cpp
 	src/file/inifile.h  
 	src/file/abstractinidefinition.h 
 	src/file/windowinifile.h 
-	src/file/windowinifile.cpp 
-	src/tools/stringtools.h 
-	src/tools/stringtools.cpp)
+	src/file/windowinifile.cpp)
 
 set(HDRS src/file/
 	src/tools/)
 
+message(p ${PTTK_INCLUDE_DIR})
+
 
 add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC})
 
-target_link_libraries(${PROJECT_NAME} glfw opengl32 glm GLAD)
-target_include_directories(${PROJECT_NAME} PUBLIC ${HDRS} ${GLAD_INCLUDE_DIR} ${GLFW3_INCLUDE_DIRS} ${GLM_DIR} ${ImGUI_SRC})
+target_link_libraries(${PROJECT_NAME} glfw opengl32 glm GLAD PTTK)
+target_include_directories(${PROJECT_NAME} PUBLIC ${HDRS} ${GLAD_INCLUDE_DIR}  ${GLM_DIR} ${ImGUI_SRC} ${PTTK_INCLUDE_DIR})
 
-add_subdirectory(extra)
+
