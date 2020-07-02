@@ -37,7 +37,11 @@ xcopy /Y %ImGUI%\*.cpp %InstallDir%\imgui\
 xcopy /S /Y %ImGUI%\misc %InstallDir%\imgui\
 
 echo Handling PTTK
-if not exist "C:\VTS\" call git clone git@github.com:MickaelF/PTTK.git
+if not exist %PTTK% (
+    call git clone git@github.com:MickaelF/PTTK.git
+) else (
+    call git pull origin default
+)
 xcopy /S /Y %PTTK%\src %InstallDir%\pttk\src\
 xcopy /S /Y %PTTK%\include %InstallDir%\pttk\include\
 xcopy /S /Y %PTTK%\extra %InstallDir%\pttk\extra\
