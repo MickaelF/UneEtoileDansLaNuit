@@ -4,10 +4,13 @@
 #include "logger.h"
 #include <exception>
 #include <filesystem>
+#include "path.h"
+
+constexpr std::string_view companyName {"PotatoThunder"};
 
 int main(int argc, char* argv[])
 {
-    Logger::setFolderPath(argv[0]);
+    Logger logger(path::getDataPath(std::filesystem::path(argv[0]).stem().string(), companyName));
     std::unique_ptr<MainWindow> mainWindow; 
     try
     {

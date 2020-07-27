@@ -36,20 +36,17 @@ set(ImGUI_SRC
 
 # ******** PTTK *********
 set(PTTK_DIR ${CMAKE_SOURCE_DIR}/thirdParty/pttk)
+set(PTTK_BUILD_CMD_LOG_PARSER OFF CACHE BOOL "" FORCE)
+set(PTTK_BUILD_LOG_GENERATOR ON CACHE BOOL "" FORCE)
+set(PTTK_BUILD_QT_WIDGET_LOG_PARSER OFF CACHE BOOL "" FORCE)
 add_subdirectory(${PTTK_DIR})
 
 # ********* Application *********
 set(SRCS src/main.cpp 
 	src/mainwindow.h 
 	src/mainwindow.cpp 
-	src/file/abstractreader.h 
-	src/file/abstractreader.cpp 
-	src/file/plaintextfile.h 
-	src/file/plaintextfile.cpp 
-	src/file/inifile.h  
-	src/file/abstractinidefinition.h 
-	src/file/windowinifile.h 
-	src/file/windowinifile.cpp)
+	src/windowinifile.h 
+	src/windowinifile.cpp)
 
 set(HDRS src/file/
 	src/tools/)
