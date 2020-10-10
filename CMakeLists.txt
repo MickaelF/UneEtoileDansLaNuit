@@ -46,12 +46,17 @@ set(SRCS src/main.cpp
 	src/mainwindow.h 
 	src/mainwindow.cpp 
 	src/windowinifile.h 
-	src/windowinifile.cpp)
+	src/windowinifile.cpp
+	src/shaderfactory.cpp
+	src/shaderfactory.h
+	)
 
-set(HDRS src/file/
-	src/tools/)
+set(SHADERS
+	shaders/glsl/simplevertexshader.vert
+	shaders/glsl/simplefragmentshader.frag
+	)
 
 add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC})
 
 target_link_libraries(${PROJECT_NAME} glfw opengl32 glm GLAD PTTK)
-target_include_directories(${PROJECT_NAME} PUBLIC ${HDRS} ${GLAD_INCLUDE_DIR} ${GLM_DIR} ${ImGUI_SRC} ${PTTK_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${GLAD_INCLUDE_DIR} ${GLM_DIR} ${ImGUI_SRC} ${PTTK_INCLUDE_DIR})

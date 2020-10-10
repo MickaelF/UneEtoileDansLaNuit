@@ -1,6 +1,14 @@
 #include "windowinifile.h"
+
 #include <string>
 #include <string_view>
+
+namespace
+{
+constexpr std::string_view ResolutionWidthLabel {"ResolutionWidth"};
+constexpr std::string_view ResolutionHeightLabel {"ResolutionHeight"};
+constexpr std::string_view WindowNameLabel {"WindowName"};
+} // namespace
 
 WindowIniFile::WindowIniFile(const WindowIniFile& other) noexcept
     : m_resolutionHeight(other.m_resolutionHeight),
@@ -14,7 +22,7 @@ WindowIniFile::WindowIniFile(WindowIniFile&& other) noexcept
       m_resolutionWidth(other.m_resolutionWidth),
       m_windowName(other.m_windowName)
 {
-    other.m_resolutionHeight = 0; 
+    other.m_resolutionHeight = 0;
     other.m_resolutionWidth = 0;
     other.m_windowName.clear();
 }
@@ -52,4 +60,14 @@ void WindowIniFile::initValue(std::string_view name, std::string_view value)
         m_resolutionHeight = std::stoi(std::string(value));
     else if (name == WindowNameLabel)
         m_windowName = value;
+}
+
+std::vector<std::pair<std::string, std::string>> WindowIniFile::values() const
+{
+    std::vector<std::pair<std::string, std::string>> values;
+    values.reserve(3);
+    values.emplace_back(std::make_pair(ResolutionHeightLabel, std::to_string(m_resolutionHeight)));
+    values.emplace_back(std::make_pair(ResolutionWidthLabel, std::to_string(m_resolutionWidth)));
+    values.emplace_back(std::make_pair(WindowNameLabel, m_windowName));
+    return values;
 }

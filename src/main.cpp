@@ -5,12 +5,14 @@
 #include <exception>
 #include <filesystem>
 #include "path.h"
-
-constexpr std::string_view companyName {"PotatoThunder"};
+constexpr std::string_view companyName{ "PotatoThunder" };
 
 int main(int argc, char* argv[])
 {
-    Logger logger(path::getDataPath(std::filesystem::path(argv[0]).stem().string(), companyName));
+    const auto dataPath {
+        path::getDataPath(std::filesystem::path(argv[0]).stem().string(), companyName)};
+    Logger logger(dataPath);
+    BasicLog::setLogger(logger);
     std::unique_ptr<MainWindow> mainWindow; 
     try
     {
