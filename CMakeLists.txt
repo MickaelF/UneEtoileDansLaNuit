@@ -6,6 +6,7 @@ project(${PROJECT_NAME})
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_BUILD_TYPE Debug)
+set(BUILD_STATIC_LIBS TRUE)
 find_package(OpenGL REQUIRED)
 
 # ********* GLW3 *********
@@ -26,6 +27,10 @@ target_include_directories(GLAD PUBLIC ${GLAD_INCLUDE_DIR})
 set(GLM_DIR ${CMAKE_SOURCE_DIR}/thirdParty/glm)
 add_subdirectory(${GLM_DIR})
 
+# ********* stb *********
+set(stb_DIR ${CMAKE_SOURCE_DIR}/thirdParty/stb)
+set(stb_SRC ${stb_DIR}/stb_image.h)
+
 # ********* ImGUI *********
 set(ImGUI_DIR ${CMAKE_SOURCE_DIR}/thirdParty/imgui)
 set(ImGUI_SRC 
@@ -37,9 +42,15 @@ set(ImGUI_SRC
 # ******** PTTK *********
 set(PTTK_DIR ${CMAKE_SOURCE_DIR}/thirdParty/pttk)
 set(PTTK_BUILD_CMD_LOG_PARSER OFF CACHE BOOL "" FORCE)
-set(PTTK_BUILD_LOG_GENERATOR ON CACHE BOOL "" FORCE)
+set(PTTK_BUILD_LOG_GENERATOR OFF CACHE BOOL "" FORCE)
 set(PTTK_BUILD_QT_WIDGET_LOG_PARSER OFF CACHE BOOL "" FORCE)
 add_subdirectory(${PTTK_DIR})
+
+# ******** Assimp *********
+set(Assimp_DIR ${CMAKE_SOURCE_DIR}/thirdParty/assimp)
+set(Assimp_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/assimp/include)
+set(ASSIMP_BUILD_TESTS OFF)
+add_subdirectory(${Assimp_DIR})
 
 # ********* Application *********
 set(SRCS src/main.cpp 
@@ -49,6 +60,12 @@ set(SRCS src/main.cpp
 	src/windowinifile.cpp
 	src/shaderfactory.cpp
 	src/shaderfactory.h
+	src/gameobject.h
+	src/gameobject.cpp	
+	src/transform.h
+	src/transform.cpp
+	src/mesh.cpp
+	src/mesh.h
 	)
 
 set(SHADERS
@@ -56,7 +73,7 @@ set(SHADERS
 	shaders/glsl/simplefragmentshader.frag
 	)
 
-add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC})
+add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC} ${stb_SRC})
 
-target_link_libraries(${PROJECT_NAME} glfw opengl32 glm GLAD PTTK)
-target_include_directories(${PROJECT_NAME} PUBLIC ${GLAD_INCLUDE_DIR} ${GLM_DIR} ${ImGUI_SRC} ${PTTK_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} glfw opengl32 glm_static assimp GLAD PTTK)
+target_include_directories(${PROJECT_NAME} PUBLIC ${Assimp_INCLUDE_DIR} ${GLAD_INCLUDE_DIR} ${GLM_DIR} ${ImGUI_SRC} ${stb_DIR} ${PTTK_INCLUDE_DIR})

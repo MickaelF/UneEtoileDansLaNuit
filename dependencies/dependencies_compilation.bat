@@ -6,12 +6,14 @@ set Compiler="Visual Studio 16 2019"
 set GLFWDir=%~dp0\glfw-3.3.2
 set GLMDir=%~dp0\glm-0.9.9.8
 set GLADDir=%~dp0\glad-0.1.33
-set ImGUI=%~dp0\imgui-1.76
+set ImGUI=%~dp0\imgui
 set PTTK=%~dp0\PTTK
+set stb=%~dp0\stb
+set Assimp=%~dp0\assimp
 set BuildDirSuffix=build
 set InstallDir=%~dp0\..\thirdParty
 mkdir %InstallDir%
-
+rem xcopy : /s = copy recursively; /y = remove command prompt to confirm the copy
 echo Handling GLFW
 xcopy /S /Y %GLFWDir%\CMake %InstallDir%\glfw3\CMake\
 xcopy /S /Y %GLFWDir%\deps %InstallDir%\glfw3\deps\
@@ -32,6 +34,16 @@ echo Handling GLM
 xcopy /S /Y %GLMDir%\glm %InstallDir%\glm\
 
 echo Handling ImGUI
+if not exist %ImGUI% (
+    call git clone git@github.com:ocornut/imgui.git
+	cd %ImGUI%	
+	call :LastTag
+	cd ..
+) else (
+	cd %ImGUI%
+	call :LastTag
+	cd ..
+)
 xcopy /Y %ImGUI%\*.h %InstallDir%\imgui\
 xcopy /Y %ImGUI%\*.cpp %InstallDir%\imgui\
 xcopy /S /Y %ImGUI%\misc %InstallDir%\imgui\
@@ -40,11 +52,49 @@ echo Handling PTTK
 if not exist %PTTK% (
     call git clone git@github.com:MickaelF/PTTK.git
 ) else (
+	cd %PTTK% 
     call git pull origin default
+	cd ..
 )
 xcopy /S /Y %PTTK%\src %InstallDir%\pttk\src\
 xcopy /S /Y %PTTK%\include %InstallDir%\pttk\include\
 xcopy /S /Y %PTTK%\extra %InstallDir%\pttk\extra\
 xcopy /Y %PTTK%\CMakeLists.txt %InstallDir%\pttk\
 
+echo Handling stb
+if not exist %stb% (
+    call git clone git@github.com:nothings/stb.git
+) else (
+    call git pull origin master
+)
+xcopy /Y %stb%\stb_image.h %InstallDir%\stb\
+
+
+echo Handling Assimp
+if not exist %Assimp% (
+    call git clone git@github.com:assimp/assimp.git
+	cd %Assimp%
+	call :LastTag
+	cd ..
+) else (
+	cd %Assimp%
+	call :LastTag
+	cd ..
+)
+xcopy /S /Y %Assimp%\cmake %InstallDir%\assimp\cmake\
+xcopy /S /Y %Assimp%\cmake-modules %InstallDir%\assimp\cmake-modules\
+xcopy /S /Y %Assimp%\code %InstallDir%\assimp\code\
+xcopy /S /Y %Assimp%\contrib %InstallDir%\assimp\contrib\
+xcopy /S /Y %Assimp%\include %InstallDir%\assimp\include\
+xcopy /S /Y %Assimp%\scripts %InstallDir%\assimp\scripts\
+xcopy /S /Y %Assimp%\test %InstallDir%\assimp\test\
+xcopy /S /Y %Assimp%\tools %InstallDir%\assimp\tools\
+xcopy /Y %Assimp%\CMakeLists.txt %InstallDir%\assimp\
+xcopy /Y %Assimp%\*.in %InstallDir%\assimp\
+
+:LastTag
+call git describe --abbrev=0 --tags > last.txt	
+set /p DATA=<last.txt
+call git checkout %DATA%
+EXIT /B 0
 pause
