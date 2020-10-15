@@ -1,11 +1,10 @@
 @echo off
 setlocal EnableDelayedExpansion
-set cmake=C:\Users\Mickael\Documents\Perso\cmake\bin\cmake.exe
 
 set Compiler="Visual Studio 16 2019"
-set GLFWDir=%~dp0\glfw-3.3.2
-set GLMDir=%~dp0\glm-0.9.9.8
-set GLADDir=%~dp0\glad-0.1.33
+set GLFWDir=%~dp0\glfw
+set GLMDir=%~dp0\glm
+set GLADDir=%~dp0\glad
 set ImGUI=%~dp0\imgui
 set PTTK=%~dp0\PTTK
 set stb=%~dp0\stb
@@ -13,8 +12,20 @@ set Assimp=%~dp0\assimp
 set BuildDirSuffix=build
 set InstallDir=%~dp0\..\thirdParty
 mkdir %InstallDir%
+
 rem xcopy : /s = copy recursively; /y = remove command prompt to confirm the copy
-echo Handling GLFW
+
+echo Handling GLFW 
+if not exist %GLFWDir% (
+    call git clone https://github.com/glfw/glfw.git
+	cd %GLFWDir%	
+	call :LastTag
+	cd ..
+) else (
+	cd %GLFWDir%
+	call :LastTag
+	cd ..
+)
 xcopy /S /Y %GLFWDir%\CMake %InstallDir%\glfw3\CMake\
 xcopy /S /Y %GLFWDir%\deps %InstallDir%\glfw3\deps\
 xcopy /S /Y %GLFWDir%\include %InstallDir%\glfw3\include\
@@ -22,15 +33,39 @@ xcopy /S /Y %GLFWDir%\src %InstallDir%\glfw3\src\
 xcopy /Y %GLFWDir%\CMakeLists.txt %InstallDir%\glfw3\
 xcopy /Y %GLFWDir%\cmake_uninstall.cmake.in %InstallDir%\glfw3\
 
-echo Building GLAD
+echo Building GLAD 
+if not exist %GLADDir% (
+    call git clone https://github.com/Dav1dde/glad.git
+	cd %GLADDir%	
+	call :LastTag
+	cd ..
+) else (
+	cd %GLADDir%
+	call :LastTag
+	cd ..
+)
+pause
 set BuildDir=%GLADDir%\%BuildDirSuffix%
 mkdir !BuildDir!
-call %cmake% -S %GLADDir% -B "!BuildDir!" -G %Compiler% -DBUILD_SHARED_LIBS=TRUE -DGLAD_API="gl=3.3" -DGLAD_PROFILE=core
-call %cmake% --build !BuildDir! 
+pause
+call cmake -S %GLADDir% -B "!BuildDir!" -G %Compiler% -DBUILD_SHARED_LIBS=TRUE -DGLAD_API="gl=3.3" -DGLAD_PROFILE=core
+pause
+call cmake --build !BuildDir!
+pause
 xcopy /S /Y %BuildDir%\include %InstallDir%\glad\
 xcopy /Y %BuildDir%\src\glad.c %InstallDir%\glad\
 
 echo Handling GLM
+if not exist %GLMDir% (
+    call git clone https://github.com/g-truc/glm.git
+	cd %GLMDir%	
+	call :LastTag
+	cd ..
+) else (
+	cd %GLMDir%
+	call :LastTag
+	cd ..
+)
 xcopy /S /Y %GLMDir%\glm %InstallDir%\glm\
 
 echo Handling ImGUI

@@ -3,4 +3,9 @@
 /out
 /.vs
 /dependencies/PTTK
-/dependencies/pttk
+/dependencies/assimp
+/dependencies/glad
+/dependencies/glfw
+/dependencies/glm
+/dependencies/imgui
+/dependencies/stb
