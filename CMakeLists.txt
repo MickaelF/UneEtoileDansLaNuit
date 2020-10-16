@@ -54,18 +54,17 @@ add_subdirectory(${Assimp_DIR})
 
 # ********* Application *********
 set(SRCS src/main.cpp 
-	src/mainwindow.h 
 	src/mainwindow.cpp 
-	src/windowinifile.h 
 	src/windowinifile.cpp
-	src/shaderfactory.cpp
-	src/shaderfactory.h
-	src/gameobject.h
 	src/gameobject.cpp	
-	src/transform.h
 	src/transform.cpp
 	src/mesh.cpp
 	src/mesh.h
+	src/texturefactory.cpp
+	src/texture.cpp
+	src/model.cpp
+	src/basicshader.cpp
+	src/shaderutil.cpp
 	)
 
 set(SHADERS

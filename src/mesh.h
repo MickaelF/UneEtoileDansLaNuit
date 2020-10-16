@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gameobject.h"
+
 class Texture;
 
 struct Vertex
@@ -10,14 +11,25 @@ struct Vertex
     glm::vec2 texcoords;
 };
 
-class Mesh : public GameObject 
+class Mesh : public GameObject
 {
-public: 
-    explicit Mesh(); 
+public:
+    explicit Mesh() = default;
+    explicit Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices,
+                  std::vector<Texture*> textures);
+    Mesh(const Mesh& other);
+    Mesh(Mesh&& other);
+    Mesh& operator=(const Mesh& other);
+    Mesh& operator=(Mesh& other);
 
+private:
+    void clear();
+    void setup();
+    unsigned int m_vao;
+    unsigned int m_vbo;
+    unsigned int m_ebo;
 
-private: 
     std::vector<Vertex> m_vertices;
-    std::vector<unsigned int> m_indices; 
-    std::vector<Texture*> m_textures;  
+    std::vector<unsigned int> m_indices;
+    std::vector<Texture*> m_textures;
 };

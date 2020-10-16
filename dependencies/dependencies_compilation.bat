@@ -44,14 +44,10 @@ if not exist %GLADDir% (
 	call :LastTag
 	cd ..
 )
-pause
 set BuildDir=%GLADDir%\%BuildDirSuffix%
 mkdir !BuildDir!
-pause
 call cmake -S %GLADDir% -B "!BuildDir!" -G %Compiler% -DBUILD_SHARED_LIBS=TRUE -DGLAD_API="gl=3.3" -DGLAD_PROFILE=core
-pause
 call cmake --build !BuildDir!
-pause
 xcopy /S /Y %BuildDir%\include %InstallDir%\glad\
 xcopy /Y %BuildDir%\src\glad.c %InstallDir%\glad\
 
