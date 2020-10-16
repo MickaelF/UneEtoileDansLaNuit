@@ -1,16 +1,16 @@
 #include "mainwindow.h"
 
-#include "log.h"
-#include "logger.h"
+#include <pttk/log.h>
+#include <pttk/logger.h>
 #include <exception>
 #include <filesystem>
-#include "path.h"
+#include <pttk/pttkpath.h>
 constexpr std::string_view companyName{ "PotatoThunder" };
 
 int main(int argc, char* argv[])
 {
     const auto dataPath {
-        path::getDataPath(std::filesystem::path(argv[0]).stem().string(), companyName)};
+        pttkPath::getDataPath(std::filesystem::path(argv[0]).stem().string(), companyName)};
     Logger logger(dataPath);
     BasicLog::setLogger(logger);
     std::unique_ptr<MainWindow> mainWindow; 

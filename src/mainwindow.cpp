@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "log.h"
+#include <pttk/log.h>
 #include <glad/glad.h>
 // glad.h needs to be included before glfw3
 #include <GLFW/glfw3.h>

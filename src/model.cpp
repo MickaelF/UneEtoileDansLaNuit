@@ -5,7 +5,7 @@
 
 #include <assimp/Importer.hpp>
 
-#include "log.h"
+#include <pttk/log.h>
 #include "mesh.h"
 #include "texturefactory.h"
 

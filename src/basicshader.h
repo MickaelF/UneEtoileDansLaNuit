@@ -9,4 +9,4 @@ public:
 
 private:
     unsigned int m_programId;
-}
+};
