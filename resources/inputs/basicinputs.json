@@ -1,48 +1,58 @@
 {
-    "maps": 
-    [
+    "maps": [
         {
-            "name":"UI",
-            "actions": 
-            [
+            "name": "UI",
+            "actions": [
                 {
-                    "name":"Submit", 
-                    "valueType":"Button"
+                    "name": "Submit",
+                    "valueType": "Button"
                 },
-                { 
-                    "name":"Move", 
-                    "valueType":"2DVector"
-                }, 
-                { 
-                    "name":"Cancel", 
+                {
+                    "name": "Move",
+                    "valueType": "2DVector"
+                },
+                {
+                    "name": "Cancel",
                     "valueType": "Button"
                 }
-            ] , 
-            "bindings": 
-            [
+            ],
+            "bindings": [
                 {
-                    "action":"Move", 
-                    "name":"Arrows",
-                    "isComposite":true, 
-                    "device":"keyboard",
-                    "type":"buttons",
-                    "values":[265,264,263,262]
-                }, 
-                {
-                    "action":"Move", 
-                    "name":"WASD",
-                    "isComposite":true, 
-                    "device":"keyboard",
-                    "type":"buttons",
-                    "values":[87,83,65,68]
+                    "action": "Move",
+                    "name": "Arrows",
+                    "isComposite": true,
+                    "device": "keyboard",
+                    "type": "buttons",
+                    "values": [
+                        265,
+                        264,
+                        263,
+                        262
+                    ]
                 },
                 {
-                    "action":"Move", 
-                    "name":"Left stick",
-                    "isComposite":true,
-                    "device":"gamepad",
-                    "type":"axis",
-                    "values":[1,0]
+                    "action": "Move",
+                    "name": "WASD",
+                    "isComposite": true,
+                    "device": "keyboard",
+                    "type": "buttons",
+                    "values": [
+                        87,
+                        83,
+                        65,
+                        68
+                    ]
+                },
+                {
+                    "action": "Move",
+                    "name": "Left stick",
+                    "isComposite": true,
+                    "device": "gamepad",
+                    "type": "axis",
+                    "values": [
+                        1,
+                        0
+                    ]
                 }
             ]
         }

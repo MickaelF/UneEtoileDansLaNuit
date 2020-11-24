@@ -61,6 +61,11 @@ set(SRCS src/main.cpp
 	src/model.cpp
 	src/basicshader.cpp
 	src/shaderutil.cpp
+	src/input/action.cpp
+	src/input/binding.cpp
+	src/input/iactionlistener.h
+	src/input/input.h
+	src/input/inputhandler.cpp
 	)
 
 set(SHADERS
