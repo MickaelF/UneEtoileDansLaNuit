@@ -56,5 +56,60 @@ AxisBinding::AxisBinding(InputType negative, int negativeKey,
         // TODO Send an exception
         return;
     }
-    m_axis = TwoButtonAxis {negative, positive, negativeKey, positiveKey};
+    m_axis = TwoButtonAxis {negative, negativeKey, positive, positiveKey};
+}
+
+void AxisBinding::setValue(float value)
+{
+    if (m_axis.index() != 0)
+    {
+        // TODO Send exception
+        return;
+    }
+    std::get<Axis>(m_axis).value = value;
+}
+
+void AxisBinding::setValue(InputType type, int key, bool pressed)
+{
+    if (m_axis.index() != 1)
+    {
+        // TODO Send exception
+        return;
+    }
+    auto& axis = std::get<TwoButtonAxis>(m_axis);
+
+    if (axis.negative == type && axis.negativeKey == key)
+        axis.negativeValue = -1.0f;
+    else
+        axis.positiveValue = 1.0f;
+}
+
+Vector2DBinding::Vector2DBinding(InputType horizontalType, int horizontalKey,
+                                 InputType verticalType, int verticalKey)
+{
+    if (horizontalType != InputType::GamepadAxis ||
+        verticalType != InputType::GamepadAxis)
+    {
+        // TODO Send exception
+        return;
+    }
+    m_vector2D = TwoAxisVector {horizontalType, horizontalKey, verticalType,
+                                verticalKey};
+}
+
+Vector2DBinding::Vector2DBinding(InputType leftType, int leftKey,
+                                 InputType topType, int topKey,
+                                 InputType rightType, int rightKey,
+                                 InputType bottomType, int bottomKey)
+{
+    if (leftType == InputType::GamepadAxis ||
+        topType == InputType::GamepadAxis ||
+        rightType == InputType::GamepadAxis ||
+        bottomType == InputType::GamepadAxis)
+    {
+        // TODO Send an exception
+        return;
+    }
+    m_vector2D = FourButtonVector {leftType,  leftKey,  topType,    topKey,
+                                   rightType, rightKey, bottomType, bottomKey};
 }

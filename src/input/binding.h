@@ -1,6 +1,6 @@
 #pragma once
+#include <glm/glm.hpp>
 #include <variant>
-#include <vector>
 
 class Action;
 
@@ -48,18 +48,64 @@ public:
     explicit AxisBinding(InputType negative, int negativeKey,
                          InputType positive, int positiveKey);
 
+    void setValue(float val);
+    void setValue(InputType type, int key, bool pressed);
+
 private:
     struct Axis
     {
         InputType axis;
         int key;
+        float value {};
     };
+
     struct TwoButtonAxis
     {
         InputType negative;
-        InputType positive;
         int negativeKey;
+        InputType positive;
         int positiveKey;
+        int positiveValue {};
+        int negativeValue {};
     };
+
     std::variant<Axis, TwoButtonAxis> m_axis;
+};
+
+class Vector2DBinding
+{
+public:
+    Vector2DBinding(InputType horizontalType, int horizontalKey,
+                    InputType verticalType, int verticalKey);
+    Vector2DBinding(InputType leftType, int leftKey, InputType topType,
+                    int topKey, InputType rightType, int rightKey,
+                    InputType bottomType, int bottomKey);
+
+private:
+    struct TwoAxisVector
+    {
+        InputType horizontalType;
+        int horizontalKey;
+        InputType verticalType;
+        int verticalKey;
+        float horizontalValue {};
+        float verticalValue {};
+    };
+
+    struct FourButtonVector
+    {
+        InputType leftType;
+        int leftKey;
+        InputType topType;
+        int topKey;
+        InputType rightType;
+        int rightKey;
+        InputType bottomType;
+        int bottomKey {};
+        int leftValue {};
+        int topValue {};
+        int rightValue {};
+        int bottomValue {};
+    };
+    std::variant<TwoAxisVector, FourButtonVector> m_vector2D;
 };
