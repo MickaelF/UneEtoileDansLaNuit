@@ -4,9 +4,8 @@
 #include <variant>
 #include <vector>
 
-#include "binding.h"
-
 class IActionListener;
+class Binding;
 
 enum class ActionType
 {
@@ -27,8 +26,7 @@ struct ActionContext
 class Action
 {
 public:
-    explicit Action(const std::string& name, int id);
-    ~Action();
+    explicit Action(const std::string& name);
 
     void notify(Binding& binding);
 
@@ -36,14 +34,15 @@ public:
     void removeListener(IActionListener* listener);
     bool hasListener(IActionListener* listener) const;
     bool isActive() const { return m_active; }
-    void activate() { m_active = true; }
-    void deactivate() { m_active = false; }
-    const std::vector<Binding>& bindings() const { return m_bindings; }
+    void setActive(bool state);
+    std::vector<Binding*>& bindings() { return m_bindings; }
+
+    void addBinding(Binding* binding);
 
 private:
     ActionContext context(bool started, bool ended) const;
     std::vector<IActionListener*> m_listeners;
-    std::vector<Binding> m_bindings;
+    std::vector<Binding*> m_bindings;
     std::variant<float, glm::vec2> m_value;
     bool m_inUse {false};
     const std::string m_name;

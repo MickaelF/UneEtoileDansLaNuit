@@ -7,8 +7,15 @@ QtDir=C:/Qt/5.15.1/msvc2019_64/lib/cmake
 
 GenerateProject()
 {
-    $cmakeExe -DCMAKE_INSTALL_PREFIX="$installDir/$1" -G "$Compiler" -S "." -B "$PWD/build" -DCMAKE_PREFIX_PATH=$QtDir -DCMAKE_CXX_STANDARD=20 -DASSIMP_BUILD_TESTS=OFF -DASSIMP_BUILD_ASSIMP_TOOLS=OFF -DGLAD_API="gl=3.3" -DGLAD_PROFILE=core $2
+    if [ "$1" == "Assimp" ]; then
+        $cmakeExe -DCMAKE_INSTALL_PREFIX="$installDir/$1" -G "$Compiler" -S "." -B "$PWD/build" -DCMAKE_PREFIX_PATH=$QtDir -DCMAKE_CXX_STANDARD=20 -DASSIMP_BUILD_TESTS=OFF -DASSIMP_BUILD_ASSIMP_TOOLS=OFF  -DCMAKE_CXX_FLAGS="/Wv:18 /EHsc"
+    elif [ "$1" == "glad" ]; then
+        $cmakeExe -DCMAKE_INSTALL_PREFIX="$installDir/$1" -G "$Compiler" -S "." -B "$PWD/build" -DCMAKE_PREFIX_PATH=$QtDir -DCMAKE_CXX_STANDARD=20 -DGLAD_API="gl=3.3" -DGLAD_PROFILE=core 
+    else 
+        $cmakeExe -DCMAKE_INSTALL_PREFIX="$installDir/$1" -G "$Compiler" -S "." -B "$PWD/build" -DCMAKE_PREFIX_PATH=$QtDir -DCMAKE_CXX_STANDARD=20
+    fi
     if [ ! $? -eq 0 ]; then
+        exit
         echo "Issue while generating project $1"
     fi
 
@@ -50,7 +57,7 @@ GitUpdate()
     git fetch --all
     LastTag
     if [ "$3" = true ]; then
-        GenerateProject $1 $3
+        GenerateProject $1 $4
     else
         CopyFile $1
     fi
@@ -71,4 +78,4 @@ GLADSpecificInstructions
 GitUpdate imgui https://github.com/ocornut/imgui.git false
 GitUpdate PTTK git@github.com:MickaelF/PTTK.git true
 GitUpdate stb https://github.com/nothings/stb.git false
-GitUpdate Assimp https://github.com/assimp/assimp.git true -DCMAKE_CXX_FLAGS="/Wv:18 /EHsc"
+GitUpdate Assimp https://github.com/assimp/assimp.git true 

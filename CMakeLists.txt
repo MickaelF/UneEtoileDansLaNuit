@@ -66,6 +66,8 @@ set(SRCS src/main.cpp
 	src/input/iactionlistener.h
 	src/input/input.h
 	src/input/inputhandler.cpp
+	src/input/abstractactionmap.cpp
+	src/input/abstractcontrolscheme.cpp
 	)
 
 set(SHADERS

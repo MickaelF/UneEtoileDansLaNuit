@@ -2,16 +2,12 @@
 
 #include "iactionlistener.h"
 #include "inputhandler.h"
-
-Action::Action(const std::string& name, int id) : m_name(name), m_id(id)
+namespace
 {
-    InputHandler::instance().addAction(this);
+static int id = 0;
 }
 
-Action::~Action()
-{
-    InputHandler::instance().removeAction(this);
-}
+Action::Action(const std::string& name) : m_name(name), m_id(id++) {}
 
 void Action::addListener(IActionListener* listener)
 {
@@ -33,4 +29,14 @@ bool Action::hasListener(IActionListener* listener) const
 ActionContext Action::context(bool started, bool ended) const
 {
     return {m_value, started, m_inUse && !started, ended, m_id};
+}
+
+void Action::setActive(bool state)
+{
+    if (m_active != state) m_active = state;
+}
+
+void Action::addBinding(Binding* binding)
+{
+    m_bindings.push_back(binding);
 }

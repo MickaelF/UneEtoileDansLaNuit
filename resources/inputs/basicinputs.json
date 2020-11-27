@@ -1,57 +1,98 @@
 {
+    "name": "BasicInputs",
     "maps": [
         {
             "name": "UI",
             "actions": [
                 {
                     "name": "Submit",
-                    "valueType": "Button"
+                    "bindingType": "Button",
+                    "bindings": [
+                        {
+                            "name": "",
+                            "keys": [
+                                {
+                                    "type": "Keyboard",
+                                    "key": "30"
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "name": "Move",
-                    "valueType": "2DVector"
+                    "bindingType": "Vector2D",
+                    "bindings": [
+                        {
+                            "name": "Arrows",
+                            "keys": [
+                                {
+                                    "type": "Keyboard",
+                                    "key": "265"
+                                },
+                                {
+                                    "type": "Keyboard",
+                                    "key": "264"
+                                },
+                                {
+                                    "type": "Keyboard",
+                                    "key": "263"
+                                },
+                                {
+                                    "type": "Keyboard",
+                                    "key": "262"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "WASD",
+                            "keys": [
+                                {
+                                    "type": "Keyboard",
+                                    "key": "87"
+                                },
+                                {
+                                    "type": "Keyboard",
+                                    "key": "83"
+                                },
+                                {
+                                    "type": "Keyboard",
+                                    "key": "65"
+                                },
+                                {
+                                    "type": "Keyboard",
+                                    "key": "68"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Left Stick",
+                            "keys": [
+                                {
+                                    "type": "GamepadAxis",
+                                    "key": 1
+                                },
+                                {
+                                    "type": "GamepadAxis",
+                                    "key": 0
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "name": "Cancel",
-                    "valueType": "Button"
-                }
-            ],
-            "bindings": [
-                {
-                    "action": "Move",
-                    "name": "Arrows",
-                    "isComposite": true,
-                    "device": "keyboard",
-                    "type": "buttons",
-                    "values": [
-                        265,
-                        264,
-                        263,
-                        262
-                    ]
-                },
-                {
-                    "action": "Move",
-                    "name": "WASD",
-                    "isComposite": true,
-                    "device": "keyboard",
-                    "type": "buttons",
-                    "values": [
-                        87,
-                        83,
-                        65,
-                        68
-                    ]
-                },
-                {
-                    "action": "Move",
-                    "name": "Left stick",
-                    "isComposite": true,
-                    "device": "gamepad",
-                    "type": "axis",
-                    "values": [
-                        1,
-                        0
+                    "bindingType": "Button",
+                    "bindings": [
+                        {
+                            "name": "",
+                            "keys": [
+                                {
+                                    "type": "Keyboard",
+                                    "key": 35
+                                }
+                            ]
+                        }
                     ]
                 }
             ]
