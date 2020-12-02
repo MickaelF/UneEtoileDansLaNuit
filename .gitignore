@@ -9,3 +9,7 @@
 /dependencies/glm
 /dependencies/imgui
 /dependencies/stb
+*__pycache__*
+*.code-workspace
+dependencies/launch-cmake-18.sh
+.vscode/*

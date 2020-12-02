@@ -49,7 +49,7 @@ int MainWindow::show()
     while (!glfwWindowShouldClose(m_window))
     {
         glfwSwapBuffers(m_window);
-        glfwPollEvents();
+        InputHandler::instance().run();
     }
     return 0;
 }

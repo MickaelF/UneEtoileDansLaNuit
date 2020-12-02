@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
+include(generate_input_class.cmake)
 message(NOTICE "This project requires Python 3 to work")
 set (PROJECT_NAME "AStarInTheNight")
 project(${PROJECT_NAME})
@@ -7,6 +8,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_BUILD_TYPE Debug)
 set(BUILD_STATIC_LIBS TRUE)
+
+set(InputClassDir ${CMAKE_CURRENT_BINARY_DIR}/inputFiles/)
+generate_input_class(InputClassFiles ${InputClassDir})
 
 # ********* GLW3 *********
 set(glfw3_DIR ${CMAKE_SOURCE_DIR}/thirdParty/glfw/lib/cmake/glfw3)
@@ -75,6 +79,6 @@ set(SHADERS
 	shaders/glsl/simplefragmentshader.frag
 	)
 
-add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC} ${stb_SRC})
+add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC} ${stb_SRC} ${InputClassFiles})
 target_link_libraries(${PROJECT_NAME} glfw opengl32 glm::glm ${ASSIMP_LIBRARIES} GLAD PTTK)
-target_include_directories(${PROJECT_NAME} PUBLIC ${Assimp_INCLUDE_DIR} ${GLAD_INCLUDE_DIR} ${GLM_DIR} ${ImGUI_SRC} ${stb_DIR} ${PTTK_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC src ${InputClassDir} ${Assimp_INCLUDE_DIR} ${GLAD_INCLUDE_DIR} ${GLM_DIR} ${ImGUI_SRC} ${stb_DIR} ${PTTK_INCLUDE_DIR})

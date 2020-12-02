@@ -1,21 +1,25 @@
 #pragma once
 
-struct GLFWwindow; 
+#include "basicinputs.h"
+
+struct GLFWwindow;
 
 class MainWindow
 {
-public: 
-	MainWindow(); 
-	~MainWindow();
-	MainWindow(const MainWindow&) = delete;
-    MainWindow(MainWindow&&) = delete; 
-	MainWindow& operator=(const MainWindow&) = delete;
-    MainWindow& operator=(MainWindow&&) = delete; 
-	
-	static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+public:
+    MainWindow();
+    ~MainWindow();
+    MainWindow(const MainWindow&) = delete;
+    MainWindow(MainWindow&&) = delete;
+    MainWindow& operator=(const MainWindow&) = delete;
+    MainWindow& operator=(MainWindow&&) = delete;
 
-	int show(); 
+    static void framebufferSizeCallback(GLFWwindow* window, int width,
+                                        int height);
 
-private: 
-	GLFWwindow* m_window {nullptr};
+    int show();
+
+private:
+    GLFWwindow* m_window {nullptr};
+    BasicInputs m_inputs;
 };

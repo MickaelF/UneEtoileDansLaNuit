@@ -32,7 +32,6 @@ void InputHandler::setWindow(GLFWwindow* window)
 
 void InputHandler::run()
 {
-    ExecutionTimer timer("Input event polling and state setting");
     glfwPollEvents();
     for (auto& controlScheme : m_controlScheme)
     {

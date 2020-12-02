@@ -1,4 +1,5 @@
 import json
+import os
 import pathlib
 import argparse
 import classtemplate
@@ -45,13 +46,13 @@ def createActionMap(mapName, jsonActionMap, output):
     source = source.replace("${ACTION_SETUP_FUNCTION_DEFINITION}", "\n\t".join(actionFuncInit))
     source = source.replace("${ACTIONS_SETUP_FUNCTION_CALLING}", "\n\t".join(actionFuncCallCstr))
 
-    hFile = open(output + "/" + filename + ".h", "x")
-    hFile.write(header)
-    hFile.close
+    file = open(output + "/" + filename + ".h", "w")
+    file.write(header)
+    file.close
 
-    sFile = open(output + "/" + filename + ".cpp", "x")
-    sFile.write(source)
-    sFile.close
+    file = open(output + "/" + filename + ".cpp", "w")
+    file.write(source)
+    file.close
 
 
 parser = argparse.ArgumentParser()
@@ -71,6 +72,8 @@ if filePath.find("/") == -1:
     filePath = str(defaultPath) + "\\" + filePath
 if args.output:
     outPath = args.output
+    if not os.path.exists(outPath):
+        os.makedirs(outPath)
 else:
     outPath = str(defaultPath)
 
@@ -79,17 +82,28 @@ jsonContent = json.load(jsonFile)
 
 actionMapClassNames = []
 actionMapIncludeFile = []
+actionMapAdd = []
 for map in jsonContent["maps"]:
     name = map["name"]
     createActionMap(name, map["actions"], outPath)
     actionMapClassNames.append(name + "ActionMap " + name + ";")
     actionMapIncludeFile.append("#include \"" + name.lower() + "actionmap.h\"")
-controlScheme = classtemplate.controlSchemeHeaderFile
-controlScheme = controlScheme.replace("${NAME}", jsonContent["name"])
-controlScheme = controlScheme.replace("${ACTION_MAPS}", "\n".join(actionMapClassNames))
-controlScheme = controlScheme.replace("${ACTION_MAP_INCLUDES}", "\n".join(actionMapIncludeFile))
-hFile = open(outPath + "/" + jsonContent["name"].lower() + ".h", "x")
-hFile.write(controlScheme)
+    actionMapAdd.append("m_actionMaps.push_back(&" + name + ");")
+controlSchemeHeader = classtemplate.controlSchemeHeaderFile
+controlSchemeHeader = controlSchemeHeader.replace("${NAME}", jsonContent["name"])
+controlSchemeHeader = controlSchemeHeader.replace("${ACTION_MAPS}", "\n".join(actionMapClassNames))
+controlSchemeHeader = controlSchemeHeader.replace("${ACTION_MAP_INCLUDES}", "\n".join(actionMapIncludeFile))
+file = open(outPath + "/" + jsonContent["name"].lower() + ".h", "w")
+file.write(controlSchemeHeader)
+file.close()
+
+controlSchemeSrc = classtemplate.controlSchemeSourceFile
+controlSchemeSrc = controlSchemeSrc.replace("${HEADER_FILE_NAME}", jsonContent["name"].lower())
+controlSchemeSrc = controlSchemeSrc.replace("${CLASSNAME}", jsonContent["name"])
+controlSchemeSrc = controlSchemeSrc.replace("${ADD_ACTION_MAPS}", "\n".join(actionMapAdd))
+file = open(outPath + "/" + jsonContent["name"].lower() + ".cpp", "w")
+file.write(controlSchemeSrc)
+file.close()
 
 
 
