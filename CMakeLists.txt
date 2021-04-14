@@ -12,8 +12,20 @@ set(BUILD_STATIC_LIBS TRUE)
 set(InputClassDir ${CMAKE_CURRENT_BINARY_DIR}/inputFiles/)
 generate_input_class(InputClassFiles ${InputClassDir})
 
-# ********* GLW3 *********
-set(glfw3_DIR ${CMAKE_SOURCE_DIR}/thirdParty/glfw/lib/cmake/glfw3)
+# ********* SDL2 *********
+set(SDL2_DIR ${CMAKE_SOURCE_DIR}/thirdParty/SDL/cmake)
+if (WIN32)
+    set(SDL2_BASE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/SDL/)
+    set(SDL2_INCLUDE_DIRS "${SDL2_BASE_DIR}/include")
+
+    # Support both 32 and 64 bit builds
+    if (${CMAKE_BUILD_TYPE} MATCHES Debug)
+        set(SDL2_LIBRARIES "${SDL2_BASE_DIR}/lib/SDL2d.lib;${SDL2_BASE_DIR}/lib/SDL2maind.lib")
+    else ()
+        set(SDL2_LIBRARIES "${SDL2_BASE_DIR}/lib/SDL2.lib;${SDL2_BASE_DIR}/lib/SDL2main.lib")
+    endif ()
+    string(STRIP "${SDL2_LIBRARIES}" SDL2_LIBRARIES)
+endif()
 
 # ********* GLAD *********
 set(GLAD_SRC ${CMAKE_SOURCE_DIR}/thirdParty/glad/src/glad.c)
@@ -49,7 +61,7 @@ find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)
 find_package(Assimp REQUIRED)
 find_package(PTTK REQUIRED)
-find_package(glfw3 REQUIRED)
+find_package(SDL2 REQUIRED)
 
 
 # ********* Application *********
@@ -68,7 +80,6 @@ set(SRCS src/main.cpp
 	src/input/action.cpp
 	src/input/binding.cpp
 	src/input/iactionlistener.h
-	src/input/input.h
 	src/input/inputhandler.cpp
 	src/input/abstractactionmap.cpp
 	src/input/abstractcontrolscheme.cpp
@@ -80,5 +91,5 @@ set(SHADERS
 	)
 
 add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC} ${stb_SRC} ${InputClassFiles})
-target_link_libraries(${PROJECT_NAME} glfw opengl32 glm::glm ${ASSIMP_LIBRARIES} GLAD PTTK)
-target_include_directories(${PROJECT_NAME} PUBLIC src ${InputClassDir} ${Assimp_INCLUDE_DIR} ${GLAD_INCLUDE_DIR} ${GLM_DIR} ${ImGUI_SRC} ${stb_DIR} ${PTTK_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} opengl32 glm::glm ${ASSIMP_LIBRARIES} GLAD PTTK)
+target_include_directories(${PROJECT_NAME} PUBLIC src ${InputClassDir} ${Assimp_INCLUDE_DIR} ${GLAD_INCLUDE_DIR} ${GLM_DIR} ${ImGUI_SRC} ${stb_DIR} ${PTTK_INCLUDE_DIR} ${SDL2_INCLUDE_DIRS})

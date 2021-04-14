@@ -2,7 +2,6 @@
 
 #include <pttk/executiontimer.h>
 
-#include "GLFW/glfw3.h"
 #include "abstractactionmap.h"
 #include "abstractcontrolscheme.h"
 #include "binding.h"
@@ -24,108 +23,82 @@ void InputHandler::removeControlScheme(AbstractControlScheme* scheme)
         std::remove(m_controlScheme.begin(), m_controlScheme.end(), scheme));
 }
 
-void InputHandler::setWindow(GLFWwindow* window)
+void InputHandler::handleGamepadInput(const std::vector<GamepadInput>& inputs)
 {
-    m_window = window;
-    glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GLFW_TRUE);
+    int i = 0;
+    i++;
+    i += 2;
 }
 
-void InputHandler::run()
+void InputHandler::handleKeyboardInput(const std::vector<KeyboardInput>& inputs)
 {
-    glfwPollEvents();
-    for (auto& controlScheme : m_controlScheme)
-    {
-        if (!controlScheme->isActive()) continue;
-        for (auto& actionMaps : controlScheme->actionsMaps())
-        {
-            if (!actionMaps->isActive()) continue;
-            for (Action& action : actionMaps->actions())
-            {
-                if (action.isActive()) continue;
-
-                for (auto binding : action.bindings())
-                {
-                    for (auto input : binding->inputs())
-                    {
-                        switch (input.first)
-                        {
-                            case InputType::GamepadAxis:
-                            {
-                                binding->setValue(
-                                    input.first, input.second,
-                                    getAxisValueFromGamepad(
-                                        input.second,
-                                        controlScheme->gamepadId()));
-                                break;
-                            }
-                            case InputType::GamepadButton:
-                            {
-                                binding->setValue(
-                                    input.first, input.second,
-                                    getButtonValueFromGamepad(
-                                        input.second,
-                                        controlScheme->gamepadId()));
-                                break;
-                            }
-                            case InputType::Keyboard:
-                            {
-                                binding->setValue(
-                                    input.first, input.second,
-                                    glfwGetKey(m_window, input.second));
-                                break;
-                            }
-                            case InputType::MouseButton:
-                            {
-                                binding->setValue(
-                                    input.first, input.second,
-                                    glfwGetMouseButton(m_window, input.second));
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    int i = 0;
+    i++;
+    i += 2;
 }
 
-float InputHandler::getAxisValueFromGamepad(int key,
-                                            std::optional<int> gamepadId)
+void InputHandler::handleMouseInput(const std::vector<MouseInput>& inputs)
 {
-    GLFWgamepadstate state {};
-    if (gamepadId.has_value())
-    {
-        if (glfwGetGamepadState(gamepadId.value(), &state))
-            return state.axes[key];
-    }
-    else
-    {
-        for (int i = 0; i < GLFW_JOYSTICK_LAST; ++i)
-        {
-            if (glfwJoystickIsGamepad(i) &&
-                glfwGetGamepadState(gamepadId.value(), &state))
-                return state.axes[key];
-        }
-    }
-    return .0f;
+    int i = 0;
+    i++;
+    i += 2;
 }
-int InputHandler::getButtonValueFromGamepad(int key,
-                                            std::optional<int> gamepadId)
-{
-    GLFWgamepadstate state {};
-    if (gamepadId.has_value())
-    {
-        if (glfwGetGamepadState(gamepadId.value(), &state))
-            return state.buttons[key];
-    }
-    else
-    {
-        for (int i = 0; i < GLFW_JOYSTICK_LAST; ++i)
-        {
-            if (glfwJoystickIsGamepad(i) &&
-                glfwGetGamepadState(gamepadId.value(), &state))
-                return state.buttons[key];
-        }
-    }
-    return 0;
-}
+
+// void InputHandler::run()
+// {
+//     for (auto& controlScheme : m_controlScheme)
+//     {
+//         if (!controlScheme->isActive()) continue;
+//         for (auto& actionMaps : controlScheme->actionsMaps())
+//         {
+//             if (!actionMaps->isActive()) continue;
+//             for (Action& action : actionMaps->actions())
+//             {
+//                 if (action.isActive()) continue;
+
+//                 for (auto binding : action.bindings())
+//                 {
+//                     for (auto input : binding->inputs())
+//                     {
+//                         switch (input.first)
+//                         {
+//                             case InputType::GamepadAxis:
+//                             {
+//                                 binding->setValue(
+//                                     input.first, input.second,
+//                                     getAxisValueFromGamepad(
+//                                         input.second,
+//                                         controlScheme->gamepadId()));
+//                                 break;
+//                             }
+//                             case InputType::GamepadButton:
+//                             {
+//                                 binding->setValue(
+//                                     input.first, input.second,
+//                                     getButtonValueFromGamepad(
+//                                         input.second,
+//                                         controlScheme->gamepadId()));
+//                                 break;
+//                             }
+//                             case InputType::Keyboard:
+//                             {
+//                                 binding->setValue(
+//                                     input.first, input.second,
+//                                     glfwGetKey(m_window, input.second));
+//                                 break;
+//                             }
+//                             case InputType::MouseButton:
+//                             {
+//                                 binding->setValue(
+//                                     input.first, input.second,
+//                                     glfwGetMouseButton(m_window,
+//                                     input.second));
+//                                 break;
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }

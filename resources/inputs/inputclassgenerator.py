@@ -13,7 +13,7 @@ def createActionMap(mapName, jsonActionMap, output):
     for actionObj in jsonActionMap:
         actionName = actionObj["name"][0].lower() + actionObj["name"][1:]
         actionsSetupFunction.append("void " + actionName + "Setup();")
-        actionsGetter.append("Action "+ actionName + ";")
+        actionsGetter.append(actionObj["bindingType"] + "Action "+ actionName + ";")
         actionSrcInit.append(actionName + "{ \"" + actionObj["name"] + "\" }")
         actionFuncCallCstr.append(actionName + "Setup();")
         bindings = []
@@ -22,9 +22,8 @@ def createActionMap(mapName, jsonActionMap, output):
             for keyObj in bindingObj["keys"]:
                 param.append("InputType::"+keyObj["type"])
                 param.append(str(keyObj["key"]))
-            param.append("\""+bindingObj["name"] +"\"")
+            param.append(actionName + ", \""+bindingObj["name"] +"\"")
             bindingCreation = classtemplate.bindingDeclaration
-            bindingCreation = bindingCreation.replace("${ACTION_NAME}", actionName)
             bindingCreation = bindingCreation.replace("${TYPE}", actionObj["bindingType"])
             bindingCreation = bindingCreation.replace("${PARAM}", ", ".join(param))
             bindings.append(bindingCreation)

@@ -1,11 +1,11 @@
 #pragma once
 
-struct ActionContext;
+class Action;
 
 class IActionListener
 {
 public:
     IActionListener() = default;
 
-    virtual void onAction(ActionContext ctx) = 0;
+    virtual void onAction(Action* action) = 0;
 };

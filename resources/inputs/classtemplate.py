@@ -31,11 +31,11 @@ mapClassActionSetupTemplate = """
 void ${NAME}ActionMap::${ACTION_NAME}Setup()
 {
     ${ACTION_BINDINGS}
-    m_actions.push_back(${ACTION_NAME});
+    m_actions.push_back(&${ACTION_NAME});
 }
 """
 
-bindingDeclaration = "${ACTION_NAME}.addBinding(new ${TYPE}Binding(${PARAM}));"
+bindingDeclaration = "new ${TYPE}Binding(${PARAM});"
 
 controlSchemeHeaderFile = """
 #include "input/abstractcontrolscheme.h"

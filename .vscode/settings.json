@@ -81,7 +81,13 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "variant": "cpp"
     },
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "cmake.configureSettings": {
+        "CPYTHON_EXECUTABLE": "C:/perso/bin/python/python.exe",
+        "CUSTOM_PYTHON": "FALSE"
+    },
+    "python.formatting.provider": "black"
 }

@@ -1,5 +1,6 @@
 #include "action.h"
 
+#include "binding.h"
 #include "iactionlistener.h"
 #include "inputhandler.h"
 namespace
@@ -26,17 +27,35 @@ bool Action::hasListener(IActionListener* listener) const
            m_listeners.cend();
 }
 
-ActionContext Action::context(bool started, bool ended) const
-{
-    return {m_value, started, m_inUse && !started, ended, m_id};
-}
-
 void Action::setActive(bool state)
 {
     if (m_active != state) m_active = state;
 }
 
-void Action::addBinding(Binding* binding)
+BinaryAction::BinaryAction(const std::string& name) : Action(name) {}
+
+void BinaryAction::notify(Binding* binding)
 {
-    m_bindings.push_back(binding);
+    BinaryBinding* bb = static_cast<BinaryBinding*>(binding);
+    if (bb->pressed() && m_on || !bb->pressed() && !m_on) return;
+    m_on = bb->pressed();
+    for (auto& listener : m_listeners) listener->onAction(this);
+}
+
+RangeAction::RangeAction(const std::string& name) : Action(name) {}
+
+void RangeAction::notify(Binding* binding)
+{
+    RangeBinding* bb = static_cast<RangeBinding*>(binding);
+    m_value = bb->value();
+    for (auto& listener : m_listeners) listener->onAction(this);
+}
+
+Vector2Action::Vector2Action(const std::string& name) : Action(name) {}
+
+void Vector2Action::notify(Binding* binding)
+{
+    Vector2Binding* bb = static_cast<Vector2Binding*>(binding);
+    m_value = bb->value();
+    for (auto& listener : m_listeners) listener->onAction(this);
 }

@@ -2,53 +2,31 @@
 
 #include <algorithm>
 
-ButtonBinding::ButtonBinding(InputType type, int key, const std::string& name)
-    : Binding(name),
+std::vector<Binding*> Binding::bindings;
+
+BinaryBinding::BinaryBinding(InputType type, int key, Action& action,
+                             const std::string& name)
+    : Binding(action, name),
       m_type(type),
       m_key(key)
 {
 }
 
-void ButtonBinding::setValue(InputType type, int key, float value) {}
+void BinaryBinding::setValue(InputType type, int key, float value) {}
 
-void ButtonBinding::setValue(InputType type, int key, int value)
+void BinaryBinding::setValue(InputType type, int key, int value)
 {
-    if (value)
-    {
-        if (m_held) return;
-        if (m_started)
-        {
-            m_started = false;
-            m_held = true;
-        }
-        else
-        {
-            m_started = true;
-            if (m_released) m_released = false;
-        }
-    }
-    else
-    {
-        if (m_started || m_held)
-        {
-            m_started = false;
-            m_held = false;
-            m_released = true;
-        }
-        else if (m_released)
-        {
-            m_released = false;
-        }
-    }
+    m_pressed = value;
 }
 
-const std::vector<std::pair<InputType, int>> ButtonBinding::inputs() const
+const std::vector<std::pair<InputType, int>> BinaryBinding::inputs() const
 {
     return {std::make_pair(m_type, m_key)};
 }
 
-AxisBinding::AxisBinding(InputType axis, int key, const std::string& name)
-    : Binding(name)
+RangeBinding::RangeBinding(InputType axis, int key, Action& action,
+                           const std::string& name)
+    : Binding(action, name)
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (axis != InputType::GamepadAxis)
@@ -60,10 +38,10 @@ AxisBinding::AxisBinding(InputType axis, int key, const std::string& name)
     m_axis = Axis {axis, key};
 }
 
-AxisBinding::AxisBinding(InputType negative, int negativeKey,
-                         InputType positive, int positiveKey,
-                         const std::string& name)
-    : Binding(name)
+RangeBinding::RangeBinding(InputType negative, int negativeKey,
+                           InputType positive, int positiveKey, Action& action,
+                           const std::string& name)
+    : Binding(action, name)
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (negative == InputType::GamepadAxis ||
@@ -76,7 +54,7 @@ AxisBinding::AxisBinding(InputType negative, int negativeKey,
     m_axis = TwoButtonAxis {negative, negativeKey, positive, positiveKey};
 }
 
-void AxisBinding::setValue(InputType type, int key, float value)
+void RangeBinding::setValue(InputType type, int key, float value)
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (m_axis.index() != 0)
@@ -88,7 +66,7 @@ void AxisBinding::setValue(InputType type, int key, float value)
     std::get<Axis>(m_axis).value = value;
 }
 
-void AxisBinding::setValue(InputType type, int key, int value)
+void RangeBinding::setValue(InputType type, int key, int value)
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (m_axis.index() != 1)
@@ -105,7 +83,7 @@ void AxisBinding::setValue(InputType type, int key, int value)
         axis.positiveValue = 1;
 }
 
-const std::vector<std::pair<InputType, int>> AxisBinding::inputs() const
+const std::vector<std::pair<InputType, int>> RangeBinding::inputs() const
 {
     if (m_axis.index() == 0)
     {
@@ -120,10 +98,19 @@ const std::vector<std::pair<InputType, int>> AxisBinding::inputs() const
     }
 }
 
-Vector2DBinding::Vector2DBinding(InputType horizontalType, int horizontalKey,
-                                 InputType verticalType, int verticalKey,
-                                 const std::string& name)
-    : Binding(name)
+float RangeBinding::value() const
+{
+    if (m_axis.index() == 0)
+        return std::get<0>(m_axis).value;
+    else
+        return std::get<1>(m_axis).negativeValue +
+               std::get<1>(m_axis).positiveValue;
+}
+
+Vector2Binding::Vector2Binding(InputType horizontalType, int horizontalKey,
+                               InputType verticalType, int verticalKey,
+                               Action& action, const std::string& name)
+    : Binding(action, name)
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (horizontalType != InputType::GamepadAxis ||
@@ -137,12 +124,12 @@ Vector2DBinding::Vector2DBinding(InputType horizontalType, int horizontalKey,
                                 verticalKey};
 }
 
-Vector2DBinding::Vector2DBinding(InputType leftType, int leftKey,
-                                 InputType topType, int topKey,
-                                 InputType rightType, int rightKey,
-                                 InputType bottomType, int bottomKey,
-                                 const std::string& name)
-    : Binding(name)
+Vector2Binding::Vector2Binding(InputType leftType, int leftKey,
+                               InputType topType, int topKey,
+                               InputType rightType, int rightKey,
+                               InputType bottomType, int bottomKey,
+                               Action& action, const std::string& name)
+    : Binding(action, name)
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (leftType == InputType::GamepadAxis ||
@@ -158,7 +145,7 @@ Vector2DBinding::Vector2DBinding(InputType leftType, int leftKey,
                                    rightType, rightKey, bottomType, bottomKey};
 }
 
-void Vector2DBinding::setValue(InputType type, int key, float value)
+void Vector2Binding::setValue(InputType type, int key, float value)
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (m_vector2D.index() != 0)
@@ -174,7 +161,7 @@ void Vector2DBinding::setValue(InputType type, int key, float value)
         vector.verticalValue = value;
 }
 
-void Vector2DBinding::setValue(InputType type, int key, int value)
+void Vector2Binding::setValue(InputType type, int key, int value)
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (m_vector2D.index() != 1)
@@ -194,7 +181,7 @@ void Vector2DBinding::setValue(InputType type, int key, int value)
         vector.bottomValue = value;
 }
 
-const std::vector<std::pair<InputType, int>> Vector2DBinding::inputs() const
+const std::vector<std::pair<InputType, int>> Vector2Binding::inputs() const
 {
     if (m_vector2D.index() == 0)
     {
@@ -210,4 +197,16 @@ const std::vector<std::pair<InputType, int>> Vector2DBinding::inputs() const
                 std::make_pair(vector.rightType, vector.rightKey),
                 std::make_pair(vector.bottomType, vector.bottomKey)};
     }
+}
+
+glm::vec2 Vector2Binding::value() const
+{
+    if (m_vector2D.index() == 0)
+        return glm::vec2 {std::get<0>(m_vector2D).horizontalValue,
+                          std::get<0>(m_vector2D).verticalValue};
+    else
+        return glm::vec2 {std::get<1>(m_vector2D).leftValue +
+                              std::get<1>(m_vector2D).rightValue,
+                          std::get<1>(m_vector2D).topValue +
+                              std::get<1>(m_vector2D).bottomValue};
 }

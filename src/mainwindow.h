@@ -1,8 +1,8 @@
 #pragma once
 
-#include "basicinputs.h"
-
-struct GLFWwindow;
+struct SDL_Window;
+struct SDL_Renderer;
+union SDL_Event;
 
 class MainWindow
 {
@@ -14,12 +14,11 @@ public:
     MainWindow& operator=(const MainWindow&) = delete;
     MainWindow& operator=(MainWindow&&) = delete;
 
-    static void framebufferSizeCallback(GLFWwindow* window, int width,
-                                        int height);
-
     int show();
 
 private:
-    GLFWwindow* m_window {nullptr};
-    BasicInputs m_inputs;
+    void handleWindowEvent(SDL_Event& event);
+
+    SDL_Window* m_window {nullptr};
+    SDL_Renderer* m_renderer {nullptr};
 };

@@ -6,7 +6,7 @@
             "actions": [
                 {
                     "name": "Submit",
-                    "bindingType": "Button",
+                    "bindingType": "Binary",
                     "bindings": [
                         {
                             "name": "",
@@ -21,7 +21,7 @@
                 },
                 {
                     "name": "Move",
-                    "bindingType": "Vector2D",
+                    "bindingType": "Vector2",
                     "bindings": [
                         {
                             "name": "Arrows",
@@ -82,7 +82,7 @@
                 },
                 {
                     "name": "Cancel",
-                    "bindingType": "Button",
+                    "bindingType": "Binary",
                     "bindings": [
                         {
                             "name": "",

@@ -14,18 +14,15 @@ enum class InputType
     GamepadButton
 };
 
-/*
-    Type de Binding :
-        - button : value entre -1 et 1 (bouton ou axe unique (x ou y du joystick
-   gauche ou droit uniquement))
-        - 2D Vector : valeur entre (-1, -1) et (1, 1). Peut être un joystick
-   (deux axes) ou un composé (quatres boutons)
-
-*/
 class Binding
 {
 public:
-    Binding(const std::string& name) : m_name {name} {}
+    Binding(Action& action, const std::string& name)
+        : m_action {action},
+          m_name {name}
+    {
+        bindings.push_back(this);
+    }
     virtual const std::vector<std::pair<InputType, int>> inputs() const = 0;
 
     virtual void setValue(InputType type, int key, float value) = 0;
@@ -33,39 +30,45 @@ public:
 
     const std::string& name() const;
 
+    static std::vector<Binding*> bindings;
+
 private:
+    Action& m_action;
     const std::string m_name;
 };
 
-class ButtonBinding : public Binding
+class BinaryBinding : public Binding
 {
 public:
-    explicit ButtonBinding(InputType type, int key,
+    explicit BinaryBinding(InputType type, int key, Action& action,
                            const std::string& name = {});
     const std::vector<std::pair<InputType, int>> inputs() const override;
     void setValue(InputType type, int key, int value) override;
     void setValue(InputType type, int key, float value) override;
 
+    bool pressed() const { return m_pressed; }
+
 private:
     InputType m_type;
     int m_key;
-    bool m_started;
-    bool m_held;
-    bool m_released;
+    bool m_pressed;
 };
 
-class AxisBinding : public Binding
+class RangeBinding : public Binding
 {
 public:
-    explicit AxisBinding(InputType axis, int key, const std::string& name = {});
-    explicit AxisBinding(InputType negative, int negativeKey,
-                         InputType positive, int positiveKey,
-                         const std::string& name = {});
+    explicit RangeBinding(InputType axis, int key, Action& action,
+                          const std::string& name = {});
+    explicit RangeBinding(InputType negative, int negativeKey,
+                          InputType positive, int positiveKey, Action& action,
+                          const std::string& name = {});
 
     void setValue(InputType type, int key, int value) override;
     void setValue(InputType type, int key, float value) override;
 
     const std::vector<std::pair<InputType, int>> inputs() const override;
+
+    float value() const;
 
 private:
     struct Axis
@@ -88,21 +91,23 @@ private:
     std::variant<Axis, TwoButtonAxis> m_axis;
 };
 
-class Vector2DBinding : public Binding
+class Vector2Binding : public Binding
 {
 public:
-    Vector2DBinding(InputType horizontalType, int horizontalKey,
-                    InputType verticalType, int verticalKey,
-                    const std::string& name = {});
-    Vector2DBinding(InputType leftType, int leftKey, InputType topType,
-                    int topKey, InputType rightType, int rightKey,
-                    InputType bottomType, int bottomKey,
-                    const std::string& name = {});
+    Vector2Binding(InputType horizontalType, int horizontalKey,
+                   InputType verticalType, int verticalKey, Action& action,
+                   const std::string& name = {});
+    Vector2Binding(InputType leftType, int leftKey, InputType topType,
+                   int topKey, InputType rightType, int rightKey,
+                   InputType bottomType, int bottomKey, Action& action,
+                   const std::string& name = {});
 
     void setValue(InputType type, int key, int value) override;
     void setValue(InputType type, int key, float value) override;
 
     const std::vector<std::pair<InputType, int>> inputs() const override;
+
+    glm::vec2 value() const;
 
 private:
     struct TwoAxisVector

@@ -1,4 +1,5 @@
 #pragma once
+#include <chrono>
 #include <glm/glm.hpp>
 #include <string>
 #include <variant>
@@ -9,43 +10,68 @@ class Binding;
 
 enum class ActionType
 {
-    Button,
-    Axis,
+    Binary,
+    Range,
     TwoDimension
 };
-
-struct ActionContext
-{
-    const std::variant<float, glm::vec2> value;
-    const bool started;
-    const bool performed;
-    const bool ended;
-    const int id;
-};
-
 class Action
 {
 public:
     explicit Action(const std::string& name);
+    virtual ~Action() {}
 
-    void notify(Binding& binding);
+    virtual void notify(Binding* binding) = 0;
 
     void addListener(IActionListener* listener);
     void removeListener(IActionListener* listener);
     bool hasListener(IActionListener* listener) const;
     bool isActive() const { return m_active; }
     void setActive(bool state);
-    std::vector<Binding*>& bindings() { return m_bindings; }
 
-    void addBinding(Binding* binding);
+    virtual ActionType type() const = 0;
+
+protected:
+    std::vector<IActionListener*> m_listeners;
 
 private:
-    ActionContext context(bool started, bool ended) const;
-    std::vector<IActionListener*> m_listeners;
-    std::vector<Binding*> m_bindings;
-    std::variant<float, glm::vec2> m_value;
-    bool m_inUse {false};
     const std::string m_name;
     const int m_id;
     bool m_active {true};
+};
+
+class BinaryAction : public Action
+{
+public:
+    explicit BinaryAction(const std::string& name);
+    ActionType type() const override { return ActionType::Binary; }
+    void notify(Binding* binding) override;
+    bool on() const { return m_on; }
+
+private:
+    bool m_on;
+};
+
+class RangeAction : public Action
+{
+public:
+    explicit RangeAction(const std::string& name);
+    ActionType type() const override { return ActionType::Range; }
+    void notify(Binding* binding) override;
+    float value() const { return m_value; }
+
+private:
+    bool m_fullRange = true;
+    float m_value = 0.0f;
+};
+
+class Vector2Action : public Action
+{
+public:
+    explicit Vector2Action(const std::string& name);
+    ActionType type() const override { return ActionType::TwoDimension; }
+    void notify(Binding* binding) override;
+    const glm::vec2& value() const { return m_value; }
+
+private:
+    glm::vec2 m_value;
 };

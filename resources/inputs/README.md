@@ -1,4 +1,4 @@
-# Input Handling 
+# Input Handling
 
 ## How inputs are handled?
 A Json file is created, with the wanted actions, for the wanted context (UI, a specific phase of gameplay, etc...). Each actions has a type. Each actions has corresponding bindings.
@@ -6,15 +6,15 @@ A Json file is created, with the wanted actions, for the wanted context (UI, a s
 
 
 ## Possible action type
-- button: three states (pressed, released, held).
-- axis: a gamepad axis, or a compond of two button. Result is a way between -1 (left or down) and 1 (up or right).
-- 2DVector: A 2D vector, for 2 axis at a time. 
+- binary: pressed, released. Possible to know if it's been held.
+- [Mid/Full]Range: a gamepad axis, or a compond of two button. Result is a way between -1 (left or down) or 0 and 1 (up or right).
+- 2DVector: A 2D vector, for 2 axis at a time.
 
 
 
-## Binding field 
+## Binding field
 A binding always has a related action. It can be composite or not, depending of binding and action's type. Only 'axis' and '2DVector' action type can be composite. 'Device' must be specified. 'Values' is the array with the GLFW key id of the binding. For 'gamepad' devices, binding type must be specified.
-    
+
 ### Device type
 Keyboard, Gamepad or Mouse. If it is for a specific gamepad, type must be "gamepad/{name}".
 ### Composite rules
@@ -25,43 +25,43 @@ For anything that can have a value inbetween a range (sticks and triggers), type
 
 ## JSON example
     {
-        "maps": 
+        "maps":
         [
             {
                 "name":"UI",
-                "actions": 
+                "actions":
                 [
                     {
-                        "name":"Submit", 
+                        "name":"Submit",
                         "valueType":"Button"
                     },
-                    { 
-                        "name":"Move", 
+                    {
+                        "name":"Move",
                         "valueType":"2DVector"
-                    }, 
-                    { 
-                        "name":"Cancel", 
+                    },
+                    {
+                        "name":"Cancel",
                         "valueType": "Button"
                     }
-                ] , 
-                "bindings": 
+                ] ,
+                "bindings":
                 [
                     {
-                        "action":"Move", 
+                        "action":"Move",
                         "name":"Arrows",
-                        "isComposite":true, 
+                        "isComposite":true,
                         "device":"keyboard",
                         "values":[265,264,263,262]
-                    }, 
+                    },
                     {
-                        "action":"Move", 
+                        "action":"Move",
                         "name":"WASD",
-                        "isComposite":true, 
+                        "isComposite":true,
                         "device":"keyboard",
                         "values":[87,83,65,68]
                     },
                     {
-                        "action":"Move", 
+                        "action":"Move",
                         "name":"Left stick",
                         "isComposite":true,
                         "device":"gamepad",
