@@ -17,16 +17,56 @@ def createActionMap(mapName, jsonActionMap, output):
         actionSrcInit.append(actionName + "{ \"" + actionObj["name"] + "\" }")
         actionFuncCallCstr.append(actionName + "Setup();")
         bindings = []
+        i = 0
         for bindingObj in actionObj["bindings"]:
             param = []
+            gamepad = []
+            gamepadAxis = []
+            keyboard = []
+            mouse = []
             for keyObj in bindingObj["keys"]:
                 param.append("InputType::"+keyObj["type"])
                 param.append(str(keyObj["key"]))
-            param.append(actionName + ", \""+bindingObj["name"] +"\"")
+                if keyObj["type"] == "Keyboard":
+                    keyboard.append(str(keyObj["key"]))
+                elif keyObj["type"] == "GamepadAxis":
+                    gamepadAxis.append(str(keyObj["key"]))
+                elif keyObj["type"] == "Gamepad":
+                    gamepad.append(str(keyObj["key"]))
+                elif keyObj["type"] == "Mouse":
+                    mouse.append(str(keyObj["key"]))
+
+            param.append("\""+bindingObj["name"] +"\"")
+
+            bindingRelation = []
+            if gamepad:
+                bindingSortDeclaration = classtemplate.bindingSortDeclaration.replace("${TYPE}", "Gamepad")
+                bindingSortDeclaration = bindingSortDeclaration.replace("${KEYS}", ",".join(gamepad))
+                bindingSortDeclaration = bindingSortDeclaration.replace("${n}", str(i))
+                bindingRelation.append(bindingSortDeclaration)
+            if keyboard:
+                bindingSortDeclaration = classtemplate.bindingSortDeclaration.replace("${TYPE}", "Keyboard")
+                bindingSortDeclaration = bindingSortDeclaration.replace("${KEYS}", ",".join(keyboard))
+                bindingSortDeclaration = bindingSortDeclaration.replace("${n}", str(i))
+                bindingRelation.append(bindingSortDeclaration)
+            if gamepadAxis:
+                bindingSortDeclaration = classtemplate.bindingSortDeclaration.replace("${TYPE}", "GamepadAxis")
+                bindingSortDeclaration = bindingSortDeclaration.replace("${KEYS}", ",".join(gamepadAxis))
+                bindingSortDeclaration = bindingSortDeclaration.replace("${n}", str(i))
+                bindingRelation.append(bindingSortDeclaration)
+            if mouse:
+                bindingSortDeclaration = classtemplate.bindingSortDeclaration.replace("${TYPE}", "Mouse")
+                bindingSortDeclaration = bindingSortDeclaration.replace("${KEYS}", ",".join(mouse))
+                bindingSortDeclaration = bindingSortDeclaration.replace("${n}", str(i))
+                bindingRelation.append(bindingSortDeclaration)
             bindingCreation = classtemplate.bindingDeclaration
             bindingCreation = bindingCreation.replace("${TYPE}", actionObj["bindingType"])
             bindingCreation = bindingCreation.replace("${PARAM}", ", ".join(param))
+            bindingCreation = bindingCreation.replace("${ACTION_NAME}", actionName)
+            bindingCreation = bindingCreation.replace("${n}", str(i))
+            bindingCreation = bindingCreation.replace("${BINDING_SORT}", "\n\t".join(bindingRelation))
             bindings.append(bindingCreation)
+            i = i + 1
         actionInit = classtemplate.mapClassActionSetupTemplate
         actionInit = actionInit.replace("${NAME}", mapName)
         actionInit = actionInit.replace("${ACTION_NAME}", actionName)

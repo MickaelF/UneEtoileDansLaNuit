@@ -71,6 +71,13 @@ int MainWindow::show()
                 case SDL_MOUSEWHEEL:
                     mouseInputs.push_back({0, 0, true, e.wheel.x, e.wheel.y});
                     break;
+                case SDL_MOUSEMOTION:
+                {
+                    int x, y;
+                    SDL_GetMouseState(&x, &y);
+                    InputHandler::setMousePosition(x, y);
+                }
+                break;
                 case SDL_JOYAXISMOTION:
                     gamepadInputs.push_back(
                         {e.jaxis.which, true, e.jaxis.axis, e.jaxis.value});

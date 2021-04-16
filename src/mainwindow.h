@@ -1,4 +1,8 @@
 #pragma once
+#include <pttk/log.h>
+
+#include "basicinputs.h"
+#include "input/iactionlistener.h"
 
 struct SDL_Window;
 struct SDL_Renderer;

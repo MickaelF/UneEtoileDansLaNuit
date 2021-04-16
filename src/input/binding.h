@@ -4,43 +4,31 @@
 #include <variant>
 #include <vector>
 
-class Action;
+#include "inputtype.h"
 
-enum class InputType
-{
-    MouseButton,
-    Keyboard,
-    GamepadAxis,
-    GamepadButton
-};
+class Action;
 
 class Binding
 {
 public:
-    Binding(Action& action, const std::string& name)
-        : m_action {action},
-          m_name {name}
-    {
-        bindings.push_back(this);
-    }
+    Binding(const std::string& name) : m_name {name} {}
     virtual const std::vector<std::pair<InputType, int>> inputs() const = 0;
 
     virtual void setValue(InputType type, int key, float value) = 0;
     virtual void setValue(InputType type, int key, int value) = 0;
 
     const std::string& name() const;
-
-    static std::vector<Binding*> bindings;
+    void addAction(Action* action) { m_actions.push_back(action); }
 
 private:
-    Action& m_action;
+    std::vector<Action*> m_actions;
     const std::string m_name;
 };
 
 class BinaryBinding : public Binding
 {
 public:
-    explicit BinaryBinding(InputType type, int key, Action& action,
+    explicit BinaryBinding(InputType type, int key,
                            const std::string& name = {});
     const std::vector<std::pair<InputType, int>> inputs() const override;
     void setValue(InputType type, int key, int value) override;
@@ -57,10 +45,10 @@ private:
 class RangeBinding : public Binding
 {
 public:
-    explicit RangeBinding(InputType axis, int key, Action& action,
+    explicit RangeBinding(InputType axis, int key,
                           const std::string& name = {});
     explicit RangeBinding(InputType negative, int negativeKey,
-                          InputType positive, int positiveKey, Action& action,
+                          InputType positive, int positiveKey,
                           const std::string& name = {});
 
     void setValue(InputType type, int key, int value) override;
@@ -95,11 +83,11 @@ class Vector2Binding : public Binding
 {
 public:
     Vector2Binding(InputType horizontalType, int horizontalKey,
-                   InputType verticalType, int verticalKey, Action& action,
+                   InputType verticalType, int verticalKey,
                    const std::string& name = {});
     Vector2Binding(InputType leftType, int leftKey, InputType topType,
                    int topKey, InputType rightType, int rightKey,
-                   InputType bottomType, int bottomKey, Action& action,
+                   InputType bottomType, int bottomKey,
                    const std::string& name = {});
 
     void setValue(InputType type, int key, int value) override;

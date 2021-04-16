@@ -13,7 +13,7 @@
                             "keys": [
                                 {
                                     "type": "Keyboard",
-                                    "key": "30"
+                                    "key": "SDL_SCANCODE_RETURN"
                                 }
                             ]
                         }
@@ -28,19 +28,19 @@
                             "keys": [
                                 {
                                     "type": "Keyboard",
-                                    "key": "265"
+                                    "key": "SDL_SCANCODE_LEFT"
                                 },
                                 {
                                     "type": "Keyboard",
-                                    "key": "264"
+                                    "key": "SDL_SCANCODE_UP"
                                 },
                                 {
                                     "type": "Keyboard",
-                                    "key": "263"
+                                    "key": "SDL_SCANCODE_RIGHT"
                                 },
                                 {
                                     "type": "Keyboard",
-                                    "key": "262"
+                                    "key": "SDL_SCANCODE_DOWN"
                                 }
                             ]
                         },
@@ -49,19 +49,19 @@
                             "keys": [
                                 {
                                     "type": "Keyboard",
-                                    "key": "87"
+                                    "key": "SDL_SCANCODE_A"
                                 },
                                 {
                                     "type": "Keyboard",
-                                    "key": "83"
+                                    "key": "SDL_SCANCODE_W"
                                 },
                                 {
                                     "type": "Keyboard",
-                                    "key": "65"
+                                    "key": "SDL_SCANCODE_D"
                                 },
                                 {
                                     "type": "Keyboard",
-                                    "key": "68"
+                                    "key": "SDL_SCANCODE_S"
                                 }
                             ]
                         },
@@ -70,11 +70,11 @@
                             "keys": [
                                 {
                                     "type": "GamepadAxis",
-                                    "key": 1
+                                    "key": "SDL_CONTROLLER_AXIS_LEFTX"
                                 },
                                 {
                                     "type": "GamepadAxis",
-                                    "key": 0
+                                    "key": "SDL_CONTROLLER_AXIS_LEFTY"
                                 }
                             ]
                         }
@@ -89,7 +89,7 @@
                             "keys": [
                                 {
                                     "type": "Keyboard",
-                                    "key": 35
+                                    "key": "SDL_SCANCODE_ESCAPE"
                                 }
                             ]
                         }

@@ -9,33 +9,54 @@ class ${NAME}ActionMap : public AbstractActionMap
 public:
     ${NAME}ActionMap();
     ${ACTIONS_NAMES}
+    KeyBinding& typeBinding(InputType type) override;
+
 private:
     ${ACTIONS_SETUP_FUNCTIONS_DECLARATION}
+
+    static std::map<InputType, KeyBinding> m_typeBindings;
 };
 """
 
 mapClassFileName= "${NAME}actionmap"
 
 mapClassSourceFile = """#include "${GENERATED_HEADER_MAP_FILENAME}.h"
+
+#include <SDL2/SDL_gamecontroller.h>
+#include <SDL2/SDL_mouse.h>
+#include <SDL2/SDL_scancode.h>
+
 #include "input/binding.h"
+
+std::map<InputType, KeyBinding> ${NAME}ActionMap::m_typeBindings;
 
 ${NAME}ActionMap::${NAME}ActionMap(): ${ACTIONS_INIT}
 {
     ${ACTIONS_SETUP_FUNCTION_CALLING}
 }
 
-${ACTION_SETUP_FUNCTION_DEFINITION}
-"""
+KeyBinding& ${NAME}ActionMap::typeBinding(InputType type)
+{
+    return m_typeBindings[type];
+}
+
+${ACTION_SETUP_FUNCTION_DEFINITION}"""
 
 mapClassActionSetupTemplate = """
 void ${NAME}ActionMap::${ACTION_NAME}Setup()
 {
     ${ACTION_BINDINGS}
     m_actions.push_back(&${ACTION_NAME});
-}
-"""
+}"""
 
-bindingDeclaration = "new ${TYPE}Binding(${PARAM});"
+bindingDeclaration = """static Binding* b${n} = nullptr;
+    if (!b${n}) {
+        b${n} = new ${TYPE}Binding(${PARAM});
+        ${BINDING_SORT}
+    }
+    b${n}->addAction(&${ACTION_NAME}); """
+
+bindingSortDeclaration = "m_typeBindings[InputType::${TYPE}].push_back(std::make_pair(std::vector<int>{${KEYS}}, b${n}));"
 
 controlSchemeHeaderFile = """
 #include "input/abstractcontrolscheme.h"
@@ -55,7 +76,5 @@ controlSchemeSourceFile = """#include "${HEADER_FILE_NAME}.h"
 ${CLASSNAME}::${CLASSNAME}()
 {
     ${ADD_ACTION_MAPS}
-}
-
-"""
+}"""
 

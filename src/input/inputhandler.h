@@ -2,6 +2,7 @@
 #include <SDL2/SDL_joystick.h>
 #include <SDL2/SDL_keycode.h>
 
+#include <glm/vec2.hpp>
 #include <optional>
 #include <vector>
 
@@ -34,8 +35,10 @@ struct MouseInput
 class InputHandler
 {
 public:
-    InputHandler() = default;
     static InputHandler& instance();
+
+    static glm::ivec2 mousePosition();
+    static void setMousePosition(int x, int y);
 
     void addControlScheme(AbstractControlScheme* scheme);
     void removeControlScheme(AbstractControlScheme* scheme);
@@ -45,5 +48,8 @@ public:
     void handleMouseInput(const std::vector<MouseInput>& inputs);
 
 private:
+    InputHandler() = default;
     std::vector<AbstractControlScheme*> m_controlScheme;
+    AbstractControlScheme* m_currentScheme;
+    static glm::ivec2 m_mousePosition;
 };

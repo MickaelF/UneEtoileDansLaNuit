@@ -3,12 +3,8 @@
 #include "binding.h"
 #include "iactionlistener.h"
 #include "inputhandler.h"
-namespace
-{
-static int id = 0;
-}
 
-Action::Action(const std::string& name) : m_name(name), m_id(id++) {}
+Action::Action(const std::string& name) : m_name(name) {}
 
 void Action::addListener(IActionListener* listener)
 {

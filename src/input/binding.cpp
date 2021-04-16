@@ -1,12 +1,10 @@
 #include "binding.h"
 
 #include <algorithm>
+#include <stdexcept>
 
-std::vector<Binding*> Binding::bindings;
-
-BinaryBinding::BinaryBinding(InputType type, int key, Action& action,
-                             const std::string& name)
-    : Binding(action, name),
+BinaryBinding::BinaryBinding(InputType type, int key, const std::string& name)
+    : Binding(name),
       m_type(type),
       m_key(key)
 {
@@ -24,31 +22,30 @@ const std::vector<std::pair<InputType, int>> BinaryBinding::inputs() const
     return {std::make_pair(m_type, m_key)};
 }
 
-RangeBinding::RangeBinding(InputType axis, int key, Action& action,
-                           const std::string& name)
-    : Binding(action, name)
+RangeBinding::RangeBinding(InputType axis, int key, const std::string& name)
+    : Binding(name)
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (axis != InputType::GamepadAxis)
     {
-        // TODO Send an exception.
-        return;
+        throw std::runtime_error(
+            "InputType must be an GamepadAxis to use this constructor.");
     }
 #endif
     m_axis = Axis {axis, key};
 }
 
 RangeBinding::RangeBinding(InputType negative, int negativeKey,
-                           InputType positive, int positiveKey, Action& action,
+                           InputType positive, int positiveKey,
                            const std::string& name)
-    : Binding(action, name)
+    : Binding(name)
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (negative == InputType::GamepadAxis ||
         positive == InputType::GamepadAxis)
     {
-        // TODO Send an exception
-        return;
+        throw std::runtime_error(
+            "InputTypes must be buttons to use this constructor.");
     }
 #endif
     m_axis = TwoButtonAxis {negative, negativeKey, positive, positiveKey};
@@ -59,8 +56,8 @@ void RangeBinding::setValue(InputType type, int key, float value)
 #if defined(DEBUG) || defined(_DEBUG)
     if (m_axis.index() != 0)
     {
-        // TODO Send exception
-        return;
+        throw std::runtime_error(
+            "Trying to set TwoButtonAxis struct throught Axis function.");
     }
 #endif
     std::get<Axis>(m_axis).value = value;
@@ -71,8 +68,8 @@ void RangeBinding::setValue(InputType type, int key, int value)
 #if defined(DEBUG) || defined(_DEBUG)
     if (m_axis.index() != 1)
     {
-        // TODO Send exception
-        return;
+        throw std::runtime_error(
+            "Trying to set Axis struct throught TwoButtonAxis function.");
     }
 #endif
     auto& axis = std::get<TwoButtonAxis>(m_axis);
@@ -109,14 +106,15 @@ float RangeBinding::value() const
 
 Vector2Binding::Vector2Binding(InputType horizontalType, int horizontalKey,
                                InputType verticalType, int verticalKey,
-                               Action& action, const std::string& name)
-    : Binding(action, name)
+                               const std::string& name)
+    : Binding(name)
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (horizontalType != InputType::GamepadAxis ||
         verticalType != InputType::GamepadAxis)
     {
-        // TODO Send exception
+        throw std::runtime_error(
+            "InputTypes must be Gamepad axis to use this constructor.");
         return;
     }
 #endif
@@ -128,8 +126,8 @@ Vector2Binding::Vector2Binding(InputType leftType, int leftKey,
                                InputType topType, int topKey,
                                InputType rightType, int rightKey,
                                InputType bottomType, int bottomKey,
-                               Action& action, const std::string& name)
-    : Binding(action, name)
+                               const std::string& name)
+    : Binding(name)
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (leftType == InputType::GamepadAxis ||
@@ -137,7 +135,8 @@ Vector2Binding::Vector2Binding(InputType leftType, int leftKey,
         rightType == InputType::GamepadAxis ||
         bottomType == InputType::GamepadAxis)
     {
-        // TODO Send an exception
+        throw std::runtime_error(
+            "InputTypes must be buttons to use this constructor.");
         return;
     }
 #endif
@@ -150,8 +149,8 @@ void Vector2Binding::setValue(InputType type, int key, float value)
 #if defined(DEBUG) || defined(_DEBUG)
     if (m_vector2D.index() != 0)
     {
-        // TODO Send exception
-        return;
+        throw std::runtime_error(
+            "Trying to set TwoAxisVector struct throught wrong function");
     }
 #endif
     auto& vector = std::get<TwoAxisVector>(m_vector2D);
@@ -166,8 +165,8 @@ void Vector2Binding::setValue(InputType type, int key, int value)
 #if defined(DEBUG) || defined(_DEBUG)
     if (m_vector2D.index() != 1)
     {
-        // TODO Send exception
-        return;
+        throw std::runtime_error(
+            "Trying to set FourButtonVector struct throught wrong function");
     }
 #endif
     auto& vector = std::get<FourButtonVector>(m_vector2D);

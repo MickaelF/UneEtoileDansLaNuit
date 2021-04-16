@@ -35,7 +35,6 @@ protected:
 
 private:
     const std::string m_name;
-    const int m_id;
     bool m_active {true};
 };
 
