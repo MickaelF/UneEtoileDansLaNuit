@@ -5,7 +5,6 @@
 #include "input/iactionlistener.h"
 
 struct SDL_Window;
-struct SDL_Renderer;
 union SDL_Event;
 
 class MainWindow
@@ -20,9 +19,15 @@ public:
 
     int show();
 
+    void quit() { m_keepRunning = false; }
+
 private:
     void handleWindowEvent(SDL_Event& event);
+    void initOpenGl();
+    void initImGui();
+    void renderImGui();
 
     SDL_Window* m_window {nullptr};
-    SDL_Renderer* m_renderer {nullptr};
+    void* m_contextGL {nullptr};
+    bool m_keepRunning {true};
 };

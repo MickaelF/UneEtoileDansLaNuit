@@ -43,6 +43,18 @@ CopyFile()
     cp -R . $installDir/$1
 }
 
+CopyImgui()
+{
+    mkdir $installDir/imgui
+    mkdir $installDir/imgui/backends/
+    cp ./imconfig.h $installDir/imgui
+    cp ./imstb* $installDir/imgui
+    cp ./imgui*.* $installDir/imgui
+    cp ./backends/imgui_impl_opengl3* $installDir/imgui/backends/
+    cp ./backends/imgui_impl_sdl* $installDir/imgui/backends/
+    sed -i 's+<SDL+<SDL2/SDL+g' $installDir/imgui/backends/imgui_impl_sdl.cpp
+}
+
 GitUpdate()
 {
     folder=$PWD/$1
@@ -58,8 +70,10 @@ GitUpdate()
     LastTag
     if [ "$3" = true ]; then
         GenerateProject $1 $4
-    else
+    elif [ "$1" != "imgui" ]; then
         CopyFile $1
+    else
+        CopyImgui
     fi
     cd ..
 }
@@ -71,11 +85,11 @@ GLADSpecificInstructions()
     cp -R $PWD/glad/build/src $installDir/glad/src
 }
 
-GitUpdate SDL https://github.com/libsdl-org/SDL.git true
-GitUpdate glm https://github.com/g-truc/glm.git false
-GitUpdate glad https://github.com/Dav1dde/glad.git true
-GLADSpecificInstructions
+#GitUpdate SDL https://github.com/libsdl-org/SDL.git true
+#GitUpdate glm https://github.com/g-truc/glm.git false
+#GitUpdate glad https://github.com/Dav1dde/glad.git true
+#GLADSpecificInstructions
 GitUpdate imgui https://github.com/ocornut/imgui.git false
-GitUpdate PTTK git@github.com:MickaelF/PTTK.git true
-GitUpdate stb https://github.com/nothings/stb.git false
-GitUpdate Assimp https://github.com/assimp/assimp.git true 
+#GitUpdate PTTK git@github.com:MickaelF/PTTK.git true
+#GitUpdate stb https://github.com/nothings/stb.git false
+#GitUpdate Assimp https://github.com/assimp/assimp.git true

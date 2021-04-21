@@ -4,12 +4,20 @@
 #include <glad/glad.h>
 #include <pttk/log.h>
 
+#include "backends/imgui_impl_opengl3.h"
+#include "backends/imgui_impl_sdl.h"
+#include "imgui/imguihandler.h"
 #include "input/inputhandler.h"
 #include "mesh.h"
 
+namespace
+{
+constexpr const char* glsl_version {"#version 460"};
+} // namespace
+
 MainWindow::MainWindow()
 {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
         throw std::runtime_error("Failed to create SDL window");
 
     m_window = SDL_CreateWindow("LearnOpenGL", SDL_WINDOWPOS_CENTERED,
@@ -17,43 +25,88 @@ MainWindow::MainWindow()
                                 SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
     if (!m_window) throw std::runtime_error("Failed to create SDL window");
 
-    m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
-
-    if (!m_renderer) throw std::runtime_error("Failed to create renderer.");
-
     // Create a OpenGL context on SDL2
-    SDL_GLContext gl_context = SDL_GL_CreateContext(m_window);
+    m_contextGL = SDL_GL_CreateContext(m_window);
+    SDL_GL_MakeCurrent(m_window, m_contextGL);
 
     // Load GL extensions using glad
     if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
         throw std::runtime_error("Failed to initialize GLAD");
+
+    initOpenGl();
+    initImGui();
 }
 
 MainWindow::~MainWindow()
 {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
+    SDL_GL_DeleteContext(m_contextGL);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
 }
 
+void MainWindow::initOpenGl()
+{
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+                        SDL_GL_CONTEXT_PROFILE_CORE);
+
+    SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+}
+
+void MainWindow::renderImGui()
+{
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame(m_window);
+    ImGui::NewFrame();
+    ImGuiHandler::instance().renderAll();
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void MainWindow::initImGui()
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    // io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplSDL2_InitForOpenGL(m_window, m_contextGL);
+    ImGui_ImplOpenGL3_Init(glsl_version);
+    ImGuiHandler::instance().setMainWindow(this);
+}
+
 int MainWindow::show()
 {
-    bool isRunning = true;
     auto inputHandler = InputHandler::instance();
     SDL_Event e;
     std::vector<GamepadInput> gamepadInputs;
     std::vector<KeyboardInput> keyboardInputs;
     std::vector<MouseInput> mouseInputs;
-    while (isRunning)
+    while (m_keepRunning)
     {
         gamepadInputs.clear();
         keyboardInputs.clear();
         mouseInputs.clear();
         while (SDL_PollEvent(&e))
         {
+            ImGui_ImplSDL2_ProcessEvent(&e);
             switch (e.type)
             {
                 case SDL_WINDOWEVENT: handleWindowEvent(e); break;
-                case SDL_QUIT: isRunning = false; return 0;
+                case SDL_QUIT: m_keepRunning = false; return 0;
                 case SDL_KEYDOWN:
                 case SDL_KEYUP:
                     keyboardInputs.push_back(
@@ -91,9 +144,10 @@ int MainWindow::show()
         if (!keyboardInputs.empty())
             inputHandler.handleKeyboardInput(keyboardInputs);
         if (!mouseInputs.empty()) inputHandler.handleMouseInput(mouseInputs);
-        // Clear screen
-        SDL_RenderClear(m_renderer);
-        SDL_RenderPresent(m_renderer);
+
+        glClear(GL_COLOR_BUFFER_BIT);
+        renderImGui();
+        SDL_GL_SwapWindow(m_window);
     }
     return 0;
 }
