@@ -35,7 +35,7 @@ add_library(GLAD ${GLAD_SRC})
 target_include_directories(GLAD PUBLIC ${GLAD_INCLUDE_DIR})
 
 # ********* GLM *********
-set(glm_DIR ${CMAKE_SOURCE_DIR}/thirdParty/glm/cmake/glm)
+set(glm_DIR ${CMAKE_SOURCE_DIR}/thirdParty/glm/lib/cmake/glm)
 
 # ********* stb *********
 set(stb_DIR ${CMAKE_SOURCE_DIR}/thirdParty/stb)
@@ -46,9 +46,9 @@ set(ImGUI_DIR ${CMAKE_SOURCE_DIR}/thirdParty/imgui)
 set(ImGUI_HDR src/imgui)
 set(ImGUI_SRC
 	${ImGUI_DIR}/imgui.cpp
-	${ImGUI_DIR}/imgui_demo.cpp
 	${ImGUI_DIR}/imgui_draw.cpp
 	${ImGUI_DIR}/imgui_widgets.cpp
+	${ImGUI_DIR}/imgui_tables.cpp
 	${ImGUI_DIR}/backends/imgui_impl_opengl3.cpp
 	${ImGUI_DIR}/backends/imgui_impl_sdl.cpp
 
@@ -89,6 +89,9 @@ set(SRCS src/main.cpp
 	src/input/inputhandler.cpp
 	src/input/abstractactionmap.cpp
 	src/input/abstractcontrolscheme.cpp
+	src/iscene.cpp
+	src/input/inputrecorder.cpp
+	src/appinfo.cpp
 	)
 
 set(SHADERS
@@ -98,4 +101,4 @@ set(SHADERS
 
 add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC} ${stb_SRC} ${InputClassFiles})
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} opengl32 glm::glm ${ASSIMP_LIBRARIES} GLAD PTTK)
-target_include_directories(${PROJECT_NAME} PUBLIC src ${ImGUI_HDR} ${InputClassDir} ${Assimp_INCLUDE_DIR} ${GLAD_INCLUDE_DIR} ${GLM_DIR} ${ImGUI_DIR} ${stb_DIR} ${PTTK_INCLUDE_DIR} ${SDL2_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PUBLIC src ${ImGUI_HDR} ${InputClassDir} ${ImGUI_DIR} ${Assimp_INCLUDE_DIR} ${GLAD_INCLUDE_DIR} ${GLM_DIR} ${ImGUI_DIR} ${stb_DIR} ${PTTK_INCLUDE_DIR} ${SDL2_INCLUDE_DIRS})

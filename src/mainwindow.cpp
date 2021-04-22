@@ -95,11 +95,14 @@ int MainWindow::show()
     std::vector<GamepadInput> gamepadInputs;
     std::vector<KeyboardInput> keyboardInputs;
     std::vector<MouseInput> mouseInputs;
+    inputHandler.startRecording();
     while (m_keepRunning)
     {
         gamepadInputs.clear();
         keyboardInputs.clear();
         mouseInputs.clear();
+        std::chrono::time_point<std::chrono::steady_clock> now =
+            std::chrono::steady_clock::now();
         while (SDL_PollEvent(&e))
         {
             ImGui_ImplSDL2_ProcessEvent(&e);
@@ -140,10 +143,11 @@ int MainWindow::show()
             }
         }
         if (!gamepadInputs.empty())
-            inputHandler.handleGamepadInput(gamepadInputs);
+            inputHandler.handleGamepadInput(gamepadInputs, now);
         if (!keyboardInputs.empty())
-            inputHandler.handleKeyboardInput(keyboardInputs);
-        if (!mouseInputs.empty()) inputHandler.handleMouseInput(mouseInputs);
+            inputHandler.handleKeyboardInput(keyboardInputs, now);
+        if (!mouseInputs.empty())
+            inputHandler.handleMouseInput(mouseInputs, now);
 
         glClear(GL_COLOR_BUFFER_BIT);
         renderImGui();

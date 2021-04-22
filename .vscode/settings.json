@@ -82,7 +82,9 @@
         "xtree": "cpp",
         "xutility": "cpp",
         "string_view": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "coroutine": "cpp",
+        "resumable": "cpp"
     },
     "editor.formatOnSave": true,
     "cmake.configureSettings": {

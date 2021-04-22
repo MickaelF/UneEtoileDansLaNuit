@@ -5,13 +5,16 @@
 #include <exception>
 #include <filesystem>
 
+#include "appinfo.h"
 #include "mainwindow.h"
 constexpr std::string_view companyName {"PotatoThunder"};
 
 int main(int argc, char* argv[])
 {
-    const auto dataPath {pttkPath::getDataPath(
-        std::filesystem::path(argv[0]).stem().string(), companyName)};
+    AppInfo& info =
+        AppInfo::instance(std::filesystem::path(argv[0]).stem().string(),
+                          std::string(companyName));
+    const auto dataPath {pttkPath::getDataPath(info.appName, info.companyName)};
     Logger logger(dataPath);
     BasicLog::setLogger(logger);
     std::unique_ptr<MainWindow> mainWindow;

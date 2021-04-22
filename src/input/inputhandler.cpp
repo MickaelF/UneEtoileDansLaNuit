@@ -3,6 +3,7 @@
 #include "abstractactionmap.h"
 #include "abstractcontrolscheme.h"
 #include "binding.h"
+#include "inputrecorder.h"
 
 glm::ivec2 InputHandler::m_mousePosition;
 
@@ -33,20 +34,35 @@ void InputHandler::removeControlScheme(AbstractControlScheme* scheme)
         std::remove(m_controlScheme.begin(), m_controlScheme.end(), scheme));
 }
 
-void InputHandler::handleGamepadInput(const std::vector<GamepadInput>& inputs)
+void InputHandler::handleGamepadInput(
+    const std::vector<GamepadInput>& inputs,
+    std::chrono::time_point<std::chrono::steady_clock> now)
 {
+    if (m_recorder) m_recorder->handleGamepadInput(inputs, now);
     for (auto scheme : m_controlScheme)
         if (scheme->isActive()) scheme->handleGamepadInput(inputs);
 }
 
-void InputHandler::handleKeyboardInput(const std::vector<KeyboardInput>& inputs)
+void InputHandler::handleKeyboardInput(
+    const std::vector<KeyboardInput>& inputs,
+    std::chrono::time_point<std::chrono::steady_clock> now)
 {
+    if (m_recorder) m_recorder->handleKeyboardInput(inputs, now);
     for (auto scheme : m_controlScheme)
         if (scheme->isActive()) scheme->handleKeyboardInput(inputs);
 }
 
-void InputHandler::handleMouseInput(const std::vector<MouseInput>& inputs)
+void InputHandler::handleMouseInput(
+    const std::vector<MouseInput>& inputs,
+    std::chrono::time_point<std::chrono::steady_clock> now)
 {
+    if (m_recorder) m_recorder->handleMouseInput(inputs, now);
     for (auto scheme : m_controlScheme)
         if (scheme->isActive()) scheme->handleMouseInput(inputs);
+}
+
+void InputHandler::startRecording()
+{
+    m_recorder = new InputRecorder();
+    m_recorder->start();
 }
