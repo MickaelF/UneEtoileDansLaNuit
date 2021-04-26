@@ -49,3 +49,17 @@ void ImGuiHandler::renderMainMenu()
         ImGui::EndMainMenuBar();
     }
 }
+
+void ImGuiHandler::displayErrorWidget()
+{
+    if (!ImGui::Begin("Error"))
+    {
+        // Early out if the window is collapsed, as an optimization.
+        ImGui::End();
+        return;
+    }
+
+    ImGui::Text("%s", m_errorText.c_str());
+    ImGui::Button("Ok");
+    ImGui::End();
+}

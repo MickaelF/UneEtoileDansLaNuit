@@ -36,20 +36,24 @@ AppInfoIniDesc& AppInfoIniDesc::operator=(AppInfoIniDesc&& other) noexcept
 
 bool AppInfoIniDesc::contains(std::string_view name) const
 {
-    return name == "company" || name == "app";
+    return name == "company" || name == "app" || name == "renderer";
 }
 
 void AppInfoIniDesc::initValue(std::string_view name, std::string_view value)
 {
     if (name == "company")
         company = value;
-    else
+    else if (name == "app")
         app = value;
+    else
+        renderer = std::stoi(std::string(value));
 }
 
 std::vector<std::pair<std::string, std::string>> AppInfoIniDesc::values() const
 {
-    return {{"company", company}, {"app", app}};
+    return {{"company", company},
+            {"app", app},
+            {"renderer", std::to_string(renderer)}};
 }
 
 AppInfo& AppInfo::instance(const std::string& company, const std::string& app)
@@ -67,12 +71,14 @@ AppInfo& AppInfo::instance(const std::string& company, const std::string& app)
 
     std::optional<AppInfoIniDesc> info =
         file.readIni<AppInfoIniDesc>(path.string());
-    static AppInfo instance {info->company, info->app};
+    static AppInfo instance {info->company, info->app, info->renderer};
     return instance;
 }
 
-AppInfo::AppInfo(const std::string& company, const std::string& app)
+AppInfo::AppInfo(const std::string& company, const std::string& app,
+                 const int renderer)
     : companyName(company),
-      appName(app)
+      appName(app),
+      rendererIndex(renderer)
 {
 }

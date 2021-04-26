@@ -7,6 +7,7 @@
 
 #include "appinfo.h"
 #include "mainwindow.h"
+#include "renderers/abstractrenderer.h"
 constexpr std::string_view companyName {"PotatoThunder"};
 
 int main(int argc, char* argv[])
@@ -17,6 +18,8 @@ int main(int argc, char* argv[])
     const auto dataPath {pttkPath::getDataPath(info.appName, info.companyName)};
     Logger logger(dataPath);
     BasicLog::setLogger(logger);
+    AbstractRenderer::selectRendererType(
+        static_cast<AbstractRenderer::Type>(info.rendererIndex));
     std::unique_ptr<MainWindow> mainWindow;
     try
     {

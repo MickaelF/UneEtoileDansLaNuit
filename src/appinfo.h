@@ -20,6 +20,7 @@ public:
     std::vector<std::pair<std::string, std::string>> values() const override;
     std::string company;
     std::string app;
+    int renderer {0};
 };
 
 // TODO Move this to PTTK
@@ -30,7 +31,9 @@ public:
                              const std::string& app = "");
     const std::string companyName;
     const std::string appName;
+    const int rendererIndex;
 
 private:
-    AppInfo(const std::string& company, const std::string& app);
+    AppInfo(const std::string& company, const std::string& app,
+            const int renderer);
 };

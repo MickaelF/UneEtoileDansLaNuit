@@ -4,6 +4,7 @@
 #include "basicinputs.h"
 #include "input/iactionlistener.h"
 
+class AbstractRenderer;
 struct SDL_Window;
 union SDL_Event;
 
@@ -18,16 +19,12 @@ public:
     MainWindow& operator=(MainWindow&&) = delete;
 
     int show();
-
     void quit() { m_keepRunning = false; }
 
 private:
     void handleWindowEvent(SDL_Event& event);
-    void initOpenGl();
-    void initImGui();
-    void renderImGui();
 
     SDL_Window* m_window {nullptr};
-    void* m_contextGL {nullptr};
     bool m_keepRunning {true};
+    AbstractRenderer* m_renderer {nullptr};
 };

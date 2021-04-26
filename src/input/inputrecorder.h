@@ -12,8 +12,11 @@
 
 class InputRecorder
 {
-    // TODO : Faire un widget ImGui timeline qui permet de se ballader dans les
-    // inputs
+    /* TODO : 
+        - Faire un widget ImGui timeline qui permet de se ballader dans les inputs
+        - avoir la possibilité de sauvegarder l'état de la scène au démarrage de la séquence d'inputs
+    */
+
 public:
     InputRecorder();
     ~InputRecorder();
