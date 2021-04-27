@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-class IRenderIDCard;
+class GameObject;
 struct SDL_Window;
 union SDL_Event;
 
@@ -17,14 +17,14 @@ public:
         Vulkan,
         DirectX
     };
-    AbstractRenderer() = default;
+    AbstractRenderer();
     static AbstractRenderer* instance();
     static void selectRendererType(Type type);
 
     virtual Type type() const = 0;
     virtual void init(SDL_Window* window) = 0;
     virtual uint32_t windowFlags() = 0;
-    virtual void render(IRenderIDCard* id) = 0;
+    virtual void render(GameObject* root) = 0;
     virtual void clean();
     virtual void renderBegin() = 0;
     virtual void renderEnd() = 0;

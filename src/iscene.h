@@ -13,7 +13,7 @@ class IScene
 {
 public:
     IScene();
-    virtual void render() = 0;
+    GameObject* root() { return &m_root; }
 
 protected:
 private:

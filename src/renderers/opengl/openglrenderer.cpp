@@ -38,7 +38,7 @@ void OpenGlRenderer::init(SDL_Window* window)
     initImGui();
 }
 
-void OpenGlRenderer::render(IRenderIDCard* id) {}
+void OpenGlRenderer::render(GameObject* root) {}
 
 uint32_t OpenGlRenderer::windowFlags()
 {

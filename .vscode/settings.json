@@ -84,7 +84,8 @@
         "string_view": "cpp",
         "variant": "cpp",
         "coroutine": "cpp",
-        "resumable": "cpp"
+        "resumable": "cpp",
+        "cinttypes": "cpp"
     },
     "editor.formatOnSave": true,
     "cmake.configureSettings": {

@@ -15,6 +15,12 @@ AbstractRenderer* AbstractRenderer::instance()
         "Renderer needs to be instantiated before being used!");
 }
 
+AbstractRenderer::AbstractRenderer()
+{
+    if (m_instance)
+        throw std::runtime_error("A second renderer cannot be instanciated!");
+}
+
 void AbstractRenderer::selectRendererType(Type type)
 {
     if (m_instance)

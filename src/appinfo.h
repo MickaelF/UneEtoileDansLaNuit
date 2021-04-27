@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "imgui/appinfowidget.h"
+
 class AppInfoIniDesc : public AbstractIniDescription
 {
 public:
@@ -23,17 +25,23 @@ public:
     int renderer {0};
 };
 
-// TODO Move this to PTTK
 class AppInfo
 {
 public:
     static AppInfo& instance(const std::string& company = "",
                              const std::string& app = "");
-    const std::string companyName;
-    const std::string appName;
-    const int rendererIndex;
+
+    void setRendererIndex(int index);
+
+    const std::string& appName() const { return m_appName; }
+    const std::string& companyName() const { return m_companyName; }
+    int rendererIndex() const { return m_rendererIndex; }
+    bool save();
 
 private:
-    AppInfo(const std::string& company, const std::string& app,
-            const int renderer);
+    AppInfo(const std::string& company, const std::string& app, int renderer);
+    std::string m_companyName;
+    std::string m_appName;
+    int m_rendererIndex;
+    AppInfoWidget m_widget;
 };

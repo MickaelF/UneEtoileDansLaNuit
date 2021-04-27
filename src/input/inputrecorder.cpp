@@ -62,8 +62,8 @@ void InputRecorder::handleMouseInput(
 void InputRecorder::start(const std::string& path)
 {
     AppInfo& info = AppInfo::instance();
-    m_path = (path.empty()) ? pttkPath::getDocumentFolderPath(info.appName,
-                                                              info.companyName)
+    m_path = (path.empty()) ? pttkPath::getDocumentFolderPath(
+                                  info.appName(), info.companyName())
                             : path;
     m_isRunning = true;
     m_start = std::chrono::steady_clock::now();

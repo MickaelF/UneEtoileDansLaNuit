@@ -96,6 +96,7 @@ set(SRCS src/main.cpp
 	src/renderers/abstractrenderer.cpp
 	src/renderers/opengl/openglrenderer.cpp
 	src/renderers/opengl/openglidcard.cpp
+	src/imgui/appinfowidget.cpp
 	)
 
 set(SHADERS

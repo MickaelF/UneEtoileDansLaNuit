@@ -9,7 +9,7 @@ public:
     Type type() const override { return Type::OpenGl; }
 
     void init(SDL_Window* window) override;
-    void render(IRenderIDCard* id) override;
+    void render(GameObject* root) override;
     uint32_t windowFlags() override;
     void clean() override;
     void renderBegin() override;

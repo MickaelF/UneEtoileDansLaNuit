@@ -15,6 +15,12 @@ class MainWindow;
 class ImGuiHandler
 {
 public:
+    enum class MessageType
+    {
+        Info,
+        Warning,
+        Error
+    };
     static ImGuiHandler& instance();
 
     void renderAll();
@@ -24,17 +30,19 @@ public:
 
     void setMainWindow(MainWindow* mainWindow) { m_mainWindow = mainWindow; }
 
-    void displayErrorWidget();
+    void displayMessageWidget(MessageType type, const std::string& message);
 
 private:
     ImGuiHandler() = default;
 
     void renderMainMenu();
-    void renderErrorWidget();
+    void renderMessageWidget();
+
+    constexpr const char* messageType(MessageType type) const;
 
     std::vector<IImGuiUserInterface*> m_ui;
     MainWindow* m_mainWindow {nullptr};
 
-    bool m_errorWidget {false};
-    std::string m_errorText;
+    bool m_displayMessageWidget {false};
+    std::vector<std::pair<std::string, MessageType>> m_messagesVector;
 };

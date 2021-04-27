@@ -13,23 +13,29 @@ constexpr std::string_view companyName {"PotatoThunder"};
 int main(int argc, char* argv[])
 {
     AppInfo& info =
-        AppInfo::instance(std::filesystem::path(argv[0]).stem().string(),
-                          std::string(companyName));
-    const auto dataPath {pttkPath::getDataPath(info.appName, info.companyName)};
+        AppInfo::instance(std::string(companyName),
+                          std::filesystem::path(argv[0]).stem().string());
+    const auto dataPath {
+        pttkPath::getDataPath(info.appName(), info.companyName())};
     Logger logger(dataPath);
     BasicLog::setLogger(logger);
-    AbstractRenderer::selectRendererType(
-        static_cast<AbstractRenderer::Type>(info.rendererIndex));
     std::unique_ptr<MainWindow> mainWindow;
     try
     {
+        AbstractRenderer::selectRendererType(
+            static_cast<AbstractRenderer::Type>(info.rendererIndex()));
         mainWindow = std::make_unique<MainWindow>();
     }
-    catch (std::exception& e)
+    catch (std::exception* e)
     {
-        lFatal << e.what();
+        lFatal << e->what();
         return -1;
     }
 
-    return mainWindow->show();
+    while (mainWindow->running())
+    {
+        mainWindow->inputHandling();
+        mainWindow->render();
+    }
+    return 0;
 }

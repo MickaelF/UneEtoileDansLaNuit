@@ -5,6 +5,7 @@
 #include "input/iactionlistener.h"
 
 class AbstractRenderer;
+class IScene;
 struct SDL_Window;
 union SDL_Event;
 
@@ -18,7 +19,9 @@ public:
     MainWindow& operator=(const MainWindow&) = delete;
     MainWindow& operator=(MainWindow&&) = delete;
 
-    int show();
+    bool running() const { return m_keepRunning; }
+    void inputHandling();
+    void render();
     void quit() { m_keepRunning = false; }
 
 private:
@@ -27,4 +30,5 @@ private:
     SDL_Window* m_window {nullptr};
     bool m_keepRunning {true};
     AbstractRenderer* m_renderer {nullptr};
+    IScene* m_currentScene {nullptr};
 };
