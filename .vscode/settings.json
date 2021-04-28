@@ -85,7 +85,10 @@
         "variant": "cpp",
         "coroutine": "cpp",
         "resumable": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "bit": "cpp",
+        "clocale": "cpp",
+        "stop_token": "cpp"
     },
     "editor.formatOnSave": true,
     "cmake.configureSettings": {

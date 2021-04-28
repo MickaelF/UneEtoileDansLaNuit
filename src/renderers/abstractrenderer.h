@@ -3,11 +3,11 @@
 #include <cstdint>
 
 class GameObject;
+class Mesh;
+class IRenderIDCard;
 struct SDL_Window;
 union SDL_Event;
 
-// TODO Display an error message if the constructor is being called somewhere
-// else than in the instance creator.
 class AbstractRenderer
 {
 public:
@@ -18,6 +18,7 @@ public:
         DirectX
     };
     AbstractRenderer();
+    virtual ~AbstractRenderer();
     static AbstractRenderer* instance();
     static void selectRendererType(Type type);
 
@@ -29,6 +30,9 @@ public:
     virtual void renderBegin() = 0;
     virtual void renderEnd() = 0;
     void processEvents(SDL_Event& event);
+
+    virtual IRenderIDCard* load(Mesh& mesh) = 0;
+    virtual void unload(IRenderIDCard* card) = 0;
 
 protected:
     void renderImGui();

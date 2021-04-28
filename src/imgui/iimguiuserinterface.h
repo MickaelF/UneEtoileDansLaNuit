@@ -8,7 +8,7 @@ public:
 
     virtual void render() = 0;
 
-    bool visible {true};
+    bool visible {false};
     const char* name;
 
 private:

@@ -8,13 +8,14 @@ class GameObject
 {
 public:
     explicit GameObject() = default;
-    ~GameObject();
+    virtual ~GameObject();
 
     const std::string& name() const { return m_name; };
     void setName(const std::string& name);
     void setParent(GameObject* parent);
 
     Transform& transform() { return m_transform; }
+    virtual bool isMesh() { return false; }
 
 private:
     void addChild(GameObject* child);

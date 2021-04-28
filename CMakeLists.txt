@@ -92,7 +92,7 @@ set(SRCS src/main.cpp
 	src/iscene.cpp
 	src/input/inputrecorder.cpp
 	src/appinfo.cpp
-	src/renderers/irenderidcard.h
+	src/renderers/irenderidcard.cpp
 	src/renderers/abstractrenderer.cpp
 	src/renderers/opengl/openglrenderer.cpp
 	src/renderers/opengl/openglidcard.cpp

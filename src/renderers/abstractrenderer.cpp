@@ -21,6 +21,8 @@ AbstractRenderer::AbstractRenderer()
         throw std::runtime_error("A second renderer cannot be instanciated!");
 }
 
+AbstractRenderer::~AbstractRenderer() {}
+
 void AbstractRenderer::selectRendererType(Type type)
 {
     if (m_instance)
