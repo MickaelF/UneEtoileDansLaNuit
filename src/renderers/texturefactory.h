@@ -1,7 +1,8 @@
 #pragma once
 #include <filesystem>
-#include <map>
-#include <memory>
+#include <vector>
+
+#include "imgui/textureexplorerwidget.h"
 
 class Texture;
 
@@ -11,6 +12,10 @@ public:
     static TextureFactory& instance();
     Texture* generateTexture(const std::filesystem::path& path);
     void unloadTexture(Texture* tex);
+    std::vector<std::pair<std::filesystem::path, Texture*>>& textures()
+    {
+        return m_generatedTexture;
+    }
 
 private:
     explicit TextureFactory() = default;
@@ -18,5 +23,7 @@ private:
     TextureFactory(TextureFactory&&) = delete;
     TextureFactory& operator=(const TextureFactory&) = delete;
     TextureFactory& operator=(TextureFactory&&) = delete;
-    std::map<std::filesystem::path, std::unique_ptr<Texture>> m_generatedTexture;
+
+    std::vector<std::pair<std::filesystem::path, Texture*>> m_generatedTexture;
+    TextureExplorerWidget m_widget;
 };

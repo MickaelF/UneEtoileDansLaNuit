@@ -63,11 +63,15 @@ set(PTTK_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/pttk/include)
 set(Assimp_DIR ${CMAKE_SOURCE_DIR}/thirdParty/Assimp/lib/cmake/assimp-5.0/)
 set(Assimp_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/Assimp/include)
 
+# ******** FreeType *********
+set(Freetype_ROOT ${CMAKE_SOURCE_DIR}/thirdParty/freetype/)
+
 find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)
 find_package(Assimp REQUIRED)
 find_package(PTTK REQUIRED)
 find_package(SDL2 REQUIRED)
+find_package(Freetype REQUIRED)
 
 
 # ********* Application *********
@@ -78,8 +82,8 @@ set(SRCS src/main.cpp
 	src/transform.cpp
 	src/mesh.cpp
 	src/mesh.h
-	src/texturefactory.cpp
-	src/texture.cpp
+	src/renderers/texturefactory.cpp
+	src/renderers/texture.cpp
 	src/model.cpp
 	src/basicshader.cpp
 	src/shaderutil.cpp
@@ -97,6 +101,8 @@ set(SRCS src/main.cpp
 	src/renderers/opengl/openglrenderer.cpp
 	src/renderers/opengl/openglidcard.cpp
 	src/imgui/appinfowidget.cpp
+	src/renderers/opengl/opengltexture.cpp
+	src/imgui/textureexplorerwidget.cpp
 	)
 
 set(SHADERS

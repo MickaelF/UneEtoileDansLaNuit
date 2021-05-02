@@ -93,3 +93,4 @@ GitUpdate imgui https://github.com/ocornut/imgui.git false
 GitUpdate PTTK https://github.com/MickaelF/PTTK.git true
 GitUpdate stb https://github.com/nothings/stb.git false
 GitUpdate Assimp https://github.com/assimp/assimp.git true
+GitUpdate freetype https://github.com/freetype/freetype.git true
