@@ -1,4 +1,4 @@
-#include "binding.h"
+#include <UneEtoile/input/binding.h>
 
 #include <algorithm>
 #include <stdexcept>

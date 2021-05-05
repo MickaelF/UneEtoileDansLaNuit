@@ -1,4 +1,4 @@
-#include "appinfo.h"
+#include <UneEtoile/appinfo.h>
 
 #include <pttk/file/inifile.h>
 

@@ -1,11 +1,11 @@
-#include "inputrecorder.h"
+#include <UneEtoile/input/inputrecorder.h>
 
 #include <pttk/pttkpath.h>
 #include <pttk/stringtools.h>
 
 #include <fstream>
 
-#include "appinfo.h"
+#include <UneEtoile/appinfo.h>
 
 namespace
 {

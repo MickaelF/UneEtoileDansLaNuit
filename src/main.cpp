@@ -5,9 +5,9 @@
 #include <exception>
 #include <filesystem>
 
-#include "appinfo.h"
-#include "mainwindow.h"
-#include "renderers/abstractrenderer.h"
+#include <UneEtoile/appinfo.h>
+#include <UneEtoile/render/abstractrenderer.h>
+#include <UneEtoile/window/mainwindow.h>
 constexpr std::string_view companyName {"PotatoThunder"};
 
 int main(int argc, char* argv[])

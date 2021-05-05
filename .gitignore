@@ -10,6 +10,12 @@
 /dependencies/imgui
 /dependencies/stb
 /dependencies/freetype
+/include/glad
+/include/KHR
+/src/glad
+/include/imgui
+/src/imgui/base
+/include/stb
 *__pycache__*
 *.code-workspace
 dependencies/launch-cmake-18.sh

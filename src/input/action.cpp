@@ -1,8 +1,8 @@
-#include "action.h"
+#include <UneEtoile/input/action.h>
 
-#include "binding.h"
-#include "iactionlistener.h"
-#include "inputhandler.h"
+#include <UneEtoile/input/binding.h>
+#include <UneEtoile/input/iactionlistener.h>
+#include <UneEtoile/input/inputhandler.h>
 
 Action::Action(const std::string& name) : m_name(name) {}
 

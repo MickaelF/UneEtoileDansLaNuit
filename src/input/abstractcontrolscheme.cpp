@@ -1,10 +1,10 @@
-#include "abstractcontrolscheme.h"
+#include <UneEtoile/input/abstractcontrolscheme.h>
 
 #include <algorithm>
 
-#include "abstractactionmap.h"
-#include "binding.h"
-#include "inputhandler.h"
+#include <UneEtoile/input/abstractactionmap.h>
+#include <UneEtoile/input/binding.h>
+#include <UneEtoile/input/inputhandler.h>
 
 AbstractControlScheme::AbstractControlScheme()
 {

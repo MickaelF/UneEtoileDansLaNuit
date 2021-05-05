@@ -1,4 +1,4 @@
-#include "abstractactionmap.h"
+#include <UneEtoile/input/abstractactionmap.h>
 
 #include <algorithm>
 

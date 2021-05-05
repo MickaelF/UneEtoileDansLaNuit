@@ -1,9 +1,9 @@
-#include "inputhandler.h"
+#include <UneEtoile/input/inputhandler.h>
 
-#include "abstractactionmap.h"
-#include "abstractcontrolscheme.h"
-#include "binding.h"
-#include "inputrecorder.h"
+#include <UneEtoile/input/abstractactionmap.h>
+#include <UneEtoile/input/abstractcontrolscheme.h>
+#include <UneEtoile/input/binding.h>
+#include <UneEtoile/input/inputrecorder.h>
 
 glm::ivec2 InputHandler::m_mousePosition;
 

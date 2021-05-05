@@ -1,6 +1,6 @@
-#include "iimguiuserinterface.h"
+#include <UneEtoile/imgui/iimguiuserinterface.h>
 
-#include "imguihandler.h"
+#include <UneEtoile/imgui/imguihandler.h>
 
 IImGuiUserInterface::IImGuiUserInterface(const char* name) : name(name)
 {

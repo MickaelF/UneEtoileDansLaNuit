@@ -1,10 +1,9 @@
-#include "imguihandler.h"
-
+#include <UneEtoile/imgui/iimguiuserinterface.h>
+#include <UneEtoile/imgui/imguihandler.h>
+#include <UneEtoile/window/mainwindow.h>
 #include <pttk/log.h>
 
-#include "iimguiuserinterface.h"
 #include "imgui.h"
-#include "mainwindow.h"
 
 ImGuiHandler& ImGuiHandler::instance()
 {

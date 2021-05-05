@@ -1,16 +1,30 @@
 cmake_minimum_required(VERSION 3.17)
-include(generate_input_class.cmake)
-message(NOTICE "This project requires Python 3 to work")
-set (PROJECT_NAME "AStarInTheNight")
+#message(NOTICE "This project requires Python 3 to work")
+set (PROJECT_NAME "UneEtoile")
 project(${PROJECT_NAME})
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_BUILD_TYPE Debug)
 set(BUILD_STATIC_LIBS TRUE)
 
-set(InputClassDir ${CMAKE_CURRENT_BINARY_DIR}/inputFiles/)
-generate_input_class(InputClassFiles ${InputClassDir})
+set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
+set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
+set(INSTALL_INCLUDE_DIR include CACHE PATH
+  "Installation directory for header files")
+set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH
+  "Installation directory for CMake files")
+option(PTTK_BUILD_CMD_LOG_PARSER "Build the PTTK Log parser command line executable" ON)
+
+# To add a correct version number, one day, see https://www.mattkeeter.com/blog/2018-01-06-versioning/
+
+# Move to exe project
+#include(generate_input_class.cmake)
+#set(InputClassDir ${CMAKE_CURRENT_BINARY_DIR}/inputFiles/)
+#generate_input_class(InputClassFiles ${InputClassDir})
+
+# ********* GLAD *********
+set(GLAD_SRC
+	src/glad/glad.c)
 
 # ********* SDL2 *********
 set(SDL2_DIR ${CMAKE_SOURCE_DIR}/thirdParty/SDL/cmake)
@@ -27,33 +41,22 @@ if (WIN32)
     string(STRIP "${SDL2_LIBRARIES}" SDL2_LIBRARIES)
 endif()
 
-# ********* GLAD *********
-set(GLAD_SRC ${CMAKE_SOURCE_DIR}/thirdParty/glad/src/glad.c)
-set(GLAD_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/glad/include)
-
-add_library(GLAD ${GLAD_SRC})
-target_include_directories(GLAD PUBLIC ${GLAD_INCLUDE_DIR})
-
 # ********* GLM *********
 set(glm_DIR ${CMAKE_SOURCE_DIR}/thirdParty/glm/lib/cmake/glm)
 
 # ********* stb *********
-set(stb_DIR ${CMAKE_SOURCE_DIR}/thirdParty/stb)
-set(stb_SRC ${stb_DIR}/stb_image.h)
+set(stb_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/stb)
 
 # ********* ImGUI *********
-set(ImGUI_DIR ${CMAKE_SOURCE_DIR}/thirdParty/imgui)
-set(ImGUI_HDR src/imgui)
-set(ImGUI_SRC
-	${ImGUI_DIR}/imgui.cpp
-	${ImGUI_DIR}/imgui_draw.cpp
-	${ImGUI_DIR}/imgui_widgets.cpp
-	${ImGUI_DIR}/imgui_tables.cpp
-	${ImGUI_DIR}/backends/imgui_impl_opengl3.cpp
-	${ImGUI_DIR}/backends/imgui_impl_sdl.cpp
-
-	src/imgui/iimguiuserinterface.cpp
-	src/imgui/imguihandler.cpp)
+set(ImGui_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/imgui)
+set(ImGui_SRC
+	src/imgui/base/imgui_draw.cpp
+	src/imgui/base/imgui.cpp
+	src/imgui/base/imgui_tables.cpp
+	src/imgui/base/imgui_widgets.cpp
+	src/imgui/base/imgui_impl_opengl3.cpp
+	src/imgui/base/imgui_impl_sdl.cpp
+	)
 
 # ******** PTTK *********
 set(PTTK_DIR ${CMAKE_SOURCE_DIR}/thirdParty/pttk/lib/cmake/)
@@ -75,41 +78,77 @@ find_package(Freetype REQUIRED)
 
 
 # ********* Application *********
-set(SRCS src/main.cpp
-	src/mainwindow.cpp
-	src/windowinifile.cpp
-	src/gameobject.cpp
-	src/transform.cpp
-	src/mesh.cpp
-	src/mesh.h
-	src/renderers/texturefactory.cpp
-	src/renderers/texture.cpp
-	src/model.cpp
-	src/basicshader.cpp
-	src/shaderutil.cpp
+set(SRCS
+	src/window/mainwindow.cpp
+	src/window/windowinifile.cpp
+	src/scene/gameobject.cpp
+	src/scene/transform.cpp
+	src/scene/mesh.cpp
+	src/render/texturefactory.cpp
+	src/render/texture.cpp
+	src/scene/model.cpp
+	src/render/basicshader.cpp
+	src/render/shaderutil.cpp
 	src/input/action.cpp
 	src/input/binding.cpp
-	src/input/iactionlistener.h
 	src/input/inputhandler.cpp
 	src/input/abstractactionmap.cpp
 	src/input/abstractcontrolscheme.cpp
-	src/iscene.cpp
+	src/scene/iscene.cpp
 	src/input/inputrecorder.cpp
 	src/appinfo.cpp
-	src/renderers/irenderidcard.cpp
-	src/renderers/abstractrenderer.cpp
-	src/renderers/opengl/openglrenderer.cpp
-	src/renderers/opengl/openglidcard.cpp
-	src/imgui/appinfowidget.cpp
-	src/renderers/opengl/opengltexture.cpp
-	src/imgui/textureexplorerwidget.cpp
+	src/render/irenderidcard.cpp
+	src/render/abstractrenderer.cpp
+	src/render/opengl/openglrenderer.cpp
+	src/render/opengl/openglidcard.cpp
+	src/imgui/widget/appinfowidget.cpp
+	src/render/opengl/opengltexture.cpp
+	src/imgui/widget/textureexplorerwidget.cpp
+	src/imgui/iimguiuserinterface.cpp
+	src/imgui/imguihandler.cpp
 	)
 
-set(SHADERS
-	shaders/glsl/simplevertexshader.vert
-	shaders/glsl/simplefragmentshader.frag
-	)
+# Make relative paths absolute (needed later on)
+foreach(p LIB BIN INCLUDE CMAKE)
+  set(var INSTALL_${p}_DIR)
+  if(NOT IS_ABSOLUTE "${${var}}")
+    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+  endif()
+endforeach()
 
-add_executable(${PROJECT_NAME} ${SRCS} ${ImGUI_SRC} ${stb_SRC} ${InputClassFiles})
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} opengl32 glm::glm ${ASSIMP_LIBRARIES} GLAD PTTK)
-target_include_directories(${PROJECT_NAME} PUBLIC src ${ImGUI_HDR} ${InputClassDir} ${ImGUI_DIR} ${Assimp_INCLUDE_DIR} ${GLAD_INCLUDE_DIR} ${GLM_DIR} ${ImGUI_DIR} ${stb_DIR} ${PTTK_INCLUDE_DIR} ${SDL2_INCLUDE_DIRS})
+# Create the UneEtoileConfig.cmake and UneEtoileConfig files
+file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}"
+   "${INSTALL_INCLUDE_DIR}")
+# ... for the build tree
+set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
+configure_file(UneEtoileConfig.cmake.in
+  "${PROJECT_BINARY_DIR}/UneEtoileConfig.cmake" @ONLY)
+# ... for the install tree
+set(CONF_INCLUDE_DIRS "\${PTTK_CMAKE_DIR}/${REL_INCLUDE_DIR}")
+configure_file(UneEtoileConfig.cmake.in
+  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/UneEtoileConfig.cmake" @ONLY)
+# ... for both
+configure_file(UneEtoileConfig.cmake.in
+  "${PROJECT_BINARY_DIR}/UneEtoileConfigVersion.cmake" @ONLY)
+
+add_library(${PROJECT_NAME} ${SRCS} ${GLAD_SRC} ${ImGui_SRC})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES} opengl32 glm::glm ${ASSIMP_LIBRARIES} PTTK)
+target_include_directories(${PROJECT_NAME} PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+	$<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>
+)
+target_include_directories(${PROJECT_NAME} PRIVATE ${ImGui_INCLUDE_DIR} ${Assimp_INCLUDE_DIR} ${GLM_DIR}  ${stb_INCLUDE_DIR} ${PTTK_INCLUDE_DIR} ${SDL2_INCLUDE_DIRS})
+
+
+install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Targets
+	LIBRARY  DESTINATION "lib${LIB_SUFFIX}"
+	ARCHIVE DESTINATION "lib${LIB_SUFFIX}"
+	RUNTIME DESTINATION bin)
+install(DIRECTORY include/ DESTINATION include)
+install(EXPORT ${PROJECT_NAME}Targets
+        FILE UneEtoileTargets.cmake
+        DESTINATION lib/cmake)
+install(FILES
+	"${PROJECT_BINARY_DIR}/UneEtoileConfigVersion.cmake"
+	"${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/UneEtoileConfig.cmake"
+	DESTINATION lib/cmake)
