@@ -4,7 +4,7 @@ class IImGuiUserInterface
 {
 public:
     IImGuiUserInterface(const char* name);
-    ~IImGuiUserInterface();
+    virtual ~IImGuiUserInterface();
 
     virtual void render() = 0;
 

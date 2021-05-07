@@ -2,14 +2,8 @@
 /thirdParty
 /out
 /.vs
-/dependencies/PTTK
-/dependencies/assimp
-/dependencies/glad
-/dependencies/SDL
-/dependencies/glm
-/dependencies/imgui
-/dependencies/stb
-/dependencies/freetype
+/dependencies/*
+!/dependencies/dependencies_compilation.sh
 /include/glad
 /include/KHR
 /src/glad

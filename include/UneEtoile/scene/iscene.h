@@ -1,6 +1,8 @@
 #pragma once
 #include <UneEtoile/scene/gameobject.h>
 
+class MainWindow;
+
 /* TODO :
     - Sauvegarde et ouverture de scene.
     - Widget Scene (arbre de Gameobjects) et GameObject (transform, shader,
@@ -12,10 +14,16 @@
 class IScene
 {
 public:
-    IScene();
+    IScene(MainWindow* window);
     GameObject* root() { return &m_root; }
 
+    virtual void preRun() = 0;
+    virtual IScene* run() = 0;
+    virtual void postRun() = 0;
+
 protected:
-private:
     GameObject m_root;
+    MainWindow* m_window;
+
+private:
 };

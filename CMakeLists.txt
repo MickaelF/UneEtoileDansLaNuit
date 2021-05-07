@@ -7,13 +7,16 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(BUILD_STATIC_LIBS TRUE)
 
+option(UneEtoile_BUILD_Model_Viewer "Build the Model Viewer" ON)
+set (UneEtoile_BUILD_Model_Viewer ON)
+
+
 set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
 set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
 set(INSTALL_INCLUDE_DIR include CACHE PATH
   "Installation directory for header files")
 set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH
   "Installation directory for CMake files")
-option(PTTK_BUILD_CMD_LOG_PARSER "Build the PTTK Log parser command line executable" ON)
 
 # To add a correct version number, one day, see https://www.mattkeeter.com/blog/2018-01-06-versioning/
 
@@ -21,6 +24,9 @@ option(PTTK_BUILD_CMD_LOG_PARSER "Build the PTTK Log parser command line executa
 #include(generate_input_class.cmake)
 #set(InputClassDir ${CMAKE_CURRENT_BINARY_DIR}/inputFiles/)
 #generate_input_class(InputClassFiles ${InputClassDir})
+
+set(INCLUDED_LIBS "")
+set(INCLUDED_DIR "")
 
 # ********* GLAD *********
 set(GLAD_SRC
@@ -34,15 +40,18 @@ if (WIN32)
 
     # Support both 32 and 64 bit builds
     if (${CMAKE_BUILD_TYPE} MATCHES Debug)
-        set(SDL2_LIBRARIES "${SDL2_BASE_DIR}/lib/SDL2d.lib;${SDL2_BASE_DIR}/lib/SDL2maind.lib")
+        set(SDL2_LIBRARIES "${SDL2_BASE_DIR}lib/SDL2d.lib;${SDL2_BASE_DIR}lib/SDL2maind.lib")
     else ()
-        set(SDL2_LIBRARIES "${SDL2_BASE_DIR}/lib/SDL2.lib;${SDL2_BASE_DIR}/lib/SDL2main.lib")
+        set(SDL2_LIBRARIES "${SDL2_BASE_DIR}lib/SDL2.lib;${SDL2_BASE_DIR}lib/SDL2main.lib")
     endif ()
     string(STRIP "${SDL2_LIBRARIES}" SDL2_LIBRARIES)
+
+	set(INCLUDED_LIBS "${INCLUDED_LIBS};${SDL2_LIBRARIES}")
 endif()
 
 # ********* GLM *********
 set(glm_DIR ${CMAKE_SOURCE_DIR}/thirdParty/glm/lib/cmake/glm)
+set(INCLUDED_LIBS "${INCLUDED_LIBS};glm::glm")
 
 # ********* stb *********
 set(stb_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/stb)
@@ -61,13 +70,16 @@ set(ImGui_SRC
 # ******** PTTK *********
 set(PTTK_DIR ${CMAKE_SOURCE_DIR}/thirdParty/pttk/lib/cmake/)
 set(PTTK_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/pttk/include)
+set(INCLUDED_LIBS "${INCLUDED_LIBS};PTTK")
 
 # ******** Assimp *********
 set(Assimp_DIR ${CMAKE_SOURCE_DIR}/thirdParty/Assimp/lib/cmake/assimp-5.0/)
 set(Assimp_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/Assimp/include)
+set(INCLUDED_LIBS "${INCLUDED_LIBS};${ASSIMP_LIBRARIES}")
 
 # ******** FreeType *********
 set(Freetype_ROOT ${CMAKE_SOURCE_DIR}/thirdParty/freetype/)
+set(INCLUDED_LIBS "${INCLUDED_LIBS};${FREETYPE_LIBRARIES}")
 
 find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)
@@ -87,8 +99,7 @@ set(SRCS
 	src/render/texturefactory.cpp
 	src/render/texture.cpp
 	src/scene/model.cpp
-	src/render/basicshader.cpp
-	src/render/shaderutil.cpp
+	src/render/opengl/openglshader.cpp
 	src/input/action.cpp
 	src/input/binding.cpp
 	src/input/inputhandler.cpp
@@ -106,6 +117,7 @@ set(SRCS
 	src/imgui/widget/textureexplorerwidget.cpp
 	src/imgui/iimguiuserinterface.cpp
 	src/imgui/imguihandler.cpp
+	src/render/abstractshader.cpp
 	)
 
 # Make relative paths absolute (needed later on)
@@ -132,7 +144,7 @@ configure_file(UneEtoileConfig.cmake.in
   "${PROJECT_BINARY_DIR}/UneEtoileConfigVersion.cmake" @ONLY)
 
 add_library(${PROJECT_NAME} ${SRCS} ${GLAD_SRC} ${ImGui_SRC})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES} opengl32 glm::glm ${ASSIMP_LIBRARIES} PTTK)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${INCLUDED_LIBS} opengl32 )
 target_include_directories(${PROJECT_NAME} PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
 	$<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>
@@ -152,3 +164,7 @@ install(FILES
 	"${PROJECT_BINARY_DIR}/UneEtoileConfigVersion.cmake"
 	"${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/UneEtoileConfig.cmake"
 	DESTINATION lib/cmake)
+
+if (UneEtoile_BUILD_Model_Viewer)
+	add_subdirectory(extra/ModelViewer)
+endif()
