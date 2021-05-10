@@ -1,13 +1,13 @@
 #pragma once
 #include <SDL2/SDL_joystick.h>
 #include <SDL2/SDL_keycode.h>
+#include <UneEtoile/imgui/widget/controlschemewidget.h>
+#include <UneEtoile/input/inputtype.h>
 
 #include <chrono>
 #include <glm/vec2.hpp>
 #include <optional>
 #include <vector>
-
-#include <UneEtoile/input/inputtype.h>
 
 class AbstractControlScheme;
 class InputRecorder;
@@ -24,15 +24,8 @@ public:
     void addControlScheme(AbstractControlScheme* scheme);
     void removeControlScheme(AbstractControlScheme* scheme);
 
-    void handleGamepadInput(
-        const std::vector<GamepadInput>& inputs,
-        std::chrono::time_point<std::chrono::steady_clock> now);
-    void handleKeyboardInput(
-        const std::vector<KeyboardInput>& inputs,
-        std::chrono::time_point<std::chrono::steady_clock> now);
-    void handleMouseInput(
-        const std::vector<MouseInput>& inputs,
-        std::chrono::time_point<std::chrono::steady_clock> now);
+    void handleInputs(const std::vector<Input>& inputs,
+                      std::chrono::time_point<std::chrono::steady_clock> now);
 
     void startRecording();
 
@@ -42,4 +35,6 @@ private:
     AbstractControlScheme* m_currentScheme;
     static glm::ivec2 m_mousePosition;
     InputRecorder* m_recorder {nullptr};
+    friend ControlSchemeWidget;
+    ControlSchemeWidget m_controlSchemeWidget;
 };

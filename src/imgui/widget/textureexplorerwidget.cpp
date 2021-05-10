@@ -45,8 +45,8 @@ void TextureExplorerWidget::render()
                 break;
             default: break;
         }
-        ImGui::End();
     }
+    ImGui::End();
 }
 
 void TextureExplorerWidget::displayOpenGlImage(Texture* tex)

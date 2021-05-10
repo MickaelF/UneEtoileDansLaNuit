@@ -1,84 +1,45 @@
 #pragma once
-#include <pttk/stringtools.h>
+#include <UneEtoile/input/inputenum.h>
+
+#include <variant>
 
 enum class InputType
 {
     MouseButton,
+    MouseWheel,
     Keyboard,
     GamepadAxis,
     GamepadButton
 };
 
-struct GamepadInput
+struct GamepadValue
 {
     int32_t padId;
-    bool isAxis = false; // if true, divide value by 2^15
-    uint8_t btnId;
     int16_t value;
-
-    inline std::string str() const
-    {
-        return std::to_string(padId) + ',' +
-               std::to_string(static_cast<int>(isAxis)) + ',' +
-               std::to_string(btnId) + ',' + std::to_string(value);
-    }
-
-    inline static GamepadInput fromStr(const std::string& str)
-    {
-        GamepadInput input;
-        auto values = strTls::split(str, ',');
-        input.padId = std::stoi(values[0]);
-        input.isAxis = static_cast<bool>(std::stoi(values[1]));
-        input.btnId = std::stoi(values[2]);
-        input.value = std::stoi(values[3]);
-        return input;
-    }
 };
 
-struct KeyboardInput
+struct KeyboardValue
 {
-    int32_t key;
     uint8_t value;
-
-    inline std::string str() const
-    {
-        return std::to_string(key) + ',' + std::to_string(value);
-    }
-
-    inline static KeyboardInput fromStr(const std::string& str)
-    {
-        KeyboardInput input;
-        auto values = strTls::split(str, ',');
-        input.key = std::stoi(values[0]);
-        input.value = std::stoi(values[1]);
-        return input;
-    }
 };
 
-struct MouseInput
+struct MouseValue
 {
-    uint8_t button;
     uint8_t value;
-    bool wheel = false;
-    int32_t x = 0;
-    int32_t y = 0;
+    int posX {};
+    int posY {};
+};
 
-    inline std::string str() const
-    {
-        return std::to_string(button) + ',' + std::to_string(value) + ',' +
-               std::to_string(static_cast<int>(wheel)) + ',' +
-               std::to_string(x) + ',' + std::to_string(y);
-    }
+struct MouseWheelValue
+{
+    int wheelX {};
+    int wheelY {};
+};
 
-    inline static MouseInput fromStr(const std::string& str)
-    {
-        MouseInput input;
-        auto values = strTls::split(str, ',');
-        input.button = std::stoi(values[0]);
-        input.value = std::stoi(values[1]);
-        input.wheel = static_cast<bool>(std::stoi(values[2]));
-        input.x = std::stoi(values[3]);
-        input.y = std::stoi(values[4]);
-        return input;
-    }
+struct Input
+{
+    InputType type;
+    int key;
+    std::variant<GamepadValue, KeyboardValue, MouseValue, MouseWheelValue>
+        value;
 };

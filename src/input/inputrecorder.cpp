@@ -1,11 +1,9 @@
+#include <UneEtoile/appinfo.h>
 #include <UneEtoile/input/inputrecorder.h>
-
 #include <pttk/pttkpath.h>
 #include <pttk/stringtools.h>
 
 #include <fstream>
-
-#include <UneEtoile/appinfo.h>
 
 namespace
 {
@@ -23,48 +21,54 @@ InputRecorder::~InputRecorder()
     if (m_isRunning) stop();
 }
 
-void InputRecorder::handleGamepadInput(
-    const std::vector<GamepadInput>& inputs,
+void InputRecorder::handleInput(
+    const std::vector<Input>& inputs,
     std::chrono::time_point<std::chrono::steady_clock> now)
 {
-    if (m_isPaused) return;
-    auto diff =
-        std::chrono::duration_cast<std::chrono::milliseconds>(now - m_start);
-    std::lock_guard<std::mutex> lock(m_mutex);
-    for (auto& input : inputs)
-        m_recordQueue.push(cstrInputStr("gamepad", input.str(), diff));
 }
 
-void InputRecorder::handleKeyboardInput(
-    const std::vector<KeyboardInput>& inputs,
-    std::chrono::time_point<std::chrono::steady_clock> now)
-{
-    if (m_isPaused) return;
-    auto diff =
-        std::chrono::duration_cast<std::chrono::milliseconds>(now - m_start);
-    std::lock_guard<std::mutex> lock(m_mutex);
-    for (auto& input : inputs)
-        m_recordQueue.push(cstrInputStr("keyboard", input.str(), diff));
-}
+// void InputRecorder::handleGamepadInput(
+//     const std::vector<GamepadInput>& inputs,
+//     std::chrono::time_point<std::chrono::steady_clock> now)
+// {
+//     if (m_isPaused) return;
+//     auto diff =
+//         std::chrono::duration_cast<std::chrono::milliseconds>(now - m_start);
+//     std::lock_guard<std::mutex> lock(m_mutex);
+//     for (auto& input : inputs)
+//         m_recordQueue.push(cstrInputStr("gamepad", input.str(), diff));
+// }
 
-void InputRecorder::handleMouseInput(
-    const std::vector<MouseInput>& inputs,
-    std::chrono::time_point<std::chrono::steady_clock> now)
-{
-    if (m_isPaused) return;
-    auto diff =
-        std::chrono::duration_cast<std::chrono::milliseconds>(now - m_start);
-    std::lock_guard<std::mutex> lock(m_mutex);
-    for (auto& input : inputs)
-        m_recordQueue.push(cstrInputStr("mouse", input.str(), diff));
-}
+// void InputRecorder::handleKeyboardInput(
+//     const std::vector<KeyboardInput>& inputs,
+//     std::chrono::time_point<std::chrono::steady_clock> now)
+// {
+//     if (m_isPaused) return;
+//     auto diff =
+//         std::chrono::duration_cast<std::chrono::milliseconds>(now - m_start);
+//     std::lock_guard<std::mutex> lock(m_mutex);
+//     for (auto& input : inputs)
+//         m_recordQueue.push(cstrInputStr("keyboard", input.str(), diff));
+// }
+
+// void InputRecorder::handleMouseInput(
+//     const std::vector<MouseInput>& inputs,
+//     std::chrono::time_point<std::chrono::steady_clock> now)
+// {
+//     if (m_isPaused) return;
+//     auto diff =
+//         std::chrono::duration_cast<std::chrono::milliseconds>(now - m_start);
+//     std::lock_guard<std::mutex> lock(m_mutex);
+//     for (auto& input : inputs)
+//         m_recordQueue.push(cstrInputStr("mouse", input.str(), diff));
+// }
 
 void InputRecorder::start(const std::string& path)
 {
     AppInfo& info = AppInfo::instance();
     m_path = (path.empty()) ? pttkPath::getDocumentFolderPath(
                                   info.appName(), info.companyName())
-                            : path;
+                            : std::filesystem::path(path);
     m_isRunning = true;
     m_start = std::chrono::steady_clock::now();
     m_recorderThread = std::thread {&InputRecorder::flush, this};

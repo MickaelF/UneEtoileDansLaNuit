@@ -5,7 +5,7 @@
 class OpenGlRenderer : public AbstractRenderer
 {
 public:
-    OpenGlRenderer() = default;
+    OpenGlRenderer();
     virtual ~OpenGlRenderer();
     Type type() const override { return Type::OpenGl; }
 

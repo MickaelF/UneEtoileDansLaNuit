@@ -1,0 +1,97 @@
+{
+    "name": "Camera",
+    "actions": [
+        {
+            "name": "Move",
+            "type": "Vector2"
+        },
+        {
+            "name": "Rotate",
+            "type": "Binary"
+        },
+        {
+            "name": "Zoom",
+            "type": "Range"
+        }
+    ],
+    "bindings": [
+        {
+            "controller": "Keyboard",
+            "implementations": [
+                {
+                    "name": "Move",
+                    "type": "Vector2",
+                    "keys": [
+                        "SDL_SCANCODE_LEFT",
+                        "SDL_SCANCODE_UP",
+                        "SDL_SCANCODE_RIGHT",
+                        "SDL_SCANCODE_DOWN"
+                    ]
+                },
+                {
+                    "name": "Move",
+                    "type": "Vector2",
+                    "keys": [
+                        "SDL_SCANCODE_A",
+                        "SDL_SCANCODE_W",
+                        "SDL_SCANCODE_D",
+                        "SDL_SCANCODE_S"
+                    ]
+                },
+                {
+                    "name": "Rotate",
+                    "type": "Binary",
+                    "keys": [
+                        "SDL_SCANCODE_LCTRL"
+                    ]
+                },
+                {
+                    "name": "Rotate",
+                    "type": "Binary",
+                    "keys": [
+                        "SDL_SCANCODE_RCTRL"
+                    ]
+                },
+                {
+                    "name": "Zoom",
+                    "type": "Range",
+                    "keys": [
+                        "SDL_SCANCODE_I",
+                        "SDL_SCANCODE_O"
+                    ]
+                }
+            ]
+        },
+        {
+            "controller": "Gamepad",
+            "implementations": [
+                {
+                    "name": "Move",
+                    "type": "Vector2",
+                    "spec": "Axis",
+                    "keys": [
+                        "SDL_CONTROLLER_AXIS_LEFTX",
+                        "SDL_CONTROLLER_AXIS_LEFTY"
+                    ]
+                },
+                {
+                    "name": "Rotate",
+                    "type": "Binary",
+                    "spec": "Button",
+                    "keys": [
+                        "SDL_CONTROLLER_BUTTON_LEFTSHOULDER"
+                    ]
+                },
+                {
+                    "name": "Zoom",
+                    "type": "Range",
+                    "spec": "Axis",
+                    "keys": [
+                        "SDL_CONTROLLER_AXIS_TRIGGERLEFT",
+                        "SDL_CONTROLLER_AXIS_TRIGGERRIGHT"
+                    ]
+                }
+            ]
+        }
+    ]
+}

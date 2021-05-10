@@ -20,23 +20,16 @@ set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH
 
 # To add a correct version number, one day, see https://www.mattkeeter.com/blog/2018-01-06-versioning/
 
-# Move to exe project
-#include(generate_input_class.cmake)
-#set(InputClassDir ${CMAKE_CURRENT_BINARY_DIR}/inputFiles/)
-#generate_input_class(InputClassFiles ${InputClassDir})
-
-set(INCLUDED_LIBS "")
-set(INCLUDED_DIR "")
-
+set(INCLUDED_LIBS "Threads::Threads;${CMAKE_DL_LIBS}")
 # ********* GLAD *********
 set(GLAD_SRC
 	src/glad/glad.c)
 
 # ********* SDL2 *********
-set(SDL2_DIR ${CMAKE_SOURCE_DIR}/thirdParty/SDL/cmake)
+set(SDL2_BASE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/SDL/)
+set(SDL2_INCLUDE_DIR "${SDL2_BASE_DIR}/include")
 if (WIN32)
-    set(SDL2_BASE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/SDL/)
-    set(SDL2_INCLUDE_DIRS "${SDL2_BASE_DIR}/include")
+	set(SDL2_DIR ${CMAKE_SOURCE_DIR}/thirdParty/SDL/cmake)
 
     # Support both 32 and 64 bit builds
     if (${CMAKE_BUILD_TYPE} MATCHES Debug)
@@ -46,6 +39,10 @@ if (WIN32)
     endif ()
     string(STRIP "${SDL2_LIBRARIES}" SDL2_LIBRARIES)
 
+	set(INCLUDED_LIBS "${INCLUDED_LIBS};${SDL2_LIBRARIES}")
+elseif(UNIX)
+	set(SDL2_DIR ${CMAKE_SOURCE_DIR}/thirdParty/SDL/lib/cmake/SDL2/)
+	set(SDL2_LIBRARIES "${SDL2_BASE_DIR}lib/libSDL2.a;${SDL2_BASE_DIR}lib/libSDL2main.a")
 	set(INCLUDED_LIBS "${INCLUDED_LIBS};${SDL2_LIBRARIES}")
 endif()
 
@@ -68,25 +65,50 @@ set(ImGui_SRC
 	)
 
 # ******** PTTK *********
-set(PTTK_DIR ${CMAKE_SOURCE_DIR}/thirdParty/pttk/lib/cmake/)
-set(PTTK_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/pttk/include)
+set(PTTK_DIR ${CMAKE_SOURCE_DIR}/thirdParty/PTTK/lib/cmake/)
+set(PTTK_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/PTTK/include)
 set(INCLUDED_LIBS "${INCLUDED_LIBS};PTTK")
 
 # ******** Assimp *********
-set(Assimp_DIR ${CMAKE_SOURCE_DIR}/thirdParty/Assimp/lib/cmake/assimp-5.0/)
-set(Assimp_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/Assimp/include)
+set(assimp_DIR ${CMAKE_SOURCE_DIR}/thirdParty/assimp/lib/cmake/assimp-5.0/)
+set(assimp_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/thirdParty/assimp/include)
 set(INCLUDED_LIBS "${INCLUDED_LIBS};${ASSIMP_LIBRARIES}")
 
 # ******** FreeType *********
 set(Freetype_ROOT ${CMAKE_SOURCE_DIR}/thirdParty/freetype/)
 set(INCLUDED_LIBS "${INCLUDED_LIBS};${FREETYPE_LIBRARIES}")
 
-find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)
-find_package(Assimp REQUIRED)
+find_package(assimp REQUIRED)
 find_package(PTTK REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(Freetype REQUIRED)
+find_package(Threads REQUIRED)
+find_library(OpenGLES2_LIBRARY GLESv2)
+set(GraphLibFile "#pragma once
+
+")
+if (OpenGLES2_LIBRARY)
+    set(GraphLibFile "${GraphLibFile}#define OPENGLES2_FOUND 
+    ")
+	set(INCLUDED_LIBS "${INCLUDED_LIBS};${OpenGLES2_LIBRARY}")
+else()
+    find_package(OpenGL)
+    if (${OpenGL_FOUND})
+        set(GraphLibFile "${GraphLibFile}#define OPENGL_FOUND 
+        ")
+	    set(INCLUDED_LIBS "${INCLUDED_LIBS};opengl32")
+	endif()
+endif()
+find_package(Vulkan)
+if (${Vulkan_FOUND})
+	set(INCLUDED_LIBS "${INCLUDED_LIBS};Vulkan")
+	set(GraphLibFile "${GraphLibFile}#define VULKAN_FOUND
+    ")
+endif()
+
+file(WRITE include/UneEtoile/render/renderermacros.h "${GraphLibFile}")
+
 
 
 # ********* Application *********
@@ -118,7 +140,12 @@ set(SRCS
 	src/imgui/iimguiuserinterface.cpp
 	src/imgui/imguihandler.cpp
 	src/render/abstractshader.cpp
-	)
+	src/scene/camera.cpp
+	src/imgui/widget/camerawidget.cpp
+	src/imgui/widget/controlschemewidget.cpp
+	src/input/bindingfactory.cpp
+	src/input/cameramanipulation.cpp
+)
 
 # Make relative paths absolute (needed later on)
 foreach(p LIB BIN INCLUDE CMAKE)
@@ -143,13 +170,13 @@ configure_file(UneEtoileConfig.cmake.in
 configure_file(UneEtoileConfig.cmake.in
   "${PROJECT_BINARY_DIR}/UneEtoileConfigVersion.cmake" @ONLY)
 
-add_library(${PROJECT_NAME} ${SRCS} ${GLAD_SRC} ${ImGui_SRC})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${INCLUDED_LIBS} opengl32 )
+add_library(${PROJECT_NAME} ${SRCS} ${GLAD_SRC} ${ImGui_SRC} ${InputClassFiles})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${INCLUDED_LIBS})
 target_include_directories(${PROJECT_NAME} PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
 	$<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>
 )
-target_include_directories(${PROJECT_NAME} PRIVATE ${ImGui_INCLUDE_DIR} ${Assimp_INCLUDE_DIR} ${GLM_DIR}  ${stb_INCLUDE_DIR} ${PTTK_INCLUDE_DIR} ${SDL2_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PRIVATE ${ImGui_INCLUDE_DIR} ${assimp_INCLUDE_DIR} ${GLM_DIR}  ${stb_INCLUDE_DIR} ${PTTK_INCLUDE_DIR} ${SDL2_INCLUDE_DIR})
 
 
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Targets

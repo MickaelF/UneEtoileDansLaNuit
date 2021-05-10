@@ -1,9 +1,10 @@
-/build*
+/build/
 /thirdParty
 /out
 /.vs
 /dependencies/*
 !/dependencies/dependencies_compilation.sh
+!/dependencies/dependencies.json
 /include/glad
 /include/KHR
 /src/glad

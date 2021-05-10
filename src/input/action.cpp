@@ -1,10 +1,14 @@
 #include <UneEtoile/input/action.h>
-
 #include <UneEtoile/input/binding.h>
 #include <UneEtoile/input/iactionlistener.h>
 #include <UneEtoile/input/inputhandler.h>
+#include <UneEtoile/input/abstractcontrolscheme.h>
 
-Action::Action(const std::string& name) : m_name(name) {}
+Action::Action(AbstractControlScheme& scheme, const char* name)
+    : m_scheme(scheme),
+      name(name)
+{
+}
 
 void Action::addListener(IActionListener* listener)
 {
@@ -28,9 +32,16 @@ void Action::setActive(bool state)
     if (m_active != state) m_active = state;
 }
 
-BinaryAction::BinaryAction(const std::string& name) : Action(name) {}
+void Action::notify(Binding* binding)
+{
+    if (!m_scheme.acceptInput(binding->usedControllers()))
+        return;
+    p_notify(binding);
+}
 
-void BinaryAction::notify(Binding* binding)
+BinaryAction::BinaryAction(AbstractControlScheme& scheme, const char* name) : Action(scheme, name) {}
+
+void BinaryAction::p_notify(Binding* binding)
 {
     BinaryBinding* bb = static_cast<BinaryBinding*>(binding);
     if (bb->pressed() && m_on || !bb->pressed() && !m_on) return;
@@ -38,18 +49,18 @@ void BinaryAction::notify(Binding* binding)
     for (auto& listener : m_listeners) listener->onAction(this);
 }
 
-RangeAction::RangeAction(const std::string& name) : Action(name) {}
+RangeAction::RangeAction(AbstractControlScheme& scheme, const char* name) : Action(scheme, name) {}
 
-void RangeAction::notify(Binding* binding)
+void RangeAction::p_notify(Binding* binding)
 {
     RangeBinding* bb = static_cast<RangeBinding*>(binding);
     m_value = bb->value();
     for (auto& listener : m_listeners) listener->onAction(this);
 }
 
-Vector2Action::Vector2Action(const std::string& name) : Action(name) {}
+Vector2Action::Vector2Action(AbstractControlScheme& scheme, const char* name) : Action(scheme, name) {}
 
-void Vector2Action::notify(Binding* binding)
+void Vector2Action::p_notify(Binding* binding)
 {
     Vector2Binding* bb = static_cast<Vector2Binding*>(binding);
     m_value = bb->value();

@@ -1,13 +1,12 @@
-#include <UneEtoile/window/mainwindow.h>
-
 #include <SDL2/SDL.h>
-#include <pttk/log.h>
-
 #include <UneEtoile/appinfo.h>
 #include <UneEtoile/imgui/imguihandler.h>
 #include <UneEtoile/input/inputhandler.h>
 #include <UneEtoile/render/abstractrenderer.h>
+#include <UneEtoile/scene/camera.h>
 #include <UneEtoile/scene/iscene.h>
+#include <UneEtoile/window/mainwindow.h>
+#include <pttk/log.h>
 
 namespace
 {
@@ -38,13 +37,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::inputHandling()
 {
-    auto inputHandler = InputHandler::instance();
+    auto& inputHandler = InputHandler::instance();
     SDL_Event e;
-    std::vector<GamepadInput> gamepadInputs;
-    std::vector<KeyboardInput> keyboardInputs;
-    std::vector<MouseInput> mouseInputs;
-    std::chrono::time_point<std::chrono::steady_clock> now =
-        std::chrono::steady_clock::now();
+    std::vector<Input> inputs;
     while (SDL_PollEvent(&e))
     {
         m_renderer->processEvents(e);
@@ -54,40 +49,60 @@ void MainWindow::inputHandling()
             case SDL_QUIT: m_keepRunning = false; return;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
-                keyboardInputs.push_back({e.key.keysym.scancode, e.key.state});
-                break;
+            {
+                Input input {InputType::Keyboard, e.key.keysym.scancode,
+                             KeyboardValue {e.key.state}};
+                inputs.push_back(input);
+            }
+            break;
             case SDL_JOYBUTTONDOWN:
             case SDL_JOYBUTTONUP:
-                gamepadInputs.push_back(
-                    {e.jaxis.which, true, e.jaxis.axis, e.jaxis.value});
-                break;
+            {
+                Input input {InputType::GamepadButton, e.jbutton.button,
+                             GamepadValue {e.jbutton.which, e.jbutton.state}};
+                inputs.push_back(input);
+            }
+            break;
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
-                mouseInputs.push_back({e.button.button, e.button.state});
-                break;
+            {
+                Input input {
+                    InputType::MouseButton, e.button.button,
+                    MouseValue {e.button.state, e.button.x, e.button.y}};
+                inputs.push_back(input);
+            }
+            break;
             case SDL_MOUSEWHEEL:
-                mouseInputs.push_back({0, 0, true, e.wheel.x, e.wheel.y});
-                break;
+            {
+                // TODO Handle differently.
+                Input input {InputType::MouseWheel, 0,
+                             MouseWheelValue {e.wheel.x, e.wheel.y}};
+                inputs.push_back(input);
+            }
+            break;
             case SDL_MOUSEMOTION:
             {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
+                auto oldMousePos = InputHandler::mousePosition();
                 InputHandler::setMousePosition(x, y);
+
+                m_camera.handleMouseMove(x - oldMousePos.x, oldMousePos.y - y);
             }
             break;
             case SDL_JOYAXISMOTION:
-                gamepadInputs.push_back(
-                    {e.jaxis.which, true, e.jaxis.axis, e.jaxis.value});
-                break;
+            {
+                Input input {InputType::GamepadAxis, e.jaxis.axis,
+                             GamepadValue {e.jaxis.which, e.jaxis.value}};
+                inputs.push_back(input);
+            }
+            break;
             case SDL_JOYDEVICEADDED: break;
             case SDL_JOYDEVICEREMOVED: break;
         }
     }
-    if (!gamepadInputs.empty())
-        inputHandler.handleGamepadInput(gamepadInputs, now);
-    if (!keyboardInputs.empty())
-        inputHandler.handleKeyboardInput(keyboardInputs, now);
-    if (!mouseInputs.empty()) inputHandler.handleMouseInput(mouseInputs, now);
+    if (!inputs.empty())
+        inputHandler.handleInputs(inputs, std::chrono::steady_clock::now());
 }
 
 void MainWindow::render()

@@ -1,8 +1,8 @@
 #pragma once
-#include <map>
-
 #include <UneEtoile/input/action.h>
 #include <UneEtoile/input/inputtype.h>
+
+#include <map>
 
 typedef std::vector<std::pair<std::vector<int>, Binding*>> KeyBinding;
 
@@ -11,7 +11,10 @@ class Binding;
 class AbstractActionMap
 {
 public:
-    AbstractActionMap() = default;
+    AbstractActionMap(const char* name);
+    virtual ~AbstractActionMap();
+
+    const char* name;
 
     std::vector<Action*>& actions() { return m_actions; }
 

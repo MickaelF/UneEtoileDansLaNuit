@@ -3,7 +3,19 @@
 #include <algorithm>
 #include <stdexcept>
 
-BinaryBinding::BinaryBinding(InputType type, int key, const std::string& name)
+int Binding::s_id = 0;
+void Binding::resetUsedController()
+{
+    m_usedControllers.clear();
+}
+
+void Binding::addUsedController(InputEnum type, int32_t gamepadId)
+{
+    m_usedControllers.id = m_usedControllers.id | type;
+    m_usedControllers.set(gamepadId);
+}
+
+BinaryBinding::BinaryBinding(InputType type, int key, const char* name)
     : Binding(name),
       m_type(type),
       m_key(key)
@@ -22,8 +34,9 @@ const std::vector<std::pair<InputType, int>> BinaryBinding::inputs() const
     return {std::make_pair(m_type, m_key)};
 }
 
-RangeBinding::RangeBinding(InputType axis, int key, const std::string& name)
-    : Binding(name)
+RangeBinding::RangeBinding(InputType axis, int key, const char* name)
+    : Binding(name),
+      m_axis(Axis {axis, key})
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (axis != InputType::GamepadAxis)
@@ -32,13 +45,13 @@ RangeBinding::RangeBinding(InputType axis, int key, const std::string& name)
             "InputType must be an GamepadAxis to use this constructor.");
     }
 #endif
-    m_axis = Axis {axis, key};
 }
 
 RangeBinding::RangeBinding(InputType negative, int negativeKey,
                            InputType positive, int positiveKey,
-                           const std::string& name)
-    : Binding(name)
+                           const char* name)
+    : Binding(name),
+      m_axis(TwoButtonAxis {negative, negativeKey, positive, positiveKey})
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (negative == InputType::GamepadAxis ||
@@ -48,7 +61,6 @@ RangeBinding::RangeBinding(InputType negative, int negativeKey,
             "InputTypes must be buttons to use this constructor.");
     }
 #endif
-    m_axis = TwoButtonAxis {negative, negativeKey, positive, positiveKey};
 }
 
 void RangeBinding::setValue(InputType type, int key, float value)
@@ -106,8 +118,10 @@ float RangeBinding::value() const
 
 Vector2Binding::Vector2Binding(InputType horizontalType, int horizontalKey,
                                InputType verticalType, int verticalKey,
-                               const std::string& name)
-    : Binding(name)
+                               const char* name)
+    : Binding(name),
+      m_vector2D(TwoAxisVector {horizontalType, horizontalKey, verticalType,
+                                verticalKey})
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (horizontalType != InputType::GamepadAxis ||
@@ -118,16 +132,16 @@ Vector2Binding::Vector2Binding(InputType horizontalType, int horizontalKey,
         return;
     }
 #endif
-    m_vector2D = TwoAxisVector {horizontalType, horizontalKey, verticalType,
-                                verticalKey};
 }
 
 Vector2Binding::Vector2Binding(InputType leftType, int leftKey,
                                InputType topType, int topKey,
                                InputType rightType, int rightKey,
                                InputType bottomType, int bottomKey,
-                               const std::string& name)
-    : Binding(name)
+                               const char* name)
+    : Binding(name),
+      m_vector2D(FourButtonVector {leftType, leftKey, topType, topKey,
+                                   rightType, rightKey, bottomType, bottomKey})
 {
 #if defined(DEBUG) || defined(_DEBUG)
     if (leftType == InputType::GamepadAxis ||

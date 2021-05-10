@@ -1,6 +1,11 @@
+#include <UneEtoile/render/opengl/openglrenderer.h>
+#include <UneEtoile/render/renderermacros.h>
+#include <pttk/log.h>
+
+#ifdef OPENGL_FOUND
 #include <SDL2/SDL_video.h>
 #include <UneEtoile/render/opengl/openglidcard.h>
-#include <UneEtoile/render/opengl/openglrenderer.h>
+
 #include <UneEtoile/scene/mesh.h>
 
 #include <stdexcept>
@@ -14,6 +19,7 @@ namespace
 constexpr const char* glsl_version {"#version 460"};
 } // namespace
 
+OpenGlRenderer::OpenGlRenderer() {}
 void OpenGlRenderer::init(SDL_Window* window)
 {
     m_window = window;
@@ -125,3 +131,23 @@ void OpenGlRenderer::endImGuiRender()
 }
 
 OpenGlRenderer::~OpenGlRenderer() {}
+
+#else
+OpenGlRenderer::OpenGlRenderer()
+{
+    lFatal << "OpenGL renderer is not included on this platform and cannot be used!";
+}
+OpenGlRenderer::~OpenGlRenderer(){}
+void OpenGlRenderer::init(SDL_Window* window){}
+
+void OpenGlRenderer::render(GameObject* root){}
+uint32_t OpenGlRenderer::windowFlags(){ return 0;}
+void OpenGlRenderer::clean() {}
+void OpenGlRenderer::renderBegin() {}
+void OpenGlRenderer::renderEnd() {}
+IRenderIDCard* OpenGlRenderer::load(Mesh& mesh) {return nullptr;}
+void OpenGlRenderer::unload(IRenderIDCard* card) {}
+void OpenGlRenderer::initImGui(){}
+void OpenGlRenderer::beginImGuiRender(){}
+void OpenGlRenderer::endImGuiRender(){}
+#endif

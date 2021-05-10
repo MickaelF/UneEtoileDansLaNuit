@@ -1,7 +1,6 @@
 #pragma once
+#include <UneEtoile/scene/camera.h>
 #include <pttk/log.h>
-
-#include <UneEtoile/input/iactionlistener.h>
 
 class AbstractRenderer;
 class IScene;
@@ -30,4 +29,5 @@ private:
     bool m_keepRunning {true};
     AbstractRenderer* m_renderer {nullptr};
     IScene* m_currentScene {nullptr};
+    Camera m_camera;
 };

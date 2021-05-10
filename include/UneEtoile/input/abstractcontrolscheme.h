@@ -1,35 +1,31 @@
 #pragma once
+
 #include <optional>
 #include <vector>
+#include <UneEtoile/input/inputenum.h>
 
-class AbstractActionMap;
-struct GamepadInput;
-struct KeyboardInput;
-struct MouseInput;
+class Action;
+struct Input;
 
 class AbstractControlScheme
 {
 public:
-    AbstractControlScheme();
+    AbstractControlScheme(const char* name);
     ~AbstractControlScheme();
 
-    const std::vector<AbstractActionMap*>& actionsMaps() const
-    {
-        return m_actionMaps;
-    }
+    const char* name;
 
     bool isActive() const;
     void setActive(bool state);
 
     void setGamepadId(int32_t id);
     const std::optional<int32_t>& gamepadId() const { return m_gamepadId; }
-
-    void handleGamepadInput(const std::vector<GamepadInput>& inputs);
-    void handleKeyboardInput(const std::vector<KeyboardInput>& inputs);
-    void handleMouseInput(const std::vector<MouseInput>& inputs);
+    bool acceptInput(InputData input) const;
 
 protected:
-    std::vector<AbstractActionMap*> m_actionMaps;
+    InputEnum m_acceptedInputs = InputEnum::All;
+    std::vector<Action*> m_actions;
+    void loadBindings();
 
 private:
     std::optional<int32_t> m_gamepadId {std::nullopt};

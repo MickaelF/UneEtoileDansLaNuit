@@ -1,5 +1,7 @@
 #pragma once
 
+#include <UneEtoile/input/inputtype.h>
+
 #include <chrono>
 #include <condition_variable>
 #include <filesystem>
@@ -7,8 +9,6 @@
 #include <queue>
 #include <thread>
 #include <vector>
-
-#include <UneEtoile/input/inputtype.h>
 
 class InputRecorder
 {
@@ -28,15 +28,8 @@ public:
     void pause() { m_isPaused = true; }
     void unpause() { m_isPaused = false; }
 
-    void handleGamepadInput(
-        const std::vector<GamepadInput>& inputs,
-        std::chrono::time_point<std::chrono::steady_clock> now);
-    void handleKeyboardInput(
-        const std::vector<KeyboardInput>& inputs,
-        std::chrono::time_point<std::chrono::steady_clock> now);
-    void handleMouseInput(
-        const std::vector<MouseInput>& inputs,
-        std::chrono::time_point<std::chrono::steady_clock> now);
+    void handleInput(const std::vector<Input>& inputs,
+                     std::chrono::time_point<std::chrono::steady_clock> now);
 
 private:
     void flush();

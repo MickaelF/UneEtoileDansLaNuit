@@ -1,0 +1,168 @@
+{
+    "cmake": {
+        "configure_options": "-DCMAKE_CXX_STANDARD=20 -DBUILD_TESTING=OFF",
+        "windows": {
+            "generator": "Visual Studio 16 2019"
+        },
+        "linux": {
+            "generator": "Unix Makefiles"
+        }
+    },
+    "dependencies": [
+        {
+            "name": "SDL",
+            "branch": "release-2.0.14",
+            "url": "https://github.com/libsdl-org/SDL.git",
+            "build": true
+        },
+        {
+            "name": "glad",
+            "branch": "v0.1.34",
+            "url": "https://github.com/Dav1dde/glad.git",
+            "build": true,
+            "version": {
+                "gl": "4.5",
+                "gles2": "3.1"
+            },
+            "cmakeBuildOptions": [
+                "-DGLAD_PROFILE=core"
+            ],
+            "special": [
+                {
+                    "operation": "copy",
+                    "files": [
+                        {
+                            "folder": "${DEP_DIR}/build/src/",
+                            "files": [
+                                "glad.c"
+                            ],
+                            "dest": "${SRC_DIR}/glad/"
+                        }
+                    ],
+                    "directories": [
+                        {
+                            "orig": "${DEP_DIR}/build/include/glad",
+                            "dest": "${INCLUDE_DIR}/glad"
+                        },
+                        {
+                            "orig": "${DEP_DIR}/build/include/KHR",
+                            "dest": "${INCLUDE_DIR}/KHR"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "glm",
+            "branch": "master",
+            "url": "https://github.com/g-truc/glm.git",
+            "build": true,
+            "cmakeBuildOptions": [
+                "-DBUILD_TESTING=OFF"
+            ]
+        },
+        {
+            "name": "PTTK",
+            "branch": "v0.0.1",
+            "url": "https://github.com/MickaelF/PTTK.git",
+            "build": true
+        },
+        {
+            "name": "stb",
+            "branch": "master",
+            "url": "https://github.com/nothings/stb.git",
+            "build": false,
+            "special": [
+                {
+                    "operation": "copy",
+                    "files": [
+                        {
+                            "folder": "${DEP_DIR}/",
+                            "files": [
+                                "stb_image.h"
+                            ],
+                            "dest": "${INCLUDE_DIR}/stb/"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "imgui",
+            "branch": "v1.82",
+            "url": "https://github.com/ocornut/imgui.git",
+            "build": false,
+            "special": [
+                {
+                    "operation": "copy",
+                    "files": [
+                        {
+                            "folder": "${DEP_DIR}/",
+                            "files": [
+                                "imconfig.h",
+                                "imgui.h",
+                                "imgui_internal.h",
+                                "imstb_rectpack.h",
+                                "imstb_textedit.h",
+                                "imstb_truetype.h"
+                            ],
+                            "dest": "${INCLUDE_DIR}/imgui/"
+                        },
+                        {
+                            "folder": "${DEP_DIR}/",
+                            "files": [
+                                "imgui.cpp",
+                                "imgui_draw.cpp",
+                                "imgui_tables.cpp",
+                                "imgui_widgets.cpp"
+                            ],
+                            "dest": "${SRC_DIR}/imgui/base/"
+                        },
+                        {
+                            "folder": "${DEP_DIR}/backends",
+                            "files": [
+                                "imgui_impl_sdl.h",
+                                "imgui_impl_opengl3.h"
+                            ],
+                            "dest": "${INCLUDE_DIR}/imgui"
+                        },
+                        {
+                            "folder": "${DEP_DIR}/backends",
+                            "files": [
+                                "imgui_impl_sdl.cpp",
+                                "imgui_impl_opengl3.cpp"
+                            ],
+                            "dest": "${SRC_DIR}/imgui/base/"
+                        }
+                    ]
+                },
+                {
+                    "operation": "replace",
+                    "files": [
+                        {
+                            "path": "${SRC_DIR}/imgui/base/imgui_impl_sdl.cpp",
+                            "change": "<SDL",
+                            "to": "<SDL2/SDL"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "freetype",
+            "branch": "VER-2-10-4",
+            "url": "https://github.com/freetype/freetype.git",
+            "build": true
+        },
+        {
+            "name": "assimp",
+            "branch": "master",
+            "url": "https://github.com/assimp/assimp.git",
+            "build": true,
+            "cmakeBuildOptions": [
+                "-DASSIMP_BUILD_TESTS=OFF",
+                "-DASSIMP_BUILD_ASSIMP_TOOLS=OFF"
+            ]
+        }
+    ]
+}

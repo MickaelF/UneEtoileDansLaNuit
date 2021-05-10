@@ -2,6 +2,10 @@
 
 #include <algorithm>
 
+AbstractActionMap::AbstractActionMap(const char* name) : name(name) {}
+
+AbstractActionMap::~AbstractActionMap() {}
+
 void AbstractActionMap::setActive(bool state)
 {
     std::for_each(m_actions.begin(), m_actions.end(),

@@ -16,10 +16,10 @@ public:
 
 private:
     void processNode(aiNode* node, const aiScene* scene);
-    Mesh&& processMesh(aiMesh* mesh, const aiScene* scene) const;
+    Mesh processMesh(aiMesh* mesh, const aiScene* scene) const;
 
-    std::vector<Texture*> loadMaterialTextures(aiMaterial* mat, aiTextureType type,
-                                               const std::string& typeName) const;
+    std::vector<Texture*> loadMaterialTextures(
+        aiMaterial* mat, aiTextureType type, const std::string& typeName) const;
 
     std::vector<Mesh> m_meshes;
     std::filesystem::path m_directory;

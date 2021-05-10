@@ -1,13 +1,11 @@
+#include <UneEtoile/render/texturefactory.h>
+#include <UneEtoile/scene/mesh.h>
 #include <UneEtoile/scene/model.h>
-
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <pttk/log.h>
 
 #include <assimp/Importer.hpp>
-
-#include <UneEtoile/scene/mesh.h>
-#include <UneEtoile/render/texturefactory.h>
 
 Model::Model(const std::filesystem::path &path)
 {
@@ -40,7 +38,7 @@ void Model::processNode(aiNode *node, const aiScene *scene)
         processNode(node->mChildren[i], scene);
 }
 
-Mesh &&Model::processMesh(aiMesh *mesh, const aiScene *scene) const
+Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) const
 {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
@@ -77,8 +75,7 @@ Mesh &&Model::processMesh(aiMesh *mesh, const aiScene *scene) const
         textures.insert(textures.end(), specularMaps.begin(),
                         specularMaps.end());
     }
-    return std::move(
-        Mesh(std::move(vertices), std::move(indices), std::move(textures)));
+    return Mesh(std::move(vertices), std::move(indices), std::move(textures));
 }
 
 std::vector<Texture *> Model::loadMaterialTextures(

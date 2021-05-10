@@ -7,6 +7,7 @@
 
 class IActionListener;
 class Binding;
+class AbstractControlScheme;
 
 enum class ActionType
 {
@@ -17,10 +18,8 @@ enum class ActionType
 class Action
 {
 public:
-    explicit Action(const std::string& name);
+    explicit Action(AbstractControlScheme& scheme, const char* name);
     virtual ~Action() {}
-
-    virtual void notify(Binding* binding) = 0;
 
     void addListener(IActionListener* listener);
     void removeListener(IActionListener* listener);
@@ -29,23 +28,27 @@ public:
     void setActive(bool state);
 
     virtual ActionType type() const = 0;
+    const char* name;
+    void notify(Binding* binding);
 
 protected:
+    virtual void p_notify(Binding* binding) = 0;
     std::vector<IActionListener*> m_listeners;
 
 private:
-    const std::string m_name;
     bool m_active {true};
+    AbstractControlScheme& m_scheme;
 };
 
 class BinaryAction : public Action
 {
 public:
-    explicit BinaryAction(const std::string& name);
+    explicit BinaryAction(AbstractControlScheme& scheme, const char* name);
     ActionType type() const override { return ActionType::Binary; }
-    void notify(Binding* binding) override;
+    
     bool on() const { return m_on; }
-
+protected:
+    void p_notify(Binding* binding) override;
 private:
     bool m_on;
 };
@@ -53,10 +56,13 @@ private:
 class RangeAction : public Action
 {
 public:
-    explicit RangeAction(const std::string& name);
+    explicit RangeAction(AbstractControlScheme& scheme, const char* name);
     ActionType type() const override { return ActionType::Range; }
-    void notify(Binding* binding) override;
+   ;
     float value() const { return m_value; }
+
+protected:
+     void p_notify(Binding* binding) override;
 
 private:
     bool m_fullRange = true;
@@ -66,11 +72,12 @@ private:
 class Vector2Action : public Action
 {
 public:
-    explicit Vector2Action(const std::string& name);
+    explicit Vector2Action(AbstractControlScheme& scheme, const char* name);
     ActionType type() const override { return ActionType::TwoDimension; }
-    void notify(Binding* binding) override;
+    
     const glm::vec2& value() const { return m_value; }
-
+protected:
+    void p_notify(Binding* binding) override;
 private:
     glm::vec2 m_value;
 };

@@ -1,7 +1,10 @@
 #include <UneEtoile/render/opengl/openglshader.h>
+#include <UneEtoile/render/renderermacros.h>
+#include <pttk/log.h>
+
+#ifdef OPENGL_FOUND
 #include <glad/glad.h>
 #include <pttk/file/plaintextfile.h>
-#include <pttk/log.h>
 
 #include <stdexcept>
 
@@ -110,3 +113,14 @@ bool OpenGlShader::checkShaderCompilation(unsigned int id)
     }
     return success != 0;
 }
+
+#else
+OpenGlShader::OpenGlShader(const char* name): AbstractShader(name)
+{
+    lFatal << "OpenGL renderer is not included on this platform and cannot be used!";
+}
+OpenGlShader::~OpenGlShader(){}
+int OpenGlShader::id() const {return 0;}
+void OpenGlShader::activate() const {}
+
+#endif

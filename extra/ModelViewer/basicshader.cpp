@@ -25,6 +25,6 @@ void BasicShaderWidget::render()
     if (ImGui::Begin(name))
     {
         ImGui::ColorEdit4("Color", glm::value_ptr(m_shader->m_color));
-        ImGui::End();
     }
+    ImGui::End();
 }

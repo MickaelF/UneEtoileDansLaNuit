@@ -1,4 +1,8 @@
 #include <UneEtoile/render/opengl/opengltexture.h>
+#include <UneEtoile/render/renderermacros.h>
+#include <pttk/log.h>
+
+#ifdef OPENGL_FOUND
 #include <glad/glad.h>
 
 OpenGlTexture::OpenGlTexture(int width, int height, int nbChannels)
@@ -22,3 +26,13 @@ void OpenGlTexture::load(unsigned char* data)
 }
 
 void OpenGlTexture::unload() {}
+
+#else
+OpenGlTexture::OpenGlTexture(int width, int height, int nbChannels)  : Texture(width, height, nbChannels){
+    lFatal << "OpenGL renderer is not included on this platform and cannot be used!";
+}
+OpenGlTexture::~OpenGlTexture(){}
+
+void OpenGlTexture::load(unsigned char* data) {}
+void OpenGlTexture::unload(){}
+#endif
