@@ -13,7 +13,7 @@ class AbstractRenderer
 public:
     enum Type
     {
-        OpenGl,
+        OpenGL,
         Vulkan,
         DirectX
     };
@@ -21,6 +21,7 @@ public:
     virtual ~AbstractRenderer();
     static AbstractRenderer* instance();
     static void selectRendererType(Type type);
+
 
     virtual Type type() const = 0;
     virtual void init(SDL_Window* window) = 0;

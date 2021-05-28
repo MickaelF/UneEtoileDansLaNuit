@@ -1,8 +1,10 @@
 #pragma once
+#include <UneEtoile/scene/transform.h>
+
 #include <string>
 #include <vector>
 
-#include <UneEtoile/scene/transform.h>
+class IRenderIDCard;
 
 class GameObject
 {
@@ -15,7 +17,8 @@ public:
     void setParent(GameObject* parent);
 
     Transform& transform() { return m_transform; }
-    virtual bool isMesh() { return false; }
+    virtual IRenderIDCard* renderCard() const { return nullptr; }
+    const std::vector<GameObject*>& children() const { return m_children; }
 
 private:
     void addChild(GameObject* child);

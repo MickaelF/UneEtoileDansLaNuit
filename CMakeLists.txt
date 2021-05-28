@@ -38,12 +38,6 @@ if (WIN32)
         set(SDL2_LIBRARIES "${SDL2_BASE_DIR}lib/SDL2.lib;${SDL2_BASE_DIR}lib/SDL2main.lib")
     endif ()
     string(STRIP "${SDL2_LIBRARIES}" SDL2_LIBRARIES)
-
-	set(INCLUDED_LIBS "${INCLUDED_LIBS};${SDL2_LIBRARIES}")
-elseif(UNIX)
-	set(SDL2_DIR ${CMAKE_SOURCE_DIR}/thirdParty/SDL/lib/cmake/SDL2/)
-	set(SDL2_LIBRARIES "${SDL2_BASE_DIR}lib/libSDL2.a;${SDL2_BASE_DIR}lib/libSDL2main.a")
-	set(INCLUDED_LIBS "${INCLUDED_LIBS};${SDL2_LIBRARIES}")
 endif()
 
 # ********* GLM *********
@@ -82,6 +76,7 @@ find_package(glm REQUIRED)
 find_package(assimp REQUIRED)
 find_package(PTTK REQUIRED)
 find_package(SDL2 REQUIRED)
+set(INCLUDED_LIBS "${INCLUDED_LIBS};${SDL2_LIBRARIES}")
 find_package(Freetype REQUIRED)
 find_package(Threads REQUIRED)
 find_library(OpenGLES2_LIBRARY GLESv2)
@@ -89,13 +84,13 @@ set(GraphLibFile "#pragma once
 
 ")
 if (OpenGLES2_LIBRARY)
-    set(GraphLibFile "${GraphLibFile}#define OPENGLES2_FOUND 
+    set(GraphLibFile "${GraphLibFile}#define OPENGLES2_FOUND
     ")
 	set(INCLUDED_LIBS "${INCLUDED_LIBS};${OpenGLES2_LIBRARY}")
 else()
     find_package(OpenGL)
     if (${OpenGL_FOUND})
-        set(GraphLibFile "${GraphLibFile}#define OPENGL_FOUND 
+        set(GraphLibFile "${GraphLibFile}#define OPENGL_FOUND
         ")
 	    set(INCLUDED_LIBS "${INCLUDED_LIBS};opengl32")
 	endif()
@@ -119,9 +114,9 @@ set(SRCS
 	src/scene/transform.cpp
 	src/scene/mesh.cpp
 	src/render/texturefactory.cpp
-	src/render/texture.cpp
+	src/render/abstracttexture.cpp
 	src/scene/model.cpp
-	src/render/opengl/openglshader.cpp
+	src/render/opengl/commonglshader.cpp
 	src/input/action.cpp
 	src/input/binding.cpp
 	src/input/inputhandler.cpp
@@ -132,10 +127,10 @@ set(SRCS
 	src/appinfo.cpp
 	src/render/irenderidcard.cpp
 	src/render/abstractrenderer.cpp
-	src/render/opengl/openglrenderer.cpp
-	src/render/opengl/openglidcard.cpp
+	src/render/opengl/commonglrenderer.cpp
+	src/render/opengl/commonglidcard.cpp
 	src/imgui/widget/appinfowidget.cpp
-	src/render/opengl/opengltexture.cpp
+	src/render/opengl/commongltexture.cpp
 	src/imgui/widget/textureexplorerwidget.cpp
 	src/imgui/iimguiuserinterface.cpp
 	src/imgui/imguihandler.cpp
@@ -145,6 +140,15 @@ set(SRCS
 	src/imgui/widget/controlschemewidget.cpp
 	src/input/bindingfactory.cpp
 	src/input/cameramanipulation.cpp
+    src/render/opengl/gles/glesidcard.cpp
+    src/render/opengl/gles/glesshader.cpp
+    src/render/opengl/gles/glestexture.cpp
+    src/render/opengl/gles/glesrenderer.cpp
+    src/render/opengl/gl/glidcard.cpp
+    src/render/opengl/gl/glshader.cpp
+    src/render/opengl/gl/gltexture.cpp
+    src/render/opengl/gl/glrenderer.cpp
+	src/render/shaderfactory.cpp
 )
 
 # Make relative paths absolute (needed later on)

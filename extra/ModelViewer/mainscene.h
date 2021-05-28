@@ -3,6 +3,7 @@
 #include <UneEtoile/scene/iscene.h>
 
 #include "basicshader.h"
+#include "triangle.h"
 
 class MainScene : public IScene
 {
@@ -14,4 +15,5 @@ public:
 
 private:
     BasicShader m_shader;
+    Triangle m_triangle;
 };

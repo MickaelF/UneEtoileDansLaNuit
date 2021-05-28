@@ -1,6 +1,6 @@
 #include <UneEtoile/imgui/widget/textureexplorerwidget.h>
 #include <UneEtoile/render/abstractrenderer.h>
-#include <UneEtoile/render/opengl/opengltexture.h>
+#include <UneEtoile/render/opengl/commongltexture.h>
 #include <UneEtoile/render/texturefactory.h>
 
 #include "imgui.h"
@@ -39,8 +39,8 @@ void TextureExplorerWidget::render()
         }
         switch (AbstractRenderer::instance()->type())
         {
-            case AbstractRenderer::Type::OpenGl:
-                displayOpenGlImage(
+            case AbstractRenderer::Type::OpenGL:
+                displayOpenGLImage(
                     texFactory.textures()[m_currentIndex].second);
                 break;
             default: break;
@@ -49,9 +49,9 @@ void TextureExplorerWidget::render()
     ImGui::End();
 }
 
-void TextureExplorerWidget::displayOpenGlImage(Texture* tex)
+void TextureExplorerWidget::displayOpenGLImage(AbstractTexture* tex)
 {
-    OpenGlTexture* currentTex = static_cast<OpenGlTexture*>(tex);
+    CommonGLTexture* currentTex = static_cast<CommonGLTexture*>(tex);
     ImGui::Image((void*)(intptr_t)currentTex->texId(),
                  ImVec2(currentTex->width, currentTex->height));
 }

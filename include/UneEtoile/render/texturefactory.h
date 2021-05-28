@@ -2,28 +2,26 @@
 #include <filesystem>
 #include <vector>
 
+#include <pttk/macroutils.h>
 #include <UneEtoile/imgui/widget/textureexplorerwidget.h>
 
-class Texture;
+class AbstractTexture;
 
 class TextureFactory
 {
 public:
     static TextureFactory& instance();
-    Texture* generateTexture(const std::filesystem::path& path);
-    void unloadTexture(Texture* tex);
-    std::vector<std::pair<std::filesystem::path, Texture*>>& textures()
+    AbstractTexture* generateTexture(const std::filesystem::path& path);
+    void unloadTexture(AbstractTexture* tex);
+    std::vector<std::pair<std::filesystem::path, AbstractTexture*>>& textures()
     {
         return m_generatedTexture;
     }
 
 private:
     explicit TextureFactory() = default;
-    TextureFactory(const TextureFactory&) = delete;
-    TextureFactory(TextureFactory&&) = delete;
-    TextureFactory& operator=(const TextureFactory&) = delete;
-    TextureFactory& operator=(TextureFactory&&) = delete;
-
-    std::vector<std::pair<std::filesystem::path, Texture*>> m_generatedTexture;
+    DELETE_COPY_CONSTR_ASSIGN(TextureFactory)
+   
+    std::vector<std::pair<std::filesystem::path, AbstractTexture*>> m_generatedTexture;
     TextureExplorerWidget m_widget;
 };

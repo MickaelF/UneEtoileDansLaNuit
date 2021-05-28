@@ -1,10 +1,9 @@
-#include <UneEtoile/scene/mesh.h>
-
 #include <UneEtoile/render/abstractrenderer.h>
 #include <UneEtoile/render/irenderidcard.h>
+#include <UneEtoile/scene/mesh.h>
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices,
-           std::vector<Texture*> textures)
+           std::vector<AbstractTexture*> textures)
     : m_vertices(std::move(vertices)),
       m_indices(std::move(indices)),
       m_textures(std::move(textures))
@@ -34,11 +33,7 @@ Mesh::Mesh(Mesh&& other)
 
 Mesh::~Mesh()
 {
-    if (m_idCard)
-    {
-        m_idCard->clear();
-        delete m_idCard;
-    }
+    clear();
 }
 
 Mesh& Mesh::operator=(const Mesh& other)
@@ -67,7 +62,10 @@ void Mesh::setup()
 
 void Mesh::clear()
 {
-    m_idCard->clear();
-    delete m_idCard;
-    m_idCard = nullptr;
+    if (m_idCard)
+    {
+        m_idCard->clear();
+        delete m_idCard;
+        m_idCard = nullptr;
+    }
 }

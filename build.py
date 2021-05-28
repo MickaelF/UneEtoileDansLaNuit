@@ -9,7 +9,7 @@ import shutil
 import fileinput
 import stat
 
-workingdir = os.getcwd()
+workingdir = os.path.dirname(os.path.realpath(__file__))
 cmakeDefaultOptions = []
 isWindowsOS = (os.name == 'nt')
 
@@ -29,8 +29,8 @@ def needsToBeUpdated(name, data):
     if not os.path.exists("lastUpdate.json"):
         return False
     lastUpdateJson = openJsonFile("lastUpdate.json".format(workingdir, name))
-    for key in lastUpdateJson.keys():
-        if data[key] != lastUpdateJson[key]:
+    for key in data.keys():
+        if not key in lastUpdateJson or data[key] != lastUpdateJson[key]:
             return True
 
     return False
@@ -64,7 +64,10 @@ def handleSpecialCommands(orig, dest, operations, clean = False):
                             shutil.copyfile("{0}/{1}".format(origDir, filename), "{0}/{1}".format(destDir, filename))
                     else:
                          for filename in file["files"]:
-                            os.remove("{0}/{1}".format(destDir, filename))
+                            try:
+                                os.remove("{0}/{1}".format(destDir, filename))
+                            except:
+                                pass
 
             if "directories" in operation:
                 for directory in operation["directories"]:
@@ -73,7 +76,7 @@ def handleSpecialCommands(orig, dest, operations, clean = False):
                         shutil.rmtree(dest, onerror=set_rw)
                     if not clean:
                         shutil.copytree(replacePlaceholders(directory["orig"]), dest)
-        elif operation["operation"] == "replace":
+        elif operation["operation"] == "replace" and not clean:
             for fileJson in operation["files"]:
                 with fileinput.FileInput(replacePlaceholders(fileJson["path"]), inplace=True, backup='.bak') as file:
                     for line in file:
@@ -94,8 +97,8 @@ def parseDependenciesJson(args):
 
     cmakeDefaultOptions.append("-DCMAKE_CXX_STANDARD=20")
 
-    os.chdir("dependencies")
     for dependency in data["dependencies"]:
+        os.chdir("{0}/dependencies".format(workingdir))
         print("""
         ************************************************************************
                                      {0}
@@ -103,25 +106,32 @@ def parseDependenciesJson(args):
         """.format(dependency["name"]))
         destPath = "{0}/{1}".format(args.d, dependency["name"])
         if args.action == "clean" and os.path.exists(dependency["name"]):
+            print("Removing folder {0}/dependencies/{1}".format(workingdir, dependency["name"]))
             shutil.rmtree("{0}/dependencies/{1}".format(workingdir, dependency["name"]), onerror=set_rw)
+            print("Removing folder {0}".format(destPath))
             shutil.rmtree(destPath, onerror=set_rw)
             if "special" in dependency:
-                handleSpecialCommands(os.getcwd(), destPath, dependency["special"], True)
+                handleSpecialCommands("{0}/dependencies/{1}".format(workingdir, dependency["name"]), destPath, dependency["special"], True)
 
         if args.action == "build":
             if os.path.exists(dependency["name"]):
-                os.chdir(dependency["name"])
+                os.chdir("{0}/dependencies/{1}".format(workingdir, dependency["name"]))
+                ret = subprocess.Popen(["git", "rev-parse", dependency["branch"]], stdout=subprocess.PIPE)
+                dependency["hash"] = ret.stdout.read().decode("utf-8")
                 if not os.path.exists("lastUpdate.json"):
                     createJsonFile("lastUpdate.json".format(workingdir, dependency["name"]), dependency)
                 elif needsToBeUpdated(dependency["name"], dependency):
                     shutil.rmtree("build", onerror=set_rw)
                     os.remove("lastUpdate.json")
                     subprocess.call(["git", "checkout", dependency["branch"]])
+                    subprocess.call(["git", "pull", "origin", dependency["branch"]])
                     createJsonFile("lastUpdate.json".format(workingdir, dependency["name"]), dependency)
             else:
                 subprocess.call(["git", "clone", dependency["url"], "-b", dependency["branch"]])
+                os.chdir("{0}/dependencies/{1}".format(workingdir, dependency["name"]))
+                ret = subprocess.Popen(["git", "rev-parse", dependency["branch"]], stdout=subprocess.PIPE)
+                dependency["hash"] = ret.stdout.read().decode("utf-8")
                 createJsonFile("{0}/dependencies/{1}/lastUpdate.json".format(workingdir, dependency["name"]), dependency)
-                os.chdir(dependency["name"])
 
             if (dependency["build"] == True):
                 cmake = cmakeDefaultOptions.copy()
@@ -131,12 +141,13 @@ def parseDependenciesJson(args):
                 if "cmakeBuildOptions" in dependency:
                     cmake.extend(dependency["cmakeBuildOptions"])
                 if dependency["name"] == "SDL":
+                    if not isWindowsOS:
+                        continue
                     cmake.append("-DVIDEO_RPI={0}".format("ON" if args.graphicalAPI == "RaspberryPi" else "OFF"))
                     cmake.append("-DVIDEO_OPENGL={0}".format("ON" if args.graphicalAPI == "OpenGL" else "OFF"))
                     cmake.append("-DVIDEO_VULKAN={0}".format("ON" if args.graphicalAPI == "Vulkan" else "OFF"))
                     cmake.append("-DVIDEO_OPENGLES={0}".format("ON" if args.graphicalAPI == "OpenGLES" else "OFF"))
                     cmake.append("-DDIRECTX={0}".format("ON" if args.graphicalAPI == "DirectX" else "OFF"))
-                    print(cmake)
                 if dependency["name"] == "glad":
                     if args.graphicalAPI == "OpenGL":
                         cmake.append("-DGLAD_API=\"gl={0}\"".format(dependency["version"]["gl"]))
@@ -146,8 +157,7 @@ def parseDependenciesJson(args):
                 subprocess.call([args.cmake, "--build", "build", "-j", "8", "--config", args.buildType])
                 subprocess.call([args.cmake, "--build", "build", "-j", "8", "--config", args.buildType, "--target", "install"])
             if "special" in dependency:
-                handleSpecialCommands(os.getcwd(), destPath, dependency["special"])
-            os.chdir("..")
+                handleSpecialCommands("{0}/dependencies/{1}".format(workingdir, dependency["name"]), destPath, dependency["special"])
 
 
 # main

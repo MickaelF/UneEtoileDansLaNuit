@@ -19,7 +19,7 @@ public:
 
     bool running() const { return m_keepRunning; }
     void inputHandling();
-    void render();
+    void render(IScene* m_currentScene);
     void quit() { m_keepRunning = false; }
 
 private:
@@ -28,6 +28,5 @@ private:
     SDL_Window* m_window {nullptr};
     bool m_keepRunning {true};
     AbstractRenderer* m_renderer {nullptr};
-    IScene* m_currentScene {nullptr};
     Camera m_camera;
 };

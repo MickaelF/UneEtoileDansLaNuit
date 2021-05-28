@@ -1,5 +1,4 @@
 #include <UneEtoile/scene/gameobject.h>
-
 #include <pttk/log.h>
 
 #include <stdexcept>
@@ -7,9 +6,6 @@
 GameObject::~GameObject()
 {
     if (m_parent != nullptr) m_parent->removeChild(this);
-
-    for (auto child : m_children)
-        if (child != nullptr) delete child;
 }
 
 void GameObject::setName(const std::string& name)
@@ -39,15 +35,15 @@ void GameObject::setParent(GameObject* parent)
 
 void GameObject::addChild(GameObject* child)
 {
-    auto it = std::find(m_children.begin(), m_children.end(), nullptr);
-    if (it == m_children.end())
-        throw std::runtime_error("Cannot add more child to this object");
-    *it = child;
+    auto it = std::find(m_children.begin(), m_children.end(), child);
+    if (it != m_children.end())
+        throw std::runtime_error("Cannot add same child multiple times");
+    m_children.push_back(child);
 }
 
 void GameObject::removeChild(GameObject* child)
 {
     auto it = std::find(m_children.begin(), m_children.end(), nullptr);
     if (it == m_children.end()) throw std::runtime_error("Cannot find child");
-    *it = nullptr;
+    m_children.erase(it);
 }

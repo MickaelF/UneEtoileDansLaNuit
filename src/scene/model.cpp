@@ -42,7 +42,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) const
 {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Texture *> textures;
+    std::vector<AbstractTexture *> textures;
 
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
@@ -67,9 +67,9 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) const
     if (mesh->mMaterialIndex >= 0)
     {
         aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-        std::vector<Texture *> diffuseMaps = loadMaterialTextures(
+        std::vector<AbstractTexture *> diffuseMaps = loadMaterialTextures(
             material, aiTextureType_DIFFUSE, "texture_diffuse");
-        std::vector<Texture *> specularMaps = loadMaterialTextures(
+        std::vector<AbstractTexture *> specularMaps = loadMaterialTextures(
             material, aiTextureType_SPECULAR, "texture_specular");
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
         textures.insert(textures.end(), specularMaps.begin(),
@@ -78,10 +78,10 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) const
     return Mesh(std::move(vertices), std::move(indices), std::move(textures));
 }
 
-std::vector<Texture *> Model::loadMaterialTextures(
+std::vector<AbstractTexture *> Model::loadMaterialTextures(
     aiMaterial *mat, aiTextureType type, const std::string &typeName) const
 {
-    std::vector<Texture *> textures;
+    std::vector<AbstractTexture *> textures;
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
     {
         aiString str;

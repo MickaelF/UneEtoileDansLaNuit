@@ -1,7 +1,7 @@
 #pragma once
 #include <UneEtoile/imgui/iimguiuserinterface.h>
 
-class Texture;
+class AbstractTexture;
 class TextureExplorerWidget : public IImGuiUserInterface
 {
 public:
@@ -9,6 +9,6 @@ public:
     void render() override;
 
 private:
-    void displayOpenGlImage(Texture* tex);
+    void displayOpenGLImage(AbstractTexture* tex);
     int m_currentIndex = 0;
 };

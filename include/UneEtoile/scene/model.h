@@ -7,7 +7,7 @@ class aiNode;
 class aiScene;
 class aiMesh;
 class Mesh;
-class Texture;
+class AbstractTexture;
 
 class Model
 {
@@ -18,7 +18,7 @@ private:
     void processNode(aiNode* node, const aiScene* scene);
     Mesh processMesh(aiMesh* mesh, const aiScene* scene) const;
 
-    std::vector<Texture*> loadMaterialTextures(
+    std::vector<AbstractTexture*> loadMaterialTextures(
         aiMaterial* mat, aiTextureType type, const std::string& typeName) const;
 
     std::vector<Mesh> m_meshes;

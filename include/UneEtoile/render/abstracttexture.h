@@ -1,11 +1,11 @@
 #pragma once
 #include <filesystem>
 
-class Texture
+class AbstractTexture
 {
 public:
-    explicit Texture(int width, int height, int nbChannels);
-    virtual ~Texture();
+    explicit AbstractTexture(int width, int height, int nbChannels);
+    virtual ~AbstractTexture();
     void increaseUseNumber();
     void decreaseUseNumber();
     virtual void load(unsigned char* data) = 0;

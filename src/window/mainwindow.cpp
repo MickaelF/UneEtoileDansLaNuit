@@ -105,7 +105,7 @@ void MainWindow::inputHandling()
         inputHandler.handleInputs(inputs, std::chrono::steady_clock::now());
 }
 
-void MainWindow::render()
+void MainWindow::render(IScene* m_currentScene)
 {
     m_renderer->renderBegin();
     if (m_currentScene) m_renderer->render(m_currentScene->root());

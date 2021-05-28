@@ -15,3 +15,4 @@
 *.code-workspace
 dependencies/launch-cmake-18.sh
 .vscode/*
+include/UneEtoile/render/renderermacros.h

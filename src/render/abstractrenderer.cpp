@@ -1,6 +1,11 @@
 #include <UneEtoile/imgui/imguihandler.h>
 #include <UneEtoile/render/abstractrenderer.h>
-#include <UneEtoile/render/opengl/openglrenderer.h>
+#include <UneEtoile/render/renderermacros.h>
+#if defined(OPENGL_FOUND)
+#include <UneEtoile/render/opengl/gl/glrenderer.h>
+#elif defined(OPENGLES2_FOUND)
+#include <UneEtoile/render/opengl/gles/glesrenderer.h>
+#endif
 
 #include <stdexcept>
 
@@ -32,7 +37,13 @@ void AbstractRenderer::selectRendererType(Type type)
 
     switch (type)
     {
-        case Type::OpenGl: m_instance = new OpenGlRenderer(); break;
+        case Type::OpenGL: 
+#if defined(OPENGL_FOUND)
+        m_instance = new GLRenderer();
+#elif defined(OPENGLES2_FOUND)
+        m_instance = new GLESRenderer();
+#endif
+        break;
         case Type::DirectX:
         case Type::Vulkan: break;
     }

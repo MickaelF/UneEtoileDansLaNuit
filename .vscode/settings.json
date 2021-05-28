@@ -88,7 +88,11 @@
         "cinttypes": "cpp",
         "bit": "cpp",
         "clocale": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "csignal": "cpp",
+        "shared_mutex": "cpp",
+        "span": "cpp",
+        "valarray": "cpp"
     },
     "editor.formatOnSave": true,
     "cmake.configureSettings": {

@@ -63,7 +63,7 @@
         },
         {
             "name": "PTTK",
-            "branch": "v0.0.1",
+            "branch": "default",
             "url": "https://github.com/MickaelF/PTTK.git",
             "build": true
         },
