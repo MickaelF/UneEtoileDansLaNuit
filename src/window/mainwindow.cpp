@@ -17,11 +17,11 @@ MainWindow::MainWindow() : m_renderer(AbstractRenderer::instance())
 {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
         throw std::runtime_error("Failed to create SDL window");
-
-    m_window =
-        SDL_CreateWindow(AppInfo::instance().appName().c_str(),
-                         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1600,
-                         900, SDL_WINDOW_SHOWN | m_renderer->windowFlags());
+    auto* appInfo {AppInfo::instance()};
+    m_window = SDL_CreateWindow(appInfo->appName().c_str(),
+                                SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                appInfo->windowWidth(), appInfo->windowHeight(),
+                                SDL_WINDOW_SHOWN | m_renderer->windowFlags());
     if (!m_window) throw std::runtime_error("Failed to create SDL window");
 
     m_renderer->init(m_window);
@@ -86,8 +86,6 @@ void MainWindow::inputHandling()
                 SDL_GetMouseState(&x, &y);
                 auto oldMousePos = InputHandler::mousePosition();
                 InputHandler::setMousePosition(x, y);
-
-                m_camera.handleMouseMove(x - oldMousePos.x, oldMousePos.y - y);
             }
             break;
             case SDL_JOYAXISMOTION:

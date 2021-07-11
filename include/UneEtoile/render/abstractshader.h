@@ -25,4 +25,6 @@ public:
     virtual void updateUniform3f(int id, const glm::vec3 &val) = 0;
     virtual void updateUniform4f(int id, const glm::vec4 &val) = 0;
     virtual void updateUniformMat4f(int id, const glm::mat4 &val) = 0;
+
+    static AbstractShader* currentShader;
 };

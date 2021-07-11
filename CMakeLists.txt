@@ -149,6 +149,11 @@ set(SRCS
     src/render/opengl/gl/gltexture.cpp
     src/render/opengl/gl/glrenderer.cpp
 	src/render/shaderfactory.cpp
+	src/render/abstractmeshhandler.cpp
+	src/render/opengl/commonglmeshhandler.cpp
+	src/imgui/widget/gameobjectwidget.cpp
+	src/imgui/widget/scenewidget.cpp
+	src/scene/abstractshaderhandler.cpp
 )
 
 # Make relative paths absolute (needed later on)

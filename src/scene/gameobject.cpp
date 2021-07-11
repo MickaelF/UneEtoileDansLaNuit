@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 
+
 GameObject::~GameObject()
 {
     if (m_parent != nullptr) m_parent->removeChild(this);
@@ -10,9 +11,10 @@ GameObject::~GameObject()
 
 void GameObject::setName(const std::string& name)
 {
-    lDebug << "Changing name of game object from " << m_name << " to " << name
-           << ".";
-    if (m_name == name) m_name = name;
+    if (!m_name.empty())
+        lDebug << "Changing name of game object from " << m_name << " to "
+               << name << ".";
+    if (m_name != name) m_name = name;
 }
 
 void GameObject::setParent(GameObject* parent)

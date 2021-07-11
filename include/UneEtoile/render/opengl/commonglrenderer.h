@@ -53,8 +53,7 @@ public:
     void clean() override;
     void renderBegin() override;
     void renderEnd() override;
-    IRenderIDCard* load(Mesh& mesh) override;
-    void unload(IRenderIDCard* card) override;
+    AbstractMeshHandler* meshHandler() const override;
 
 protected:
     virtual const char* glslVersion() const = 0;

@@ -5,6 +5,12 @@
 
 #include "imgui.h"
 
+namespace
+{
+std::vector<IImGuiUserInterface*> toAdd;
+std::vector<IImGuiUserInterface*> toRemove;
+} // namespace
+
 ImGuiHandler& ImGuiHandler::instance()
 {
     static ImGuiHandler instance;
@@ -16,16 +22,33 @@ void ImGuiHandler::renderAll()
     renderMainMenu();
     if (m_displayMessageWidget) renderMessageWidget();
     for (auto& ui : m_ui) ui->render();
+    if (!toAdd.empty())
+    {
+        m_ui.insert(m_ui.end(), toAdd.begin(), toAdd.end());
+        toAdd.clear();
+    }
+    if (!toRemove.empty())
+    {
+        m_ui.erase(std::remove_if(m_ui.begin(), m_ui.end(),
+                                  [&](IImGuiUserInterface* ui)
+                                  {
+                                      for (auto* r : toRemove)
+                                          if (ui == r) return true;
+                                      return false;
+                                  }),
+                   m_ui.end());
+        toRemove.clear();
+    }
 }
 
 void ImGuiHandler::addUI(IImGuiUserInterface* ptr)
 {
-    m_ui.push_back(ptr);
+    toAdd.push_back(ptr);
 }
 
 void ImGuiHandler::removeUI(IImGuiUserInterface* ptr)
 {
-    m_ui.erase(std::find(m_ui.cbegin(), m_ui.cend(), ptr));
+    toRemove.push_back(ptr);
 }
 
 void ImGuiHandler::displayMessageWidget(MessageType type,

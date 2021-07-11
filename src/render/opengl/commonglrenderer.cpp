@@ -6,6 +6,7 @@
     #include <SDL2/SDL_video.h>
     #include <UneEtoile/render/opengl/commonglidcard.h>
     #include <UneEtoile/render/opengl/commonglshader.h>
+    #include <UneEtoile/render/opengl/commonglmeshhandler.h>
     #include <UneEtoile/scene/mesh.h>
 
     #include <stdexcept>
@@ -27,11 +28,19 @@ void CommonGLRenderer::render(GameObject* root)
     {
         CommonGLIDCard* card = static_cast<CommonGLIDCard*>(root->renderCard());
         glBindVertexArray(card->vao);
+        auto model {root->modelMatrix()};
+        AbstractShader::currentShader->updateUniformMat4f(AbstractShader::currentShader->retrieveUniformId("modelMatrix"), root->modelMatrix());
         glDrawElements(m_renderingMode, card->nbIndices, GL_UNSIGNED_INT, 0);
     }
     for (auto& child : root->children()) render(child);
 
     glBindVertexArray(0);
+}
+
+AbstractMeshHandler* CommonGLRenderer::meshHandler() const
+{
+    static CommonGLMeshHandler handler;
+    return &handler;
 }
 
 uint32_t CommonGLRenderer::windowFlags()
@@ -55,50 +64,6 @@ void CommonGLRenderer::renderEnd()
 {
     renderImGui();
     SDL_GL_SwapWindow(m_window);
-}
-
-IRenderIDCard* CommonGLRenderer::load(Mesh& mesh)
-{
-    unsigned int vao, vbo, ebo;
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
-    glGenBuffers(1, &ebo);
-
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-    auto& vertices = mesh.vertices();
-
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex),
-                 &vertices[0], GL_STATIC_DRAW);
-
-    auto& indices = mesh.indices();
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int),
-                 &indices[0], GL_STATIC_DRAW);
-
-    // vertex positions
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-    // vertex normals
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                          (void*)offsetof(Vertex, normal));
-    // vertex texture coords
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                          (void*)offsetof(Vertex, texcoords));
-
-    glBindVertexArray(0);
-    return new CommonGLIDCard(vao, vbo, ebo, indices.size());
-}
-
-void CommonGLRenderer::unload(IRenderIDCard* card)
-{
-    CommonGLIDCard* oglCard = static_cast<CommonGLIDCard*>(card);
-    glDeleteVertexArrays(1, &oglCard->vao);
-    glDeleteBuffers(1, &oglCard->vbo);
-    glDeleteBuffers(1, &oglCard->ebo);
 }
 
 void CommonGLRenderer::initImGui()
@@ -177,19 +142,13 @@ void GLRendererImgui::render()
         }
         if (m_culling && ImGui::Combo("Culling mode:", &m_cullingMode,
                                       cullingModes, IM_ARRAYSIZE(cullingModes)))
-        {
-            glCullFace(cullingMode());
-        }
+        { glCullFace(cullingMode()); }
         if (ImGui::Combo("Rendering mode:", &m_rendererMode, renderingModes,
                          IM_ARRAYSIZE(renderingModes)))
-        {
-            m_renderer->m_renderingMode = renderingMode();
-        }
+        { m_renderer->m_renderingMode = renderingMode(); }
         if (ImGui::Combo("Winding mode:", &m_windingMode, windingModes,
                          IM_ARRAYSIZE(windingModes)))
-        {
-            glFrontFace(windingMode());
-        }
+        { glFrontFace(windingMode()); }
     }
     ImGui::End();
 }
@@ -209,11 +168,6 @@ uint32_t CommonGLRenderer::windowFlags()
 void CommonGLRenderer::clean() {}
 void CommonGLRenderer::renderBegin() {}
 void CommonGLRenderer::renderEnd() {}
-IRenderIDCard* CommonGLRenderer::load(Mesh& mesh)
-{
-    return nullptr;
-}
-void CommonGLRenderer::unload(IRenderIDCard* card) {}
 void CommonGLRenderer::initImGui() {}
 void CommonGLRenderer::beginImGuiRender() {}
 void CommonGLRenderer::endImGuiRender() {}

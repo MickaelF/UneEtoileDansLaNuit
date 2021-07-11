@@ -11,6 +11,7 @@ BindingFactory::TypeKeyBinding::keyBinding(InputType type)
         case InputType::GamepadAxis: return m_gamepadAxis;
         case InputType::GamepadButton: return m_gamepadButton;
         case InputType::Keyboard: return m_keyboard;
+        default: throw std::runtime_error("Binding not existing");
     }
 }
 
@@ -112,10 +113,11 @@ std::vector<Binding*> BindingFactory::bindingsFromIds(
 {
     std::vector<Binding*> out;
     out.reserve(ids.size());
-    std::copy_if(
-        m_bindings.begin(), m_bindings.end(), std::back_inserter(out),
-        [ids](const auto& b)
-        { return std::find(ids.cbegin(), ids.cend(), b->id) != ids.cend(); });
+    std::copy_if(m_bindings.begin(), m_bindings.end(), std::back_inserter(out),
+                 [ids](const auto& b) {
+                     return std::find(ids.cbegin(), ids.cend(), b->id) !=
+                            ids.cend();
+                 });
     return out;
 }
 

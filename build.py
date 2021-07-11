@@ -154,8 +154,10 @@ def parseDependenciesJson(args):
                     elif args.graphicalAPI == "OpenGLES" or args.graphicalAPI == "RaspberryPi":
                         cmake.append("-DGLAD_API=\"gles2={0}\"".format(dependency["version"]["gles2"]))
                 subprocess.call(cmake)
-                subprocess.call([args.cmake, "--build", "build", "-j", "8", "--config", args.buildType])
-                subprocess.call([args.cmake, "--build", "build", "-j", "8", "--config", args.buildType, "--target", "install"])
+                subprocess.call([args.cmake, "--build", "build", "-j", "8", "--config", "Debug"])
+                subprocess.call([args.cmake, "--build", "build", "-j", "8", "--config", "Debug", "--target", "install"])
+                subprocess.call([args.cmake, "--build", "build", "-j", "8", "--config", "Release"])
+                subprocess.call([args.cmake, "--build", "build", "-j", "8", "--config", "Release", "--target", "install"])
             if "special" in dependency:
                 handleSpecialCommands("{0}/dependencies/{1}".format(workingdir, dependency["name"]), destPath, dependency["special"])
 

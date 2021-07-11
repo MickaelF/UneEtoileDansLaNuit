@@ -3,10 +3,9 @@
 #include <cstdint>
 
 class GameObject;
-class Mesh;
-class IRenderIDCard;
 struct SDL_Window;
 union SDL_Event;
+class AbstractMeshHandler;
 
 class AbstractRenderer
 {
@@ -22,7 +21,6 @@ public:
     static AbstractRenderer* instance();
     static void selectRendererType(Type type);
 
-
     virtual Type type() const = 0;
     virtual void init(SDL_Window* window) = 0;
     virtual uint32_t windowFlags() = 0;
@@ -32,8 +30,7 @@ public:
     virtual void renderEnd() = 0;
     void processEvents(SDL_Event& event);
 
-    virtual IRenderIDCard* load(Mesh& mesh) = 0;
-    virtual void unload(IRenderIDCard* card) = 0;
+    virtual AbstractMeshHandler* meshHandler() const = 0;
 
 protected:
     void renderImGui();

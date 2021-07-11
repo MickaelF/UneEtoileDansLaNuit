@@ -81,10 +81,13 @@ std::optional<unsigned int> CommonGLShader::generateVertexShader(
     std::string_view vertex)
 {
     unsigned int vertexId = glCreateShader(GL_VERTEX_SHADER);
-    if (generateShader(std::string(vertex), vertexId))
+    if (generateShader(std::string(vertex), vertexId)) {
         return vertexId;
-    else
+    }
+    else {
+        glDeleteShader(vertexId);
         return std::nullopt;
+    }
 }
 
 std::optional<unsigned int> CommonGLShader::generateFragmentShader(
@@ -117,9 +120,7 @@ int CommonGLShader::retrieveUniformId(std::string_view name) const
 
 void CommonGLShader::updateUniform1f(int id, float val)
 {
-    glUseProgram(m_id);
     glUniform1f(id, val);
-    glUseProgram(0);
 }
 
 void CommonGLShader::updateUniform2f(int id, const glm::vec2 &val)

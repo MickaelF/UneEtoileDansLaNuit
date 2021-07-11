@@ -9,23 +9,24 @@
 #include <filesystem>
 
 #include "mainscene.h"
+
 constexpr std::string_view companyName {"PotatoThunder"};
 
 int main(int argc, char *argv[])
 {
-    AppInfo &info =
+    std::filesystem::current_path(std::filesystem::path(argv[0]).parent_path());
+    AppInfo *info =
         AppInfo::instance(std::string(companyName),
                           std::filesystem::path(argv[0]).stem().string());
-    std::filesystem::current_path(std::filesystem::path(argv[0]).parent_path());
     const auto dataPath {
-        pttkPath::getDataPath(info.appName(), info.companyName())};
+        pttkPath::getDataPath(info->appName(), info->companyName())};
     Logger logger(dataPath);
     BasicLog::setLogger(logger);
     std::unique_ptr<MainWindow> mainWindow;
     try
     {
         AbstractRenderer::selectRendererType(
-            static_cast<AbstractRenderer::Type>(info.rendererIndex()));
+            static_cast<AbstractRenderer::Type>(info->rendererIndex()));
         mainWindow = std::make_unique<MainWindow>();
     }
     catch (std::exception *e)
@@ -39,7 +40,7 @@ int main(int argc, char *argv[])
         currentScene->preRun();
         IScene *nextScene = currentScene->run();
         currentScene->postRun();
-        currentScene = nextScene;
+        if (nextScene != currentScene) currentScene = nextScene;
     }
 
     return 0;

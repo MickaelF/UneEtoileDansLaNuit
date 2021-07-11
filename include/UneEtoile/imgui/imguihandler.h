@@ -41,6 +41,7 @@ private:
     constexpr const char* messageType(MessageType type) const;
 
     std::vector<IImGuiUserInterface*> m_ui;
+
     MainWindow* m_mainWindow {nullptr};
 
     bool m_displayMessageWidget {false};

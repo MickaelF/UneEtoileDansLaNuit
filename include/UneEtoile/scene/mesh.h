@@ -1,6 +1,10 @@
 #pragma once
 
+#include <UneEtoile/render/abstractshader.h>
+#include <UneEtoile/scene/abstractshaderhandler.h>
 #include <UneEtoile/scene/gameobject.h>
+
+#include <vector>
 
 class AbstractTexture;
 class IRenderIDCard;
@@ -31,6 +35,15 @@ public:
     const std::vector<unsigned int>& indices() const { return m_indices; }
     const std::vector<AbstractTexture*>& textures() const { return m_textures; }
 
+    void setIsStatic(bool state);
+    bool isStatic() const { return m_isStatic; }
+
+    void addShader(AbstractShaderHandler* shader);
+    const std::vector<AbstractShaderHandler*>& shaders() const
+    {
+        return m_shaderHandlers;
+    }
+
 protected:
     std::vector<Vertex> m_vertices;
     std::vector<unsigned int> m_indices;
@@ -41,4 +54,6 @@ private:
     void clear();
 
     IRenderIDCard* m_idCard {nullptr};
+    std::vector<AbstractShaderHandler*> m_shaderHandlers;
+    bool m_isStatic {true};
 };

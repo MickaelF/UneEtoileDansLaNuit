@@ -1,6 +1,7 @@
 #pragma once
 
 #include <UneEtoile/scene/iscene.h>
+#include <UneEtoile/scene/camera.h>
 
 #include "basicshader.h"
 #include "triangle.h"
@@ -16,4 +17,5 @@ public:
 private:
     BasicShader m_shader;
     Triangle m_triangle;
+    Camera m_camera;
 };

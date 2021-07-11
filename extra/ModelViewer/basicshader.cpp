@@ -12,40 +12,27 @@ constexpr std::string_view shaderName {"BasicShader"};
 }
 
 BasicShader::BasicShader()
-    : m_widget(this),
-      m_shader(AbstractShader::getShader(shaderName))
+    : AbstractShaderHandler(AbstractShader::getShader(shaderName))
 {
-    m_colorId = m_shader->retrieveUniformId("color");
 }
 
 BasicShader::~BasicShader() {}
 
-void BasicShader::updateUniforms() const
+void BasicShader::updateUniforms()
 {
-    if (m_imguiUpdate && m_colorId >= 0)
-        m_shader->updateUniform4f(m_colorId, m_color);
-}
-
-void BasicShader::activate()
-{
-    m_shader->activate();
-}
-
-BasicShaderWidget::BasicShaderWidget(BasicShader* ptr)
-    : IImGuiUserInterface(shaderName.data()),
-      m_shader(ptr)
-{
-}
-
-BasicShaderWidget::~BasicShaderWidget() {}
-
-void BasicShaderWidget::render()
-{
-    if (ImGui::Begin(name))
+    static int colorId = m_shader->retrieveUniformId("color");
+    if (m_colorChanged)
     {
-        m_shader->m_imguiUpdate =
-            m_shader->m_imguiUpdate |
-            ImGui::ColorEdit4("Color", glm::value_ptr(m_shader->m_color));
+        m_shader->updateUniform4f(colorId, m_color);
+        m_colorChanged = false;
     }
-    ImGui::End();
+    AbstractShaderHandler::updateUniforms();
+}
+
+void BasicShader::imguiRender()
+{
+    ImGui::Text("Basic Shader");
+    m_colorChanged =
+        m_colorChanged | ImGui::ColorEdit4("Color", glm::value_ptr(m_color));
+    ImGui::NewLine();
 }

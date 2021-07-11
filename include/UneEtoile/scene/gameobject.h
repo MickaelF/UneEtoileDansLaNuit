@@ -20,6 +20,8 @@ public:
     virtual IRenderIDCard* renderCard() const { return nullptr; }
     const std::vector<GameObject*>& children() const { return m_children; }
 
+    glm::mat4 modelMatrix() const { return m_transform.model(); }
+
 private:
     void addChild(GameObject* child);
     void removeChild(GameObject* child);
@@ -28,5 +30,5 @@ private:
     GameObject* m_parent {nullptr};
     std::vector<GameObject*> m_children;
     std::string m_name;
-    int m_depthLevel = 0;
+    int m_depthLevel {0};
 };

@@ -4,6 +4,7 @@
 #include <UneEtoile/render/texturefactory.h>
 
 #include "imgui.h"
+
 TextureExplorerWidget::TextureExplorerWidget()
     : IImGuiUserInterface("Texture Explorer")
 {
@@ -16,9 +17,7 @@ void TextureExplorerWidget::render()
     std::vector<std::string> names;
 
     for (auto& texture : texFactory.textures())
-    {
-        names.push_back(texture.first.filename().generic_string());
-    }
+    { names.push_back(texture.first.filename().generic_string()); }
     if (ImGui::Begin(name, &visible))
     {
         if (ImGui::BeginCombo("", names[m_currentIndex].c_str()))
@@ -53,5 +52,6 @@ void TextureExplorerWidget::displayOpenGLImage(AbstractTexture* tex)
 {
     CommonGLTexture* currentTex = static_cast<CommonGLTexture*>(tex);
     ImGui::Image((void*)(intptr_t)currentTex->texId(),
-                 ImVec2(currentTex->width, currentTex->height));
+                 ImVec2(static_cast<float>(currentTex->width),
+                        static_cast<float>(currentTex->height)));
 }

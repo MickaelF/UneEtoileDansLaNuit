@@ -28,5 +28,4 @@ private:
     SDL_Window* m_window {nullptr};
     bool m_keepRunning {true};
     AbstractRenderer* m_renderer {nullptr};
-    Camera m_camera;
 };

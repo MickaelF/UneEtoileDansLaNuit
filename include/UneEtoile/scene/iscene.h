@@ -1,4 +1,5 @@
 #pragma once
+#include <UneEtoile/imgui/widget/scenewidget.h>
 #include <UneEtoile/scene/gameobject.h>
 
 class MainWindow;
@@ -11,6 +12,7 @@ class MainWindow;
     - Sauvegarde des inputs utilisateurs pour pouvoir débugger
     - Créer une macro pour la déclaration des classes ImGui ?
 */
+
 class IScene
 {
 public:
@@ -26,4 +28,6 @@ protected:
     MainWindow* m_window;
 
 private:
+    friend SceneWidget;
+    SceneWidget m_widget;
 };

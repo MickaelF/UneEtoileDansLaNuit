@@ -1,5 +1,7 @@
+#include <UneEtoile/render/abstractmeshhandler.h>
 #include <UneEtoile/render/abstractrenderer.h>
 #include <UneEtoile/render/opengl/commonglidcard.h>
+
 CommonGLIDCard::CommonGLIDCard(unsigned int vao, unsigned int vbo,
                                unsigned int ebo, unsigned int nbIndices)
     : vao {vao},
@@ -16,5 +18,5 @@ CommonGLIDCard::~CommonGLIDCard()
 
 void CommonGLIDCard::clear()
 {
-    AbstractRenderer::instance()->unload(this);
+    AbstractRenderer::instance()->meshHandler()->unload(this);
 }

@@ -8,8 +8,8 @@ AppInfoWidget::AppInfoWidget() : IImGuiUserInterface("App info") {}
 
 void AppInfoWidget::render()
 {
-    static AppInfo& info = AppInfo::instance();
-    if (m_currentRenderer == -1) m_currentRenderer = info.rendererIndex();
+    static AppInfo* info = AppInfo::instance();
+    if (m_currentRenderer == -1) m_currentRenderer = info->rendererIndex();
     if (!visible) return;
     if (ImGui::Begin(name, &visible))
     {
@@ -19,13 +19,13 @@ void AppInfoWidget::render()
             ImGui::TableSetColumnIndex(0);
             ImGui::Text("Application Name:");
             ImGui::TableSetColumnIndex(1);
-            ImGui::Text("%s", info.appName().c_str());
+            ImGui::Text("%s", info->appName().c_str());
 
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
             ImGui::Text("Company Name:");
             ImGui::TableSetColumnIndex(1);
-            ImGui::Text("%s", info.companyName().c_str());
+            ImGui::Text("%s", info->companyName().c_str());
 
             const char* items[] = {"OpenGl", "DirectX", "Vulkan"};
             ImGui::TableNextRow();
@@ -52,7 +52,7 @@ void AppInfoWidget::render()
                 if (ImGui::Button("Cancel"))
                 {
                     m_modifying = false;
-                    m_currentRenderer = info.rendererIndex();
+                    m_currentRenderer = info->rendererIndex();
                 }
             }
         }
@@ -63,24 +63,28 @@ void AppInfoWidget::render()
 
 bool AppInfoWidget::hasChanges() const
 {
-    if (m_currentRenderer != AppInfo::instance().rendererIndex()) return true;
-    return false;
+    if (m_currentRenderer != AppInfo::instance()->rendererIndex())
+        return true;
+    else
+        return false;
 }
 
 bool AppInfoWidget::needRestart() const
 {
-    if (m_currentRenderer != AppInfo::instance().rendererIndex()) return true;
-    return false;
+    if (m_currentRenderer != AppInfo::instance()->rendererIndex())
+        return true;
+    else
+        return false;
 }
 
 void AppInfoWidget::save()
 {
-    static AppInfo& info = AppInfo::instance();
+    static AppInfo* info = AppInfo::instance();
     m_modifying = false;
     if (!hasChanges()) return;
     bool displayNeedRestart = needRestart();
-    info.setRendererIndex(m_currentRenderer);
-    if (!info.save())
+    info->setRendererIndex(m_currentRenderer);
+    if (!info->save())
     {
         ImGuiHandler::instance().displayMessageWidget(
             ImGuiHandler::MessageType::Error,

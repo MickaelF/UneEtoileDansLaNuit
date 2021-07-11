@@ -161,7 +161,9 @@
             "build": true,
             "cmakeBuildOptions": [
                 "-DASSIMP_BUILD_TESTS=OFF",
-                "-DASSIMP_BUILD_ASSIMP_TOOLS=OFF"
+                "-DASSIMP_BUILD_ASSIMP_TOOLS=OFF",
+                "-DASSIMP_BUILD_ALL_EXPORTERS_BY_DEFAULT=OFF",
+                "-DASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT=OFF"
             ]
         }
     ]

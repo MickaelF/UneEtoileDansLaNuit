@@ -31,9 +31,9 @@ std::tuple<std::string, std::string> getGLShaders(
     const std::filesystem::path& path)
 {
     return std::make_tuple(
-        getShaderFileContent(std::filesystem::path(path).append(".vert"))
+        getShaderFileContent(std::filesystem::path(path).concat(".vert"))
             .value(),
-        getShaderFileContent(std::filesystem::path(path).append(".frag"))
+        getShaderFileContent(std::filesystem::path(path).concat(".frag"))
             .value());
 }
 } // namespace
@@ -56,8 +56,8 @@ AbstractShader* ShaderFactory::shader(std::string_view name)
 AbstractShader* ShaderFactory::glShader(std::string_view name)
 {
     constexpr const char* path {"/shaders/gl/"};
-    std::filesystem::path completePath =
-        std::filesystem::current_path().append(path).append(name);
+    auto completePath {
+        std::filesystem::current_path().concat(path).concat(name)};
     auto files {getGLShaders(completePath)};
     return new GLShader(name.data(), std::get<0>(files), std::get<1>(files));
 }

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <stdexcept>
 
+
 int Binding::s_id = 0;
 void Binding::resetUsedController()
 {
@@ -112,8 +113,8 @@ float RangeBinding::value() const
     if (m_axis.index() == 0)
         return std::get<0>(m_axis).value;
     else
-        return std::get<1>(m_axis).negativeValue +
-               std::get<1>(m_axis).positiveValue;
+        return static_cast<float>(std::get<1>(m_axis).negativeValue +
+                                  std::get<1>(m_axis).positiveValue);
 }
 
 Vector2Binding::Vector2Binding(InputType horizontalType, int horizontalKey,

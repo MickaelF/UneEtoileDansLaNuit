@@ -1,3 +1,4 @@
+#include <UneEtoile/render/abstractmeshhandler.h>
 #include <UneEtoile/render/abstractrenderer.h>
 #include <UneEtoile/render/irenderidcard.h>
 #include <UneEtoile/scene/mesh.h>
@@ -57,7 +58,7 @@ Mesh& Mesh::operator=(Mesh& other)
 
 void Mesh::setup()
 {
-    m_idCard = AbstractRenderer::instance()->load(*this);
+    m_idCard = AbstractRenderer::instance()->meshHandler()->load(*this);
 }
 
 void Mesh::clear()
@@ -68,4 +69,15 @@ void Mesh::clear()
         delete m_idCard;
         m_idCard = nullptr;
     }
+}
+
+void Mesh::setIsStatic(bool state)
+{
+    if (m_isStatic == state) return;
+    m_isStatic = state;
+}
+
+void Mesh::addShader(AbstractShaderHandler* shader)
+{
+    m_shaderHandlers.push_back(shader);
 }

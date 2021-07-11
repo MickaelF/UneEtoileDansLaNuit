@@ -65,9 +65,9 @@ void InputRecorder::handleInput(
 
 void InputRecorder::start(const std::string& path)
 {
-    AppInfo& info = AppInfo::instance();
+    AppInfo* info = AppInfo::instance();
     m_path = (path.empty()) ? pttkPath::getDocumentFolderPath(
-                                  info.appName(), info.companyName())
+                                  info->appName(), info->companyName())
                             : std::filesystem::path(path);
     m_isRunning = true;
     m_start = std::chrono::steady_clock::now();
